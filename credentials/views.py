@@ -3,16 +3,17 @@ from .models import Credential
 
 from .forms import CredentialForm
 from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class CredentialListView(ListView):
+class CredentialListView(LoginRequiredMixin, ListView):
     model = Credential
     ordering = ["-created_at"]
     context_object_name = "credential_list"
     template_name = "credentials/credential_list.html"
 
 
-class CredentialCreateView(CreateView):
+class CredentialCreateView(LoginRequiredMixin, CreateView):
     model = Credential
     form_class = CredentialForm
     template_name = "credentials/credential_form.html"

@@ -23,7 +23,7 @@ SECRET_KEY = "^&*2_#&l%qw!o7^m9xf3njey--gha3k_)!5i#!89(-1)h5-gu4"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+SITE_ID = 1
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -35,11 +35,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     # 第三方应用
     "rest_framework",
+    "rest_framework.authtoken",
     "channels",
     "crispy_forms",
     "django_extensions",
+    "allauth",
+    "allauth.account",
     # 项目应用
     "grids.apps.GridsConfig",
     "users.apps.UsersConfig",
@@ -123,3 +127,16 @@ AUTH_USER_MODEL = "users.User"
 
 ASGI_APPLICATION = "fisher.routing.application"
 CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
+
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_LOGOUT_ON_GET = True
+LOGIN_URL = "/auth/login"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+        # "rest_framework.authentication.SessionAuthentication",
+    ),
+}

@@ -1,0 +1,25 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load account %}
+{% load crispy_forms_tags %}
+
+{% block inner %}
+  <div class="col-md-4 offset-md-4">
+    <main class="card">
+      <div class="card-header">
+        登录
+      </div>
+      <div class="card-body">
+        <form class="login" method="POST" action="{% url 'account_login' %}">
+          {% csrf_token %}
+          {{ form|crispy }}
+          {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+          {% endif %}
+          <button class="btn btn-outline-primary btn-sm" type="submit">登录</button>
+        </form>
+      </div>
+    </main>
+  </div>
+{% endblock %}

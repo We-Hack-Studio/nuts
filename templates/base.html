@@ -27,6 +27,15 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url "credentials:list" %}">接入</a>
         </li>
+        {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "account_logout" %}">登出</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "account_login" %}">登录</a>
+          </li>
+        {% endif %}
       </ul>
     </div>
   </nav>

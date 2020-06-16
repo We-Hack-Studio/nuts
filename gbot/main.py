@@ -40,6 +40,8 @@ ROBOT_REQ_PATH = "/robots/{robot_id}/".format(robot_id=config.ROBOT_ID)
 
 
 class HttpClient(object):
+    headers = {"Authorization": f"Token {config.TOKEN}"}
+
     def __init__(self):
         self.base_url: str = config.SERVER_BASE_URL.rstrip("/")
 
@@ -70,7 +72,12 @@ class HttpClient(object):
     ):
         url = self.base_url + req_path
         response = requests.request(
-            method, url, headers=headers, params=params, data=data, json=json
+            method,
+            url,
+            headers=headers or self.headers,
+            params=params,
+            data=data,
+            json=json,
         )
         response.raise_for_status()
         return response.json()

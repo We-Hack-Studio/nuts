@@ -40,6 +40,7 @@
         {% else %}
           <h3>创建网格</h3>
           <form id="make-grids-form" action="{% url "grid-make" %}">
+            {% csrf_token %}
             <div class="form-group row">
               <label for="capital" class="col-sm-2 col-form-label">投资金额(BTC)</label>
               <div class="col-sm-10">
@@ -89,6 +90,9 @@
 {% endblock %}
 {% block scripts %}
   <script>
+      var authToken = "{{ auth_token }}";
+  </script>
+  <script>
       $("document").ready(function () {
           // 创建网格
           $("#make-grids-form").on("submit", function (event) {
@@ -104,15 +108,30 @@
                   'take_profit_range': $form.find("input[name='take_profit_range']").val(),
               };
 
-              $.post(url, payload, function (data) {
-                  location.reload();
+              $.ajax({
+                  url: url,
+                  data: payload,
+                  type: "POST",
+                  beforeSend: function (xhr) {
+                      xhr.setRequestHeader('Authorization', 'Token ' + authToken);
+                  },
+                  success: function () {
+                      location.reload();
+                  }
               });
           });
 
           // 重置网格
           $("#clear-grids-btn").on("click", function (event) {
-              $.post("/api/grids/clear/", function (data) {
-                  location.reload();
+              $.ajax({
+                  url: "/api/grids/clear/",
+                  type: "POST",
+                  beforeSend: function (xhr) {
+                      xhr.setRequestHeader('Authorization', 'Token' + authToken);
+                  },
+                  success: function () {
+                      location.reload();
+                  }
               });
           });
       })

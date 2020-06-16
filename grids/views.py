@@ -5,6 +5,7 @@ from rest_framework_bulk import mixins as bulk_mixins
 
 from .models import Grid
 from .serializers import GridSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
 class GridMakeInputSerializer(serializers.Serializer):
@@ -69,6 +70,7 @@ class GridViewSet(
     viewsets.GenericViewSet,
 ):
     serializer_class = GridSerializer
+    permission_classes = [IsAuthenticated]
     lookup_value_regex = "[0-9]+"
 
     def get_queryset(self):

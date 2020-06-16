@@ -26,6 +26,7 @@ router.register("robots", robots.views.RobotViewSet, basename="robot")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("auth/", include("allauth.account.urls")),
     path("robots/", include("robots.urls")),
     path("credentials/", include("credentials.urls")),
     path("api/", include(router.urls)),
