@@ -1,0 +1,22 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+ccxt = "*"
+django = "*"
+django-model-utils = "*"
+djangorestframework = "*"
+djangorestframework-bulk = "*"
+django-cryptography = "*"
+django-crispy-forms = "*"
+django-extensions = "*"
+django-allauth = "*"
+channels = "*"
+channels-redis = "*"
+
+[requires]
+python_version = "3.6"
