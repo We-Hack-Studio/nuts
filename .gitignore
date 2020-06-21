@@ -108,6 +108,7 @@ venv.bak/
 gbot/config.py
 staticfiles/
 
+config.js
 .DS_Store
 node_modules
 /dist

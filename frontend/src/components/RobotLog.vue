@@ -21,7 +21,7 @@
             subscribe() {
                 let vm = this
                 let robotSocket = new WebSocket(
-                    'ws://127.0.0.1:7000/ws/streams/'
+                    window.conf.wsBaseUri
                 );
 
                 robotSocket.onmessage = function (e) {

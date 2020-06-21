@@ -2,12 +2,12 @@ import axios from 'axios'
 import store from "./store";
 
 export const annonInstance = axios.create({
-    baseURL: "http://127.0.0.1:7000/api",
+    baseURL: window.conf.apiBaseUrl,
     timeout: 10000,
 });
 
 export const authInstance = axios.create({
-    baseURL: "http://127.0.0.1:7000/api",
+    baseURL: window.conf.apiBaseUrl,
     timeout: 10000,
 });
 authInstance.interceptors.request.use(function (config) {
