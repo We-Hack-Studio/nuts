@@ -12,23 +12,22 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+import environ
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = environ.Path(__file__) - 3
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
+env = environ.Env()
+READ_DOT_ENV_FILE = env.bool("READ_DOT_ENV_FILE", default=False)
+if READ_DOT_ENV_FILE:
+    # OS environment variables take precedence over variables from .env
+    env.read_env(os.path.join(BASE_DIR, ".env"))
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "^&*2_#&l%qw!o7^m9xf3njey--gha3k_)!5i#!89(-1)h5-gu4"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 SITE_ID = 1
 ALLOWED_HOSTS = ["*"]
 
 # Application definition
-
-INSTALLED_APPS = [
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -36,7 +35,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
-    # 第三方应用
+]
+THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "channels",
@@ -44,6 +44,10 @@ INSTALLED_APPS = [
     "django_extensions",
     "allauth",
     "allauth.account",
+    "rest_auth",
+    "corsheaders",
+]
+LOCAL_APPS = [
     # 项目应用
     "grids.apps.GridsConfig",
     "users.apps.UsersConfig",
@@ -51,9 +55,14 @@ INSTALLED_APPS = [
     "streams.apps.StreamsConfig",
     "credentials.apps.CredentialsConfig",
     "exchanges.apps.ExchangesConfig",
+    "core.apps.CoreConfig",
+    "assets.apps.AssetsConfig",
+    "positions.apps.PositionsConfig",
 ]
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",  # cross domain
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -135,8 +144,19 @@ LOGIN_URL = "/auth/login"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
-        # "rest_framework.authentication.SessionAuthentication",
     ),
 }
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",  # login by email
+)
+
+REST_AUTH_SERIALIZERS = {
+    "TOKEN_SERIALIZER": "users.serializers.UserDetailTokenSerializer",
+}
+ASSET_CURRENCY_LIST = env.list(
+    "ASSET_CURRENCY_LIST", default=["BTC", "USDT", "ETH", "EOS"]
+)

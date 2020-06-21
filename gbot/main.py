@@ -7,36 +7,8 @@ from datetime import datetime
 import ccxt
 import requests
 
+from dingtalkchatbot.chatbot import DingtalkChatbot
 from gbot import config
-
-# 日志配置
-logger = logging.getLogger("bot")
-DEFAULT_LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "simple": {
-            "format": "%(asctime)s %(levelname)s %(message)s",
-            "datefmt": "%Y-%m-%d %H:%M:%S",
-        },
-    },
-    "handlers": {
-        "console": {
-            "level": config.LOG_LEVEL,
-            "class": "logging.StreamHandler",
-            "formatter": "simple",
-        }
-    },
-    "loggers": {"bot": {"handlers": ["console"], "level": config.LOG_LEVEL}},
-}
-logging.config.dictConfig(DEFAULT_LOGGING)
-
-# API
-GRID_PARAMETERS_REQ_PATH = "/grids/parameters/"
-GRIDS_REQ_PATH = "/grids/"
-ROBOT_LOG_REQ_PATH = "/robots/logs/"
-ROBOT_CONFIG_REQ_PATH = "/robots/{robot_id}/config/".format(robot_id=config.ROBOT_ID)
-ROBOT_REQ_PATH = "/robots/{robot_id}/".format(robot_id=config.ROBOT_ID)
 
 
 class HttpClient(object):
@@ -45,27 +17,23 @@ class HttpClient(object):
     def __init__(self):
         self.base_url: str = config.SERVER_BASE_URL.rstrip("/")
 
-    def fetch_grid_parameters(self):
-        parameters = self._request("GET", GRID_PARAMETERS_REQ_PATH)
-        return parameters
-
     def fetch_grids(self):
-        grids = self._request("GET", GRIDS_REQ_PATH)
+        grids = self._request("GET", INTERNAL_GRIDS_REQ_PATH)
         return grids
 
     def fetch_robot_config(self):
-        cfg = self._request("GET", ROBOT_CONFIG_REQ_PATH)
+        cfg = self._request("GET", INTERNAL_ROBOT_CONFIG_REQ_PATH)
         return cfg
 
     def update_grids(self, grids):
-        self._request("PATCH", GRIDS_REQ_PATH, json=grids)
+        self._request("PATCH", INTERNAL_GRIDS_REQ_PATH, json=grids)
 
     def update_robot(self, data):
-        self._request("PATCH", ROBOT_REQ_PATH, json=data)
+        self._request("PATCH", INTERNAL_ROBOT_REQ_PATH, json=data)
 
     def create_log(self, msg):
         data = {"msg": msg, "robot_id": config.ROBOT_ID}
-        self._request("POST", ROBOT_LOG_REQ_PATH, json=data)
+        self._request("POST", INTERNAL_ROBOT_LOG_REQ_PATH, json=data)
 
     def _request(
         self, method, req_path, headers=None, params=None, data=None, json=None
@@ -81,6 +49,85 @@ class HttpClient(object):
         )
         response.raise_for_status()
         return response.json()
+
+
+# 日志配置
+class DingTalkHandler(logging.Handler):
+    def __init__(self):
+        logging.Handler.__init__(self)
+        self.ding_bot = DingtalkChatbot(
+            config.DINGTALK_WEBHOOK, secret=config.DINGTALK_SECRET
+        )
+
+    def emit(self, record):
+        try:
+            msg = self.format(record)
+            self.ding_bot.send_text(msg=msg)
+        except Exception:
+            self.handleError(record)
+
+
+class RemoteHandler(logging.Handler):
+    def __init__(self):
+        logging.Handler.__init__(self)
+        self.client = HttpClient()
+
+    def emit(self, record):
+        try:
+            self.client.create_log(msg=record.msg)
+        except Exception:
+            self.handleError(record)
+
+
+logger = logging.getLogger("bot")
+remote_logger = logging.getLogger("bot.remote")
+full_logger = logging.getLogger("bot.full")
+DEFAULT_LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "simple": {
+            "format": "%(asctime)s %(levelname)s %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": config.LOG_LEVEL,
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+        "dingtalk": {
+            "level": logging.DEBUG,
+            "class": "main.DingTalkHandler",
+            "formatter": "simple",
+        },
+        "remote": {
+            "level": logging.DEBUG,
+            "class": "main.RemoteHandler",
+            "formatter": "simple",
+        },
+    },
+    "loggers": {
+        "bot": {"handlers": ["console"], "level": config.LOG_LEVEL},
+        "bot.remote": {"handlers": ["console", "remote"], "level": logging.DEBUG},
+        "bot.full": {
+            "handlers": ["console", "remote", "dingtalk"],
+            "level": logging.DEBUG,
+        },
+    },
+}
+logging.config.dictConfig(DEFAULT_LOGGING)
+
+# API
+INTERNAL_GRIDS_REQ_PATH = "/internal/grids/"
+INTERNAL_ROBOT_LOG_REQ_PATH = "/internal/robots/logs/"
+INTERNAL_ROBOT_CONFIG_REQ_PATH = "/internal/robots/{robot_id}/config/".format(
+    robot_id=config.ROBOT_ID
+)
+INTERNAL_ROBOT_REQ_PATH = "/internal/robots/{robot_id}/".format(
+    robot_id=config.ROBOT_ID
+)
 
 
 class GridBot(object):
@@ -288,7 +335,10 @@ class BybitGridBot(GridBot):
                 grid["filled_qty"] = 0
                 grid["holding"] = False
 
-            logger.info(f"已同步第 {grid_index} 层网格，网格状态={grid['holding']}")
+            grid_state = "开" if grid["holding"] else "平"
+            full_logger.info(
+                "网格（%f@%d）状态已变更 -> %s", grid["entry_price"], grid_id, grid_state
+            )
             self._synced_order_set.add(order["id"])
 
         self.client.update_grids(self.grids)
@@ -318,16 +368,12 @@ class BybitGridBot(GridBot):
         self.load_grids()
 
     def trade(self):
-        msg = "正在设置交易环境"
-        logger.info(msg)
-        self.client.create_log(msg)
+        full_logger.info("正在设置交易环境")
         self.pre_trade()
         cnt = 1
         while True:
             try:
-                msg = f"开始第 {cnt} 轮交易"
-                logger.info(msg)
-                self.client.create_log(msg)
+                logger.info("开始第 %d 轮交易", cnt)
                 self.sync_position()
                 self.sync_balance()
                 self.sync_grids()
@@ -336,6 +382,7 @@ class BybitGridBot(GridBot):
                 cnt += 1
             except Exception as e:
                 logger.exception(e, exc_info=True)
+                full_logger.exception(e)
 
     def auth(self):
         self.ccxt_exchange.apiKey = self._api_key

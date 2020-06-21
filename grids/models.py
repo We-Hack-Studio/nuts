@@ -10,6 +10,12 @@ class Grid(models.Model):
     created_at = AutoCreatedField("创建于")
     modified_at = AutoLastModifiedField("修改于")
     index = models.IntegerField("索引")
+    robot = models.ForeignKey(
+        "robots.Robot",
+        verbose_name="机器人",
+        related_name="grids",
+        on_delete=models.CASCADE,
+    )
 
     class Meta:
         verbose_name = "网格"

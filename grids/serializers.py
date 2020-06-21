@@ -16,4 +16,5 @@ class GridSerializer(BulkSerializerMixin, serializers.ModelSerializer):
             "filled_qty",
             "index",
             "holding",
+            "robot",
         ]

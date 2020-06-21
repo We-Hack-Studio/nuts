@@ -2,4 +2,5 @@ from django.apps import AppConfig
 
 
 class ExchangesConfig(AppConfig):
-    name = 'exchanges'
+    name = "exchanges"
+    verbose_name = "交易所"

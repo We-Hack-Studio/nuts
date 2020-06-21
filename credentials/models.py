@@ -24,7 +24,7 @@ class Credential(models.Model):
     )
 
     class Meta:
-        verbose_name = "交易所凭据"
+        verbose_name = "交易所凭证"
         verbose_name_plural = verbose_name
 
     def __str__(self):

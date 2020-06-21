@@ -14,20 +14,33 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
 from rest_framework_bulk.routes import BulkRouter
 
-import grids.views
+import credentials.views
+import exchanges.views
+import grids.internal.views
+import robots.internal.views
 import robots.views
 
 router = BulkRouter()
-router.register("grids", grids.views.GridViewSet, basename="grid")
+router.register(
+    "internal/grids", grids.internal.views.GridViewSet, basename="internal-grid"
+)
 router.register("robots", robots.views.RobotViewSet, basename="robot")
+router.register(
+    "internal/robots", robots.internal.views.RobotViewSet, basename="internal-robot"
+)
+router.register("exchanges", exchanges.views.ExchangeViewSet, basename="exchange")
+router.register(
+    "credentials", credentials.views.CredentialViewSet, basename="credential"
+)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/", include("allauth.account.urls")),
     path("robots/", include("robots.urls")),
     path("credentials/", include("credentials.urls")),
+    path("api/", include("rest_auth.urls")),
     path("api/", include(router.urls)),
 ]
