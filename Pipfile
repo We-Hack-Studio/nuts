@@ -23,6 +23,7 @@ DingtalkChatbot = "*"
 django-filter = "*"
 uvicorn = "*"
 django-environ = "*"
+whitenoise = "*"
 
 [requires]
 python_version = ">=3.6"
