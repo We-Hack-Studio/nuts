@@ -8,7 +8,7 @@ import ccxt
 import requests
 
 from dingtalkchatbot.chatbot import DingtalkChatbot
-from gbot import config
+import config
 
 
 class HttpClient(object):
