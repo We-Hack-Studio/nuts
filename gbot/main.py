@@ -330,15 +330,31 @@ class BybitGridBot(GridBot):
             if order["side"] == "sell":
                 grid["filled_qty"] = order["cost"]
                 grid["holding"] = True
+                full_logger.info(
+                    "第%d层网格（入%.2f 量%d 出%.2f）已开，关联订单：%s %d@%.2f",
+                    grid["index"],
+                    grid["entry_price"],
+                    grid["entry_size"],
+                    grid["exit_price"],
+                    order["side"],
+                    order["amount"],
+                    order["price"],
+                )
 
             if order["side"] == "buy":
                 grid["filled_qty"] = 0
                 grid["holding"] = False
+                full_logger.info(
+                    "第%d层网格（入%.2f 量%d 出%.2f）已平，关联订单：%s %d@%.2f",
+                    grid["index"],
+                    grid["entry_price"],
+                    grid["entry_size"],
+                    grid["exit_price"],
+                    order["side"],
+                    order["amount"],
+                    order["price"],
+                )
 
-            grid_state = "开" if grid["holding"] else "平"
-            full_logger.info(
-                "网格（%f@%d）状态已变更 -> %s", grid["entry_price"], grid_id, grid_state
-            )
             self._synced_order_set.add(order["id"])
 
         self.client.update_grids(self.grids)
