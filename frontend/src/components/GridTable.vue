@@ -5,7 +5,7 @@
       <b-icon-gear class="mr-3" v-b-modal.grid-params-form-modal></b-icon-gear>
       <b-icon-trash class="mr-3" variant="danger" @click="showMsgBox" v-if="hasGrids"></b-icon-trash>
     </div>
-    <b-table :items="gridList" :fields="fields" class="mt-2"></b-table>
+    <b-table :items="gridList" :fields="fields" class="mt-2" :tbody-tr-class="holdingClass" small></b-table>
     <b-modal button-size="sm" size="sm" id="grid-params-form-modal" centered title="网格参数设置">
       <b-form @submit="onSubmit">
         <b-form-group
@@ -175,6 +175,10 @@
                         console.log(err);
                         // An error occurred
                     })
+            },
+            holdingClass(item, type) {
+                if (!item || type !== 'row') return
+                if (item.holding) return 'text-success'
             }
         },
         computed: {
