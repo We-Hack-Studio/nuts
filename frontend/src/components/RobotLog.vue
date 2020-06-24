@@ -2,34 +2,43 @@
   <div>
     <b-card header-tag="header" footer-tag="footer">
       <template v-slot:header>
-        <h6 class="mb-0">日志监控</h6>
+        <div class="d-flex justify-content-between"><span>日志监控</span>
+          <toggle-button :value="robotEnabled" :sync="true" :disabled="robotSwitchDisabled"
+                         @change="handleRobotSwitch"
+                         :labels="{checked: 'On', unchecked: 'Off'}"/>
+        </div>
       </template>
-      <p v-for="log in robotLogList" :key="log.datetime">{{log.datetime}} {{log.msg}}</p>
+      <p v-for="log in robotLogList" :key="log.timestamp">{{log.timestamp}} {{log.msg}}</p>
     </b-card>
   </div>
 </template>
 
 <script>
+    import {updateRobot} from "../api";
+
     export default {
         name: 'RobotLog',
+        props: {
+            robotEnabled: Boolean,
+            robotStreamKey: String,
+        },
         data() {
             return {
+                robotSwitchDisabled: false,
                 robotLogList: []
             }
         },
         methods: {
             subscribe() {
                 let vm = this
+                let robotId = vm.$route.params.id
                 let robotSocket = new WebSocket(
-                    window.conf.wsBaseUri
+                    window.conf.robotStreamWsUri.replace('{pk}', robotId) + '?stream_key=' + vm.robotStreamKey
                 );
 
                 robotSocket.onmessage = function (e) {
                     let data = JSON.parse(e.data);
-                    vm.robotLogList.push({
-                        datetime: data.datetime,
-                        msg: data.data.msg,
-                    });
+                    vm.robotLogList.push(data);
                 };
 
                 robotSocket.onclose = function () {
@@ -38,13 +47,22 @@
 
                 robotSocket.onopen = function () {
                     console.info("Websocket opened!");
-                    let message = JSON.stringify({
-                        'cmd': "sub",
-                        'params': ['robot.' + vm.$route.params.id],
-                        "id": "fisher"
-                    })
-                    robotSocket.send(message);
+                    // let message = JSON.stringify({
+                    //     'cmd': "sub",
+                    //     'params': ['robot.' + robotId],
+                    //     "id": "fisher"
+                    // })
+                    // robotSocket.send(message);
                 };
+            },
+            handleRobotSwitch({value}) {
+                this.robotSwitchDisabled = true
+                updateRobot(this.$route.params.id, {"enabled": value}).then(() => {
+                    this.robotSwitchDisabled = false
+                    this.$emit("robot-switch")
+                }).catch(err => {
+                    console.log(err.data);
+                })
             }
         },
         mounted() {

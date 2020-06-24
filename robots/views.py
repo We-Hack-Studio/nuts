@@ -4,59 +4,21 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
+from django.utils import timezone
 from django.views.generic import CreateView, DetailView, ListView
 from rest_framework import mixins, serializers, status, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
+from core.utils import KeyHelper
 from grids.models import Grid
 from grids.serializers import GridSerializer
 from robots.serializers import RobotConfigSerializer
 
-from .forms import RobotForm
 from .models import Robot
 from .serializers import RobotSerializer
-
-
-class RobotListView(LoginRequiredMixin, ListView):
-    model = Robot
-    ordering = "-ping_time"
-    template_name = "robots/robot_list.html"
-
-
-class RobotDetailView(LoginRequiredMixin, DetailView):
-    model = Robot
-    ordering = "-ping_time"
-    template_name = "robots/robot_detail.html"
-    context_object_name = "robot"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(object_list=object_list, **kwargs)
-        grid_list = Grid.objects.all().order_by("index")
-        context["grid_list"] = grid_list
-        auth_token = ""
-        try:
-            auth_token = self.request.user.auth_token.key
-        except Token.DoesNotExist:
-            pass
-        context["auth_token"] = auth_token
-        return context
-
-
-class RobotCreateView(LoginRequiredMixin, CreateView):
-    model = Robot
-    form_class = RobotForm
-    template_name = "robots/robot_form.html"
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs["user"] = self.request.user
-        return kwargs
-
-    def get_success_url(self):
-        return reverse("robots:list")
 
 
 class GridMakeInputSerializer(serializers.Serializer):
@@ -117,6 +79,7 @@ class GridMakeInputSerializer(serializers.Serializer):
 
 class RobotViewSet(
     mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
     mixins.CreateModelMixin,
     viewsets.GenericViewSet,
@@ -126,12 +89,16 @@ class RobotViewSet(
 
     def get_queryset(self):
         user = self.request.user
-        return (
-            Robot.objects.filter(credential__user=user)
-            .select_related("credential__user", "credential__exchange")
+        qs = (
+            Robot.objects.select_related(
+                "credential__user", "credential__exchange", "position"
+            )
             .with_stats()
             .order_by("-created_at")
         )
+        if user.is_superuser:
+            return qs
+        return qs.filter(credential__user=user)
 
     @action(
         methods=["GET"],
@@ -139,6 +106,7 @@ class RobotViewSet(
         serializer_class=GridSerializer,
         url_path="grids",
         url_name="grid",
+        permission_classes=[IsAuthenticated],
     )
     def list_grids(self, request, *args, **kwargs):
         robot = self.get_object()
@@ -171,4 +139,54 @@ class RobotViewSet(
         if any(grid.holding for grid in grids):
             return Response({"detail": "有已开仓网格，不能清除"}, status=400)
         grids.delete()
-        return Response({"detail": "ok"}, status=200)
+        return Response(status=204)
+
+    @action(
+        methods=["GET"],
+        detail=True,
+        serializer_class=RobotConfigSerializer,
+        permission_classes=[IsAuthenticated | IsAdminUser],
+    )
+    def config(self, request, *args, **kwargs):
+        robot = self.get_object()
+        serializer = self.get_serializer(instance=robot)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(
+        methods=["POST"],
+        detail=False,
+        url_path="logs",
+        permission_classes=[IsAuthenticated | IsAdminUser],
+    )
+    def send_log(self, request, *args, **kwargs):
+        channel_layer = get_channel_layer()
+        data = request.data
+        robot_id = data["robot_id"]
+        text = {
+            "topic": "log",
+            "robot_id": robot_id,
+            "datetime": datetime.now().strftime("%H:%M:%S"),
+            "data": {"msg": data["msg"]},
+        }
+        event = {
+            "type": "robot.stream",
+            "text": text,
+        }
+        group_name = f"robot.{robot_id}"
+        async_to_sync(channel_layer.group_send)(
+            group_name, event,
+        )
+        return Response({"detail": "ok"})
+
+    @action(
+        methods=["POST"],
+        detail=True,
+        url_path="ping",
+        permission_classes=[IsAuthenticated | IsAdminUser],
+    )
+    def ping(self, request, *args, **kwargs):
+        robot = self.get_object()
+        now = timezone.now()
+        robot.ping_time = now
+        robot.save(update_fields=["ping_time"])
+        return Response({"detail": "pong"}, status=status.HTTP_200_OK)

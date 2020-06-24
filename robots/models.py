@@ -3,13 +3,14 @@ from django.db import models
 from model_utils.fields import AutoCreatedField, AutoLastModifiedField
 
 from .managers import RobotManager
+from django_cryptography.fields import encrypt
 
 
 class Robot(models.Model):
     name = models.CharField("名字", max_length=20)
     pair = models.CharField("交易对", max_length=15)
     margin_currency = models.CharField("保证金币种", max_length=10)
-    enable = models.BooleanField("启用", default=True)
+    enabled = models.BooleanField("启用", default=True)
     start_time = models.DateTimeField("启动时间", null=True)
     ping_time = models.DateTimeField("心跳时间", null=True)
     created_at = AutoCreatedField("创建于")
@@ -20,6 +21,7 @@ class Robot(models.Model):
         on_delete=models.CASCADE,
         related_name="robots",
     )
+    stream_key = encrypt(models.CharField("Websocket消息密钥", max_length=300))
     objects: RobotManager = RobotManager()
 
     class Meta:

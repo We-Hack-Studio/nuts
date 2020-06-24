@@ -24,6 +24,10 @@ django-filter = "*"
 uvicorn = "*"
 django-environ = "*"
 whitenoise = "*"
+dictdiffer = "*"
+httpx = "*"
+websockets = "*"
+aiologger = "*"
 
 [requires]
 python_version = ">=3.6"

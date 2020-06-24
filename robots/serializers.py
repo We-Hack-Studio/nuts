@@ -1,11 +1,12 @@
 from rest_framework import serializers
 from rest_framework.fields import DurationField as DrfDurationField
+from rest_framework.serializers import FloatField
 
 from credentials.serializers import CredentialKeysSerializer
 from exchanges.serializers import ExchangeSerializer
+from users.serializers import UserSerializer
 
 from .models import Robot
-from rest_framework.serializers import FloatField
 
 
 class DurationField(DrfDurationField):
@@ -23,8 +24,10 @@ class PercentageField(FloatField):
 
 
 class RobotSerializer(serializers.ModelSerializer):
+    user = UserSerializer(source="credential.user", read_only=True)
     exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
     duration_display = DurationField(source="duration", read_only=True)
+    balance = serializers.FloatField(source="asset_balance", read_only=True)
     profit_ratio_ptg = PercentageField(source="asset_profit_ratio", read_only=True)
 
     class Meta:
@@ -34,18 +37,22 @@ class RobotSerializer(serializers.ModelSerializer):
             "name",
             "pair",
             "margin_currency",
-            "enable",
+            "enabled",
             "start_time",
             "ping_time",
             "duration_display",
             "profit_ratio_ptg",
+            "balance",
             "credential",
+            "user",
             "exchange",
+            "stream_key",
             "created_at",
             "modified_at",
         ]
         read_only_fields = [
             "ping_time",
+            "stream_key",
             "created_at",
             "modified_at",
         ]
@@ -55,7 +62,12 @@ class RobotSerializer(serializers.ModelSerializer):
 
 
 class RobotConfigSerializer(serializers.ModelSerializer):
+    user = UserSerializer(source="credential.user", read_only=True)
+    exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
     credential_keys = CredentialKeysSerializer(source="credential", read_only=True)
+    principal = serializers.FloatField(source="asset_principal", read_only=True)
+    position_id = serializers.IntegerField(source="position.id", read_only=True)
+    asset_id = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Robot
@@ -63,6 +75,13 @@ class RobotConfigSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "pair",
-            "enable",
+            "margin_currency",
+            "enabled",
+            "user",
+            "exchange",
+            "position_id",
+            "asset_id",
             "credential_keys",
+            "principal",
+            "stream_key",
         ]

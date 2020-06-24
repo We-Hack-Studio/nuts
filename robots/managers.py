@@ -18,6 +18,7 @@ class RobotQuerySet(QuerySet):
             credential__assets__currency=F("margin_currency"),
         ).annotate(
             asset_balance=F("credential__assets__balance"),
+            asset_id=F("credential__assets__id"),
             asset_principal=F("credential__assets__principal"),
             asset_profit=F("asset_balance") - F("asset_principal"),
             asset_profit_ratio=ExpressionWrapper(

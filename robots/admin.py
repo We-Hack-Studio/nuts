@@ -7,7 +7,7 @@ from .models import Robot
 class RobotAdmin(admin.ModelAdmin):
     list_display = [
         "id",
-        "enable",
+        "enabled",
         "start_time",
         "ping_time",
         "created_at",

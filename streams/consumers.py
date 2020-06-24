@@ -2,13 +2,23 @@ import json
 from datetime import datetime
 
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
+from core.utils import KeyHelper
+from urllib.parse import parse_qs
 
 
-class StreamConsumer(AsyncJsonWebsocketConsumer):
+class PrivateStreamConsumer(AsyncJsonWebsocketConsumer):
     async def receive_json(self, content, **kwargs):
         params = content.get("params")
         cmd = content.get("cmd")
+        key = content.get("key")
+        if not key:
+            await self.close()
 
+        data = KeyHelper.from_key(key=key)
+        if not data:
+            await self.close()
+
+        group_name = data["channel_group_name"]
         if cmd == "sub":
             for group_name in params:
                 await self.channel_layer.group_add(

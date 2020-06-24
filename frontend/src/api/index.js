@@ -27,6 +27,14 @@ export function createRobot(data) {
     return authInstance.post('/robots/', data)
 }
 
+export function updateRobot(robotId, data) {
+    return authInstance.patch('/robots/' + robotId + '/', data)
+}
+
+export function getRobot(robotId) {
+    return authInstance.get('/robots/' + robotId + '/')
+}
+
 export function getRobotList() {
     return authInstance.get('/robots/')
 }
