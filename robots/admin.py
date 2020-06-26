@@ -22,6 +22,7 @@ class RobotAdmin(admin.ModelAdmin):
     ]
     readonly_fields = [
         "stream_key",
+        "ping_time",
     ]
 
     def order_sync_datetime(self, obj):
