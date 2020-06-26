@@ -37,6 +37,7 @@ class CredentialSerializer(serializers.ModelSerializer):
             "secret",
             "api_key_masked",
             "secret_masked",
+            "test_net",
             "exchange",
             "exchange_info",
             "created_at",

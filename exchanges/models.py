@@ -1,4 +1,6 @@
 from django.db import models
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 from model_utils.fields import AutoCreatedField, AutoLastModifiedField
 
 
@@ -8,6 +10,15 @@ class Exchange(models.Model):
     name_zh = models.CharField("中文名", max_length=20, blank=True)
     created_at = AutoCreatedField("创建于")
     modified_at = AutoLastModifiedField("修改于")
+    logo = models.ImageField(upload_to="exchanges/logos", blank=True)
+    logo_thumbnail = ImageSpecField(
+        source="logo",
+        processors=[ResizeToFill(32, 32)],
+        format="png",
+        options={"quality": 100},
+    )
+    active = models.BooleanField("启用", default=False)
+    rank = models.SmallIntegerField("排序", default=0)
 
     class Meta:
         verbose_name = "交易所"

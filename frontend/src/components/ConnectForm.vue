@@ -42,8 +42,19 @@
         ></b-form-input>
       </b-form-group>
     </b-col>
+    <b-col md="12">
+      <b-form-checkbox
+              id="id_test_net"
+              v-model="form.testNet"
+              name="test_net"
+              value="true"
+              unchecked-value="false"
+      >
+        测试网
+      </b-form-checkbox>
+    </b-col>
     <b-col>
-      <b-button type="submit" variant="primary">接入</b-button>
+      <b-button type="submit" variant="primary" class="mt-2">接入</b-button>
     </b-col>
   </b-form>
 </template>
@@ -60,6 +71,7 @@
                     apiKey: '',
                     secret: '',
                     exchange: null,
+                    testNet: false,
                 },
                 exchangeOptions: [],
             }
@@ -72,6 +84,7 @@
                     "api_key": this.form.apiKey,
                     "secret": this.form.secret,
                     "exchange": this.form.exchange,
+                    "test_net": this.form.testNet,
                 }
                 createCredential(data).then(response => {
                     let cred = response.data
@@ -89,6 +102,7 @@
                         apiKey: '',
                         secret: '',
                         exchange: null,
+                        testNet: false,
                     }
                 }).catch(err => {
                     console.log(err.data);

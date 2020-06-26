@@ -1,10 +1,10 @@
 <template>
   <b-row>
-    <b-col md="4">
+    <b-col md="5">
       <robot-log :robotEnabled="robotEnabled" :robotStreamKey="robotStreamKey" v-if="robotStreamKey!==''"
                  @robot-switch="robotEnabled=!robotEnabled"></robot-log>
     </b-col>
-    <b-col md="8">
+    <b-col md="7">
       <grid-table></grid-table>
     </b-col>
   </b-row>

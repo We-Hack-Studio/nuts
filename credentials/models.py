@@ -9,6 +9,7 @@ class Credential(models.Model):
     api_key = encrypt(models.CharField("API密钥", max_length=50))
     secret = encrypt(models.CharField("密钥", max_length=50))
     passphrase = encrypt(models.CharField("密码", max_length=30, blank=True))
+    test_net = models.BooleanField("测试网", default=False)
     created_at = AutoCreatedField("创建于")
     exchange = models.ForeignKey(
         "exchanges.Exchange",

@@ -1,8 +1,10 @@
 <template>
   <header>
     <div>
-      <b-navbar toggleable="lg" type="dark" variant="info">
-        <b-navbar-brand href="#">NavBar</b-navbar-brand>
+      <b-navbar toggleable="lg" type="light" variant="light">
+        <b-navbar-brand href="#">
+          <b-icon-x-diamond scale="1.5"></b-icon-x-diamond>
+        </b-navbar-brand>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav>
@@ -11,7 +13,14 @@
             <b-nav-item to="/connect" v-if="isAuthenticated">接入</b-nav-item>
           </b-navbar-nav>
           <b-navbar-nav class="ml-auto">
-            <b-nav-item to="/login" v-if="isAuthenticated" @click="logout">登出</b-nav-item>
+            <b-nav-item-dropdown right v-if="isAuthenticated">
+              <!-- Using 'button-content' slot -->
+              <template v-slot:button-content>
+                <b-avatar size="sm"></b-avatar>
+              </template>
+              <b-dropdown-item to="/account">账户</b-dropdown-item>
+              <b-dropdown-item to="/login" @click="logout">登出</b-dropdown-item>
+            </b-nav-item-dropdown>
             <b-nav-item to="/login" v-else>登录</b-nav-item>
           </b-navbar-nav>
         </b-collapse>

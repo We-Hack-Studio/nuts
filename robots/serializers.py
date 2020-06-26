@@ -29,6 +29,7 @@ class RobotSerializer(serializers.ModelSerializer):
     duration_display = DurationField(source="duration", read_only=True)
     balance = serializers.FloatField(source="asset_balance", read_only=True)
     profit_ratio_ptg = PercentageField(source="asset_profit_ratio", read_only=True)
+    test_net = serializers.BooleanField(source="credential.test_net", read_only=True)
 
     class Meta:
         model = Robot
@@ -38,10 +39,12 @@ class RobotSerializer(serializers.ModelSerializer):
             "pair",
             "margin_currency",
             "enabled",
+            "test_net",
             "start_time",
             "ping_time",
             "duration_display",
             "profit_ratio_ptg",
+            "order_sync_ts",
             "balance",
             "credential",
             "user",
@@ -68,6 +71,7 @@ class RobotConfigSerializer(serializers.ModelSerializer):
     principal = serializers.FloatField(source="asset_principal", read_only=True)
     position_id = serializers.IntegerField(source="position.id", read_only=True)
     asset_id = serializers.IntegerField(read_only=True)
+    test_net = serializers.BooleanField(source="credential.test_net", read_only=True)
 
     class Meta:
         model = Robot
@@ -77,6 +81,8 @@ class RobotConfigSerializer(serializers.ModelSerializer):
             "pair",
             "margin_currency",
             "enabled",
+            "order_sync_ts",
+            "test_net",
             "user",
             "exchange",
             "position_id",

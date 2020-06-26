@@ -1,9 +1,9 @@
 from django.conf import settings
 from django.db import models
+from django_cryptography.fields import encrypt
 from model_utils.fields import AutoCreatedField, AutoLastModifiedField
 
 from .managers import RobotManager
-from django_cryptography.fields import encrypt
 
 
 class Robot(models.Model):
@@ -13,6 +13,7 @@ class Robot(models.Model):
     enabled = models.BooleanField("启用", default=True)
     start_time = models.DateTimeField("启动时间", null=True)
     ping_time = models.DateTimeField("心跳时间", null=True)
+    order_sync_ts = models.BigIntegerField("订单同步时间戳", null=True)
     created_at = AutoCreatedField("创建于")
     modified_at = AutoLastModifiedField("修改于")
     credential = models.ForeignKey(
