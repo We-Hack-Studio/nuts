@@ -23,6 +23,7 @@ django-filter = "*"
 uvicorn = "*"
 django-environ = "*"
 whitenoise = "*"
+django-imagekit  = "*"
 
 [requires]
 python_version = ">=3.6"
