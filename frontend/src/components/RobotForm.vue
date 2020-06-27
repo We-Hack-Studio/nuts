@@ -2,6 +2,7 @@
   <b-card
           header="创建机器人"
           header-tag="header"
+          class="mt-3"
   >
     <b-form @submit="onSubmit">
       <b-form-group

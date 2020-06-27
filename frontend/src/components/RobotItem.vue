@@ -6,7 +6,7 @@
       <span>{{robot.pair}}</span>
       <span>{{robot.durationDisplay || '0天0小时'}}</span>
       <span>{{robot.profitRatioPtg || '0.00%'}}</span>
-      <span>》</span>
+      <span><b-icon-chevron-right></b-icon-chevron-right></span>
     </div>
   </div>
 </template>

@@ -17,13 +17,18 @@
                          :labels="{checked: 'On', unchecked: 'Off'}"/>
         </div>
       </template>
-      <p v-for="log in robotLogList" :key="log.timestamp">{{log.timestamp}} {{log.msg}}</p>
+      <ul class="list-unstyled robot-log-ul px-3 py-2" ref="robotLogUl">
+        <li v-for="log in robotLogList" :key="log.timestamp">
+          {{log.timestamp|formatLogTime}} {{log.level}} {{log.msg}}
+        </li>
+      </ul>
     </b-card>
   </div>
 </template>
 
 <script>
     import {updateRobot} from "../api";
+    import moment from 'moment'
 
     export default {
         name: 'RobotLog',
@@ -48,7 +53,15 @@
 
                 robotSocket.onmessage = function (e) {
                     let data = JSON.parse(e.data);
-                    vm.robotLogList.push(data);
+                    if (data.topic === 'log') {
+                        vm.robotLogList.push(data);
+                        if (vm.robotLogList.length > 100) {
+                            vm.robotLogList.shift()
+                        }
+                        vm.$nextTick(() => {
+                            vm.$refs.robotLogUl.scrollTop = vm.$refs.robotLogUl.scrollHeight - vm.$refs.robotLogUl.clientHeight
+                        })
+                    }
                 };
 
                 robotSocket.onclose = function () {
@@ -85,8 +98,21 @@
             // 此时 data 已经被 observed 了
             this.subscribe()
         },
+        filters: {
+            formatLogTime: function (value) {
+                return moment(value).format('HH:MM:DD')
+            }
+        }
     }
 </script>
 
 <style scoped>
+  .robot-log-ul {
+    max-height: 20rem;
+    overflow-y: scroll;
+  }
+
+  .card-body {
+    padding: 0;
+  }
 </style>

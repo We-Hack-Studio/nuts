@@ -107,6 +107,7 @@ venv.bak/
 .idea/
 gbot/config.py
 staticfiles/
+media/
 
 config.js
 .DS_Store
