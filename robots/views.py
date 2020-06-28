@@ -2,19 +2,15 @@ from datetime import datetime
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse
 from django.utils import timezone
-from django.views.generic import CreateView, DetailView, ListView
 from rest_framework import mixins, serializers, status, viewsets
-from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
+from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
-from core.utils import KeyHelper
-from grids.models import Grid
-from grids.serializers import GridSerializer
+from grids.models import Grid, GridStrategyParameter
+from grids.serializers import GridSerializer, GridStrategyParameterSerializer
 from robots.serializers import RobotConfigSerializer
 
 from .models import Robot
@@ -115,9 +111,23 @@ class RobotViewSet(
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(
+        methods=["GET"],
+        detail=True,
+        serializer_class=GridStrategyParameterSerializer,
+        url_path="grid-strategy-parameter",
+        url_name="grid-strategy-parameter",
+        permission_classes=[IsAuthenticated],
+    )
+    def retrieve_grid_strategy_parameter(self, request, *args, **kwargs):
+        robot = self.get_object()
+        parameter = get_object_or_404(GridStrategyParameter, robot=robot)
+        serializer = self.get_serializer(instance=parameter)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(
         methods=["POST"],
         detail=True,
-        serializer_class=GridMakeInputSerializer,
+        serializer_class=GridStrategyParameterSerializer,
         url_path="grids/make",
         url_name="grid-make",
     )
@@ -125,9 +135,12 @@ class RobotViewSet(
         robot = self.get_object()
         if robot.grids.exists():
             return Response({"detail": "请清除已有网格再创建"}, status=400)
-        serializer: GridMakeInputSerializer = self.get_serializer(data=request.data)
+        serializer: GridStrategyParameterSerializer = self.get_serializer(
+            data=request.data
+        )
         serializer.is_valid(raise_exception=True)
-        serializer.make(robot)
+        serializer.save(robot=robot)
+        serializer.make_grids()
         return Response({"detail": "ok"}, status=200)
 
     @action(
@@ -135,10 +148,12 @@ class RobotViewSet(
     )
     def clear_grids(self, request, *args, **kwargs):
         robot = self.get_object()
+        parameter = robot.grid_strategy_parameter
         grids = robot.grids.all()
         if any(grid.holding for grid in grids):
             return Response({"detail": "有已开仓网格，不能清除"}, status=400)
         grids.delete()
+        parameter.delete()
         return Response(status=204)
 
     @action(
@@ -151,32 +166,6 @@ class RobotViewSet(
         robot = self.get_object()
         serializer = self.get_serializer(instance=robot)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    @action(
-        methods=["POST"],
-        detail=False,
-        url_path="logs",
-        permission_classes=[IsAuthenticated | IsAdminUser],
-    )
-    def send_log(self, request, *args, **kwargs):
-        channel_layer = get_channel_layer()
-        data = request.data
-        robot_id = data["robot_id"]
-        text = {
-            "topic": "log",
-            "robot_id": robot_id,
-            "datetime": datetime.now().strftime("%H:%M:%S"),
-            "data": {"msg": data["msg"]},
-        }
-        event = {
-            "type": "robot.stream",
-            "text": text,
-        }
-        group_name = f"robot.{robot_id}"
-        async_to_sync(channel_layer.group_send)(
-            group_name, event,
-        )
-        return Response({"detail": "ok"})
 
     @action(
         methods=["POST"],

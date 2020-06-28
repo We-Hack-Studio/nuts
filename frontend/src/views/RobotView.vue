@@ -63,11 +63,11 @@
             setGridList(data) {
                 this.gridList = data.map(grid => ({
                     gridId: grid.id,
-                    gridIndex: grid.index,
+                    level: grid.level,
                     entryPrice: grid['entry_price'],
                     exitPrice: grid['exit_price'],
-                    entryQty: grid['entry_qty'],
                     filledQty: grid['filled_qty'],
+                    entryQty: grid['entry_qty'],
                     holding: grid.holding,
                 }))
             },

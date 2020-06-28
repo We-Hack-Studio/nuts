@@ -7,8 +7,8 @@
     </div>
     <b-table hover :items="gridList" :fields="fields" class="mt-2" :tbody-tr-class="holdingClass"
              small>
-      <template v-slot:cell(gridIndex)="data">
-        {{ data.value + 1 }}
+      <template v-slot:cell(level)="data">
+        {{ data.value }}
       </template>
       <template v-slot:cell(qty)="data">
         {{ data.item.filledQty }}/{{ data.item.entryQty }}
@@ -96,7 +96,7 @@
                 },
                 fields: [
                     {
-                        key: 'gridIndex',
+                        key: 'level',
                         label: '层'
                     },
                     {
