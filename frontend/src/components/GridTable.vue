@@ -1,11 +1,19 @@
 <template>
   <div>
     <div class="d-flex justify-content-end">
-      <b-icon-arrow-clockwise class="mr-3" @click="loadGridTable"></b-icon-arrow-clockwise>
+      <b-icon-arrow-clockwise class="mr-3" @click="refreshGridList"></b-icon-arrow-clockwise>
       <b-icon-gear class="mr-3" v-b-modal.grid-params-form-modal></b-icon-gear>
       <b-icon-trash class="mr-3" variant="danger" @click="showMsgBox" v-if="hasGrids"></b-icon-trash>
     </div>
-    <b-table :items="gridList" :fields="fields" class="mt-2" :tbody-tr-class="holdingClass" small></b-table>
+    <b-table hover :items="gridList" :fields="fields" class="mt-2" :tbody-tr-class="holdingClass"
+             small>
+      <template v-slot:cell(gridIndex)="data">
+        {{ data.value + 1 }}
+      </template>
+      <template v-slot:cell(qty)="data">
+        {{ data.item.filledQty }}/{{ data.item.entryQty }}
+      </template>
+    </b-table>
     <b-modal button-size="sm" size="sm" id="grid-params-form-modal" centered title="网格参数设置">
       <b-form @submit="onSubmit">
         <b-form-group
@@ -70,12 +78,14 @@
 </template>
 
 <script>
-    import {getGridList, createGrids, clearGrids} from "../api";
+    import {createGrids, clearGrids} from "../api";
 
     export default {
+        props: {
+            gridList: Array
+        },
         data() {
             return {
-                gridList: [],
                 form: {
                     minPrice: null,
                     maxPrice: null,
@@ -86,6 +96,10 @@
                 },
                 fields: [
                     {
+                        key: 'gridIndex',
+                        label: '层'
+                    },
+                    {
                         key: 'entryPrice',
                         label: '入场价'
                     },
@@ -94,17 +108,20 @@
                         label: '出场价'
                     },
                     {
-                        key: 'entryQty',
-                        label: '数量'
+                        key: 'qty',
+                        label: '已成交/数量'
                     },
-                    {
-                        key: 'action',
-                        label: '操作'
-                    }
+                    // {
+                    //     key: 'action',
+                    //     label: '操作'
+                    // }
                 ],
             }
         },
         methods: {
+            refreshGridList() {
+                this.$emit('refresh-grids')
+            },
             onSubmit(ok, evt) {
                 evt.preventDefault()
                 let data = {
@@ -124,31 +141,15 @@
                         maxLeverage: null,
                         takeProfitRange: null,
                     }
+                    this.$emit('grids-created')
                     ok()
-                    this.loadGridTable()
-                }).catch(err => {
-                    console.log(err.data);
-                })
-            },
-            setGridList(data) {
-                this.gridList = data.map(grid => ({
-                    gridId: grid.id,
-                    entryPrice: grid['entry_price'],
-                    exitPrice: grid['exit_price'],
-                    entryQty: grid['entry_qty'],
-                    holding: grid.holding,
-                }))
-            },
-            loadGridTable() {
-                getGridList(this.$route.params.id).then(response => {
-                    this.setGridList(response.data)
                 }).catch(err => {
                     console.log(err.data);
                 })
             },
             clearGridTable() {
                 clearGrids(this.$route.params.id).then(() => {
-                    this.gridList = []
+                    this.$emit('grids-cleared')
                 }).catch(err => {
                     console.log(err.data);
                 })
@@ -179,15 +180,13 @@
             holdingClass(item, type) {
                 if (!item || type !== 'row') return
                 if (item.holding) return 'text-success'
+                if (item.filledQty > 0) return 'text-warning'
             }
         },
         computed: {
             hasGrids() {
                 return this.gridList.length > 0
             }
-        },
-        mounted() {
-            this.loadGridTable()
-        },
+        }
     }
 </script>
