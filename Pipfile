@@ -4,6 +4,15 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+mkdocs = "*"
+django-debug-toolbar = "*"
+pytest = "*"
+pytest-django = "*"
+pytest-cov = "*"
+freezegun = "*"
+django-silk = "*"
+django-test-plus = "*"
+pytest-sugar = "*"
 
 [packages]
 ccxt = "*"
@@ -12,7 +21,6 @@ django-model-utils = "*"
 djangorestframework = "*"
 djangorestframework-bulk = "*"
 django-cryptography = "*"
-django-crispy-forms = "*"
 django-extensions = "*"
 django-allauth = "*"
 django-rest-auth = "*"
@@ -25,6 +33,8 @@ django-environ = "*"
 whitenoise = "*"
 django-imagekit  = "*"
 pillow = "*"
+gunicorn = "*"
+uvloop = "*"
 
 [requires]
-python_version = ">=3.6"
+python_version = "3"

@@ -1,0 +1,21 @@
+version: '3'
+
+volumes:
+  media:
+
+services:
+  yufu.api:
+    build:
+      context: .
+      dockerfile: compose/Dockerfile
+    image: yufu_api
+    container_name: yufu_api
+    working_dir: /app
+    volumes:
+      - ./database/:/app/database/
+      - ./media:/app/media
+    env_file:
+      - yufu.env
+    ports:
+      - "8000:8000"
+    command: /start.sh

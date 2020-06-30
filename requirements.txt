@@ -1,9 +1,0 @@
-ccxt
-django
-django-model-utils
-djangorestframework
-djangorestframework-bulk
-django-cryptography
-django-crispy-forms
-django-extensions
-django-allauth

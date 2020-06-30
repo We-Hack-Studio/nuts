@@ -103,11 +103,12 @@ venv.bak/
 /site
 
 # mypy
-*.sqlite3
 .idea/
-gbot/config.py
+database/
+*.sqlite3
 staticfiles/
 media/
+yufu.env
 
 config.js
 .DS_Store

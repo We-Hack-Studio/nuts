@@ -5,7 +5,7 @@ import sys
 
 
 def main():
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fisher.settings.local")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -14,6 +14,11 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
+
+    # This allows easy placement of apps within the interior
+    # yufu directory.
+    current_path = os.path.dirname(os.path.abspath(__file__))
+    sys.path.append(os.path.join(current_path, "yufu"))
     execute_from_command_line(sys.argv)
 
 

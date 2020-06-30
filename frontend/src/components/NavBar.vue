@@ -8,7 +8,7 @@
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav>
-            <b-nav-item to="/ranking">排行</b-nav-item>
+            <b-nav-item to="/market">行情</b-nav-item>
             <b-nav-item to="/robot/list" v-if="isAuthenticated">机器人</b-nav-item>
             <b-nav-item to="/connect" v-if="isAuthenticated">接入</b-nav-item>
           </b-navbar-nav>
