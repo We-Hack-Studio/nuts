@@ -12,7 +12,6 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -109,11 +108,11 @@ database/
 staticfiles/
 media/
 yufu.env
+yufu.conf
 
 config.js
 .DS_Store
 node_modules
-/dist
 
 # Log files
 npm-debug.log*

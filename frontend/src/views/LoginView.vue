@@ -59,7 +59,7 @@
                     }
                     this.$store.commit("SET_USER", payload)
                     userLocalStorage.save(payload)
-                    this.$router.push('/ranking')
+                    this.$router.push('/robot/list')
                 }).catch(err => {
                     let errData = err.response.data
                     this.hasError = true

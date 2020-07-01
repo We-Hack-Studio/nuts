@@ -1,7 +1,9 @@
 version: '3'
 
 volumes:
+  staticfiles:
   media:
+  database:
 
 services:
   yufu.api:
@@ -12,10 +14,27 @@ services:
     container_name: yufu_api
     working_dir: /app
     volumes:
-      - ./database/:/app/database/
-      - ./media:/app/media
+      - ./db.sqlite3:/app/db.sqlite3
+      - staticfiles:/app/staticfiles
+      - media:/app/media
     env_file:
       - yufu.env
     ports:
       - "8000:8000"
     command: /start.sh
+
+  nginx:
+    build:
+      context: .
+      dockerfile: compose/nginx/Dockerfile
+    image: nginx
+    container_name: nginx
+    depends_on:
+      - yufu.api
+    volumes:
+      - staticfiles:/apps/yufu/staticfiles
+      - media:/apps/yufu/media
+      - ./frontend/dist:/apps/yufu/dist
+    ports:
+      - "8080:80"
+      - "8443:443"

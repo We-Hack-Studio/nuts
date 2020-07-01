@@ -1,5 +1,5 @@
 const userLocalStorage = {
-    storageKey: 'fisher:user',
+    storageKey: 'yufu:user',
     load: function () {
         let user = JSON.parse(localStorage.getItem(this.storageKey) || 'null');
         return user || {

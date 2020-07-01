@@ -1,0 +1,22 @@
+upstream yufu_api  {
+    server yufu.api:8000;
+}
+
+server {
+    listen 80 default_server;
+    server_name _;
+    location / {
+        root   /apps/yufu/dist;
+        index  index.html;
+    }
+    location /static {
+        alias /apps/yufu/staticfiles;
+    }
+    location /media {
+        alias /apps/yufu/media;
+    }
+    location ~ ^/(api|ws|admin) {
+        include /etc/nginx/includes/proxy.conf;
+        proxy_pass http://yufu_api;
+    }
+}
