@@ -27,6 +27,8 @@ class GridAdmin(admin.ModelAdmin):
         "exit_price",
         "filled_qty",
         "entry_qty",
+        "associated_order_id",
+        "locked",
         "created_at",
         "modified_at",
     ]

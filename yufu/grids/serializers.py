@@ -85,6 +85,9 @@ class GridSerializer(BulkSerializerMixin, serializers.ModelSerializer):
             "exit_price",
             "filled_qty",
             "entry_qty",
+            "unfilled_qty",
+            "locked",
+            "associated_order_id",
             "holding",
             "robot",
         ]

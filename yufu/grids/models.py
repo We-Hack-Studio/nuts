@@ -41,6 +41,8 @@ class Grid(models.Model):
     entry_price = models.FloatField("入场价格")
     exit_price = models.FloatField("出场价格")
     filled_qty = models.FloatField("已开仓数量")
+    associated_order_id = models.CharField("关联订单id", max_length=100, blank=True)
+    locked = models.BooleanField("锁仓", default=False)
     created_at = AutoCreatedField("创建于")
     modified_at = AutoLastModifiedField("修改于")
     level = models.IntegerField("层")
@@ -58,3 +60,7 @@ class Grid(models.Model):
     @property
     def holding(self):
         return self.filled_qty > 0
+
+    @property
+    def unfilled_qty(self):
+        return self.entry_qty - self.filled_qty
