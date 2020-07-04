@@ -16,13 +16,26 @@ Python3、Django、Vue.js。
 
 **Step1**
 
-克隆或者直接下载代码到本地。
+克隆或者下载代码到本机或者服务器。
+
+```bash
+$ git clone https://github.com/zmrenwu/yufuquant.cc.git
+# 输出如下
+Cloning into 'yufuquant.cc'...
+remote: Enumerating objects: 599, done.
+remote: Counting objects: 100% (599/599), done.
+remote: Compressing objects: 100% (384/384), done.
+remote: Total 599 (delta 321), reused 480 (delta 202), pack-reused 0
+Receiving objects: 100% (599/599), 2.19 MiB | 1.63 MiB/s, done.
+Resolving deltas: 100% (321/321), done.
+```
 
 **Step2**
 
 打开命令行，进入到项目根目录，安装必要的依赖（推荐使用 Python 虚拟环境）：
 
 ```bash
+$ cd yufuquant.cc
 $ pip install -r requirements.txt
 ```
 
