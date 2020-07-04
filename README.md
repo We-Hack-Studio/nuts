@@ -1,3 +1,5 @@
+[TOC]
+
 # 渔夫数字货币交易系统
 
 专注于主流交易所、主流数字货币的量化交易，为量化交易者打造一个开源免费的基础平台。
@@ -51,21 +53,36 @@ $ python manage.py runscript yufu.scripts.init_db
 
 **Step4**
 
-进入 frontend/dist目录，将 config.js 文件中的 127.0.0.1 改为本机或者服务器 ip。
+进入 frontend/dist目录，复制 config.example.js 文件，重命名为 config.js，将 config.js 文件中的 127.0.0.1 改为本机或者服务器 ip。
 
 **Step5**
 
-启动 Docker 容器
+进入到 compose/nginx/conf.d/ 目录，复制 yufu.conf.template 文件，重命名为 yufu.conf。
+
+**Step6**
+
+回到项目根目录，复制 yufu.example.env 文件，命名为 yufu.env，按注释修改各项内容：
+
+```
+# 系统密钥，设置一个随机字符串
+DJANGO_SECRET_KEY=yufuquant.ccufmv!jn)82cu*pcry#3xcag**c#nn)=y0j%2k5dulf43_+omhu
+# 修改为本机或者服务器的 ip 地址
+DJANGO_ALLOWED_HOSTS=127.0.0.1
+# sentry 服务 DSN 地址，可不填
+SENTRY_DSN=
+```
+
+**Step7**
+
+启动 Docker 容器。
 
 ```bash
 $ docker-compose up --build -d
 ```
 
-点击机器人列表的 id 进入机器人管理页面，在右边的表单输入网格参数创建网格。
+**Step8**
 
-**Step6**
-
-访问 http://ip:8080，其中 ip 为你本机 ip 或者服务器公网 ip，使用默认账户登录（用户名yufu，密码yufu123456）。
+访问 http://ip:8080，其中 ip 为你本机或者服务器公网 ip，使用默认账户登录（用户名yufu，密码yufu123456）。
 
 ## 运行策略机器人
 
