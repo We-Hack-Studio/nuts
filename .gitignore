@@ -110,7 +110,7 @@ media/
 yufu.env
 yufu.conf
 
-config.js
+frontend/public/config.js
 .DS_Store
 node_modules
 

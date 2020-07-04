@@ -19,16 +19,16 @@ services:
       - media:/app/media
     env_file:
       - yufu.env
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     command: /start.sh
 
-  nginx:
+  yufu.nginx:
     build:
       context: .
       dockerfile: compose/nginx/Dockerfile
-    image: nginx
-    container_name: nginx
+    image: yufu_nginx
+    container_name: yufu_nginx
     depends_on:
       - yufu.api
     volumes:

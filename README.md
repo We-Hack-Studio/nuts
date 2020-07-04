@@ -1,18 +1,18 @@
 # 渔夫数字货币交易系统
 
-Python 开发的数字货币交易系统。当前版本内置一套网格策略和 Web操盘系统。
+专注于主流交易所、主流数字货币的量化交易，为量化交易者打造一个开源免费的基础平台。
 
-<img src="./screenshots/网格机器人页面.png" style="zoom: 33%;" />
+## 系统架构
+
+![](./screenshots/yufu系统架构.png)
 
 ## 技术栈
 
-- 编程语言 Python 3
-- ccxt 对接数字货币交易所接口
-- 操盘系统后端使用 django 开发，Web 界面使用 Bootstrap v4
+Python3、Django、Vue.js。
 
-## 如何使用
+## 基于 Docker 快速部署
 
-确保电脑上有 **Python 3** 运行环境，没有请安装！
+> 如果部署过程遇到问题，欢迎加入下方的用户体验群获取指导帮助。
 
 **Step1**
 
@@ -28,85 +28,83 @@ $ pip install -r requirements.txt
 
 **Step3**
 
-运行下面的命令启动操盘系统：
+生成并初始化数据：
 
 ```bash
 # 初始化数据库
 $ python manage.py migrate
-$ python manage.py runscript scripts.init_db
-
-# 创建系统管理员账户
-$ python manage.py createsuperuser
-
-# 启动系统
-$ python manage.py runserver
+$ python manage.py runscript yufu.scripts.init_db
 ```
 
 **Step4**
 
-浏览器打开 http://127.0.0.1:7000/credentials/，点击 **新增** 按钮，绑定交易所的 API Key 和密钥。
+进入 frontend/dist目录，将 config.js 文件中的 127.0.0.1 改为本机或者服务器 ip。
 
 **Step5**
 
-点击导航条上的 **机器人** 导航按钮，点击 **新增** 创建一个交易机器人。
+启动 Docker 容器
 
-**Step6**
+```bash
+$ docker-compose up --build -d
+```
 
 点击机器人列表的 id 进入机器人管理页面，在右边的表单输入网格参数创建网格。
 
-**Step7**
+**Step6**
 
-进入到项目的 gbot 文件夹下，复制 config.py.example 到相同目录下，重命名为 config.py，按说明修改其中的参数。
+访问 http://ip:8080，其中 ip 为你本机 ip 或者服务器公网 ip，使用默认账户登录（用户名yufu，密码yufu123456）。
 
-**Step8**
+## 运行策略机器人
 
-命令行输入如下命令启动交易机器人开始交易：
+当前系统提供了一套网格策略机器人，可以在 Bybit 交易所的模拟盘或者实盘运行。后续版本我们会陆续添加主流交易所主流币的实盘策略，并开放 API 和发布 SDK 供第三方策略机器人的开发和接入。
 
-```bash
-$ python main.py
-```
+**Step1**
 
-## 交易逻辑
+点击导航条的 **接入**，绑定交易所凭据。
 
-当前版本暂只支持 BTC 本位合约，机器人会在网格指定的价格卖出 BTC，价格降至止盈价格时买回。
+**Step2**
 
-当设置的杠杆<= 1 倍时，等同于高卖低买的现货交易策略。
+点击导航条的 **机器人**，创建一个新的机器人。
 
-当设置的杠杆 == 0.5 倍时，可一定程度对冲卖飞风险。
+**Step3**
 
-杠杆 >1 才是真正意义上的借贷杠杆交易。
+克隆或者直接下载机器人代码到本机或者服务器。
 
-为了提高收益，可提高杠杆倍数，但请仔细分析当前市场环境，风险自担。
+**Step4**
 
-## 其他说明
+settings.py
 
-1. 当前版本暂只支持 bybit 交易所的 BTCUSD 交易对（可先用测试网进行模拟盘交易，见下方附录）。
-2. 当前版本暂只支持 1 个机器人。
-3. 由于权限控制模块还在开发中，当前版本暂只支持本地运行，不建议部署在公网服务器。
+**Step5**
 
-## 开发计划
+创建网格
 
-- [ ] 云服务器部署
-- [ ] 关键日志推送微信或钉钉
-- [ ] Bybit USDT 合约支持
-- [ ] 接入 BitMEX 和 3 大交易所
-- [ ] 支持 ETH、EOS 合约
-- [ ]  支持管理多个交易机器人
+**Step6**
+
+启动机器人
+
+## 用户体验群
+
+加入用户体验群获取指导和帮助以及和开发者一起决定未来的产品形态和功能。
+
+## 后续开发计划
+
+- [ ] 火币、币安、OKEx 现货、合约实盘策略
+- [ ] ETH、EOS 等更多的主流币支持
 
 ## 联系开发者
 
 Email：zmrenwu@gmail.com
 
-WeChat：zmrenwu
+微信：zmrenwu
 
 ## 附录
 
 ### Bybit 测试网使用方法
 
-测试网址：https://testnet.bybit.com/
+测试网入口：https://testnet.bybit.com/
 
 先注册账户，然后在资产页面，点击充值，可领取测试用 BTC、ETH。最容易领取的是 ETH，然后可以使用 Bybit 的兑换功能将 ETH 兑换为 BTC。
 
-创建 API，接入渔夫数字货币交易系统，将 config.py 的 TEST_NET 设置为 True 即可开启模拟盘交易，如图：
+创建 API，接入渔夫数字货币交易系统：
 
 ![](./screenshots/Bybit交易界面.png)
