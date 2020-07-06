@@ -1,4 +1,4 @@
-[TOC]
+
 
 # 渔夫数字货币交易系统
 
@@ -94,15 +94,29 @@ $ docker-compose up --build -d
 
 **Step2**
 
-点击导航条的 **机器人**，创建一个新的机器人。
+点击导航条的 **机器人**，创建一个新的机器人（交易对 BTCUSD，保证金币种 BTC）。
 
 **Step3**
 
-克隆或者直接下载机器人代码到本机或者服务器。
+克隆或者直接下载机器人代码到本机或者服务器。仓库地址：[yufu-bot](https://github.com/zmrenwu/yufu-bot)
 
 **Step4**
 
-settings.py
+进入 bot 目录，复制 settings.template.py 为 settings.py，按需求修改相应的配置。
+
+```python
+# 创建的机器人 id
+ROBOT_ID = 1
+# 访问令牌，查看方式为点击右上角的头像->点击账户->查看认证令牌
+TOKEN = ""
+# 交易时间间隔
+TRADE_INTERVAL = 3
+REST_BASE_URL = "http://ip:8080/api"
+WS_ROBOT_STREAM_URI = "ws://ip:8080/ws/robots/:robot_id/streams/?stream_key=robot-stream-key"
+# 钉钉 webhook，填写后交易日志将推送钉钉
+DINGTALK_WEBHOOK = ""
+DINGTALK_SECRET = ""
+```
 
 **Step5**
 
@@ -110,11 +124,18 @@ settings.py
 
 **Step6**
 
-启动机器人
+安装依赖，启动机器人。
+
+```bash
+$ pipenv install
+$ pipenv run python -m bot.grid
+```
 
 ## 用户体验群
 
 加入用户体验群获取指导和帮助以及和开发者一起决定未来的产品形态和功能。
+
+入群方式请加我微信 zmrenwu，备注渔夫量化。
 
 ## 后续开发计划
 
