@@ -12,9 +12,13 @@
 
 Python3、Django、Vue.js。
 
-## 基于 Docker 快速部署
+## 部署
+
+### 基于本机 Python 环境
 
 > 如果部署过程遇到问题，欢迎加入下方的用户体验群获取指导帮助。
+
+这种部署方式适合本机部署，当然也可以在云服务器部署，只需要保证本机或者服务器安装了 Python3.6 以上版本就行。
 
 **Step1**
 
@@ -46,43 +50,62 @@ $ pip install -r requirements.txt
 生成并初始化数据：
 
 ```bash
-# 初始化数据库
 $ python manage.py migrate
-$ python manage.py runscript yufu.scripts.init_db
+$ python manage.py runscript yufuquant.scripts.init_db
+# 输出
+正在初始化数据库...
+初始化生成交易所数据...
+初始化生成管理员账户...
+数据库初始化成功!
 ```
 
 **Step4**
 
-进入 frontend/dist目录，复制 config.example.js 文件，重命名为 config.js，将 config.js 文件中的 127.0.0.1 改为本机或者服务器 ip。
+归集前端资源文件
+
+```bash
+$ python manage.py collectstatic --noinput
+```
 
 **Step5**
 
-进入到 compose/nginx/conf.d/ 目录，复制 yufu.conf.template 文件，重命名为 yufu.conf。
+进入 frontend/dist目录，复制 config.example.js 文件，重命名为 config.js，将 config.js 文件中的 127.0.0.1 改为本机或者服务器 ip。
 
 **Step6**
 
-回到项目根目录，复制 yufu.example.env 文件，命名为 yufu.env，按注释修改各项内容：
+回到项目根目录，复制 yufuquant.example.env 文件，命名为 yufuquant.env，按注释修改各项内容：
 
 ```
-# 系统密钥，设置一个随机字符串
-DJANGO_SECRET_KEY=yufuquant.ccufmv!jn)82cu*pcry#3xcag**c#nn)=y0j%2k5dulf43_+omhu
+# 系统密钥，推荐使用下面的工具生成：
+# https://www.zmrenwu.com/webtools/django-secret-key-creator 
+DJANGO_SECRET_KEY=
 # 修改为本机或者服务器的 ip 地址
 DJANGO_ALLOWED_HOSTS=127.0.0.1
-# sentry 服务 DSN 地址，可不填
+# sentry 服务 DSN 地址，用于接收系统错误日志，可不填
 SENTRY_DSN=
 ```
 
-**Step7**
+**Last Step**
 
-启动 Docker 容器。
+启动服务：
 
 ```bash
-$ docker-compose up --build -d
+$ python -m run_uvicorn
+# 输出
+INFO:     Started server process [20573]
+INFO:     Waiting for application startup.
+INFO:     ASGI 'lifespan' protocol appears unsupported.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 ```
 
-**Step8**
+访问 http://ip:8080，其中 ip 为你本机或者服务器公网 ip，使用默认账户登录（用户名 admin，密码test123456）。
 
-访问 http://ip:8080，其中 ip 为你本机或者服务器公网 ip，使用默认账户登录（用户名yufu，密码yufu123456）。
+### 基于 Docker 环境
+
+拼命撰写中~~~
+
+> 如果部署过程遇到问题，欢迎加入下方的用户体验群获取指导帮助。
 
 ## 运行策略机器人
 
@@ -111,8 +134,8 @@ ROBOT_ID = 1
 TOKEN = ""
 # 交易时间间隔
 TRADE_INTERVAL = 3
-REST_BASE_URL = "http://ip:8080/api"
-WS_ROBOT_STREAM_URI = "ws://ip:8080/ws/robots/:robot_id/streams/?stream_key=robot-stream-key"
+REST_BASE_URL = "http://ip:8000/api"
+WS_ROBOT_STREAM_URI = "ws://ip:8000/ws/robots/:robot_id/streams/?stream_key=robot-stream-key"
 # 钉钉 webhook，填写后交易日志将推送钉钉
 DINGTALK_WEBHOOK = ""
 DINGTALK_SECRET = ""
