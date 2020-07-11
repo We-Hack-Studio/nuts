@@ -107,7 +107,7 @@ database/
 *.sqlite3
 staticfiles/
 media/
-yufu.env
+yufuquant.env
 yufu.conf
 
 config.js

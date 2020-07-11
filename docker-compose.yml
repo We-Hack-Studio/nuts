@@ -18,7 +18,7 @@ services:
       - staticfiles:/app/staticfiles
       - media:/app/media
     env_file:
-      - yufu.env
+      - yufuquant.env
     expose:
       - "8000"
     command: /start.sh

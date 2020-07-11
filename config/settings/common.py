@@ -23,7 +23,7 @@ env = environ.Env()
 READ_ENV_FILE = env.bool("READ_ENV_FILE", default=False)
 if READ_ENV_FILE:
     # OS environment variables take precedence over variables from .env
-    env.read_env(os.path.join(ROOT_DIR, "yufu.env"))
+    env.read_env(os.path.join(ROOT_DIR, "yufuquant.env"))
 
 SITE_ID = 1
 ALLOWED_HOSTS = ["*"]
