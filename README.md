@@ -99,7 +99,7 @@ INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 ```
 
-访问 http://ip:8080，其中 ip 为你本机或者服务器公网 ip，使用默认账户登录（用户名 admin，密码test123456）。
+访问 [http://ip:8080](http://ip:8080)，其中 ip 为你本机或者服务器公网 ip，使用默认账户登录（用户名 admin，密码test123456）。
 
 ### 基于 Docker 环境
 
@@ -175,7 +175,10 @@ Email：zmrenwu@gmail.com
 
 ### Bybit 测试网使用方法
 
-测试网入口：https://testnet.bybit.com/
+测试网入口：
+
+- 非大陆访问：https://testnet.bybit.com/
+- 大陆访问：https://testnet.bybit-cn.com/
 
 先注册账户，然后在资产页面，点击充值，可领取测试用 BTC、ETH。最容易领取的是 ETH，然后可以使用 Bybit 的兑换功能将 ETH 兑换为 BTC。
 
