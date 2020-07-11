@@ -24,6 +24,7 @@ import grids.views
 import positions.views
 import robots.views
 import users.views
+from core.views import IndexView
 
 router = BulkRouter()
 router.register("grids", grids.views.GridViewSet, basename="grid")
@@ -37,6 +38,7 @@ router.register(
 )
 
 urlpatterns = [
+    path("", IndexView.as_view(), name="index"),
     path("admin/", admin.site.urls),
     path("auth/", include("allauth.account.urls")),
     path("robots/", include("robots.urls")),

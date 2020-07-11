@@ -16,7 +16,7 @@ import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 ROOT_DIR = environ.Path(__file__) - 3
-APPS_DIR = ROOT_DIR.path("yufu")
+APPS_DIR = ROOT_DIR.path("yufuquant")
 sys.path.insert(0, str(APPS_DIR))
 
 env = environ.Env()
@@ -47,6 +47,7 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "rest_auth",
+    "webpack_loader",
 ]
 LOCAL_APPS = [
     # 项目应用
@@ -80,7 +81,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(ROOT_DIR, "templates")],
+        "DIRS": [str(APPS_DIR.path("templates"))],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -92,7 +93,6 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = "config.wsgi.application"
 
 # Password validation
@@ -125,6 +125,15 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = str(ROOT_DIR("staticfiles"))
+STATICFILES_DIRS = [
+    # 不要设置为包含 node_modules 的目录，因为其中会有一些奇怪命名的文件，使得 django 报错
+    str(ROOT_DIR.path("frontend", "dist"))
+]
+# https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+]
 MEDIA_ROOT = str(ROOT_DIR("media"))
 MEDIA_URL = "/media/"
 AUTH_USER_MODEL = "users.User"
@@ -154,3 +163,14 @@ REST_AUTH_SERIALIZERS = {
 ASSET_CURRENCY_LIST = env.list(
     "ASSET_CURRENCY_LIST", default=["BTC", "USDT", "ETH", "EOS"]
 )
+
+WEBPACK_LOADER = {
+    "DEFAULT": {
+        "CACHE": False,
+        "BUNDLE_DIR_NAME": "",  # must end with slash
+        "STATS_FILE": ROOT_DIR.path("frontend", "webpack-stats.json"),
+        "POLL_INTERVAL": 0.1,
+        "TIMEOUT": None,
+        "IGNORE": [r".+\.hot-update.js", r".+\.map"],
+    }
+}

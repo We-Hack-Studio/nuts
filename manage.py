@@ -18,7 +18,7 @@ def main():
     # This allows easy placement of apps within the interior
     # yufu directory.
     current_path = os.path.dirname(os.path.abspath(__file__))
-    sys.path.append(os.path.join(current_path, "yufu"))
+    sys.path.append(os.path.join(current_path, "yufuquant"))
     execute_from_command_line(sys.argv)
 
 

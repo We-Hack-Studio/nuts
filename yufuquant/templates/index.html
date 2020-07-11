@@ -1,0 +1,21 @@
+{% load static %}
+{% load render_bundle from webpack_loader %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset=utf-8>
+  <meta http-equiv=X-UA-Compatible content="IE=edge">
+  <meta name=viewport content="width=device-width,initial-scale=1">
+  <link rel=icon href=/static/favicon.ico>
+  <title>渔夫数字货币量化交易系统</title>
+  {% render_bundle 'app' 'css' %}
+  {% render_bundle 'chunk-vendors' 'css' %}
+</head>
+<body>
+<div id=app></div>
+<script src="{% static 'config.js' %}"></script>
+{% render_bundle 'app' 'js' %}
+{% render_bundle 'chunk-vendors' 'js' %}
+</body>
+</html>
