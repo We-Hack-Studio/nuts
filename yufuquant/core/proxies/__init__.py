@@ -1,7 +1,7 @@
 import ccxt
+from django.core.exceptions import ValidationError
 
 from .exceptions import ExchangeProxyException
-from django.core.exceptions import ValidationError
 
 
 class ExchangeProxy:
@@ -12,7 +12,7 @@ class ExchangeProxy:
     default_ccxt_exchange_configs = {
         "enableRateLimit": True,
     }
-    ccxt_exchange_class = None
+    ccxt_exchange_class = ccxt.Exchange
 
     def __init__(self, pair: str = ""):
         if pair:
@@ -46,7 +46,7 @@ class ExchangeProxy:
         except ccxt.AuthenticationError:
             raise ValidationError("无效的凭据")
         except (ccxt.ExchangeError, ccxt.NetworkError) as e:
-            raise ExchangeProxyException(f"账户资产获取失败。代理异常：{str(e)}")
+            raise ExchangeProxyException(f"账户资产获取失败，请稍后重试。详细代理异常信息：{str(e)}")
 
         ret = {}
         for currency in ["BTC", "USDT", "EOS", "ETH"]:
