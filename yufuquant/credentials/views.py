@@ -1,13 +1,11 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse
-from django.views.generic import CreateView, DeleteView, ListView
+from core.mixins import ApiErrorsMixin
 from rest_framework import mixins, permissions, throttling, viewsets
 
-from .models import Credential
 from .serializers import CredentialSerializer
 
 
 class CredentialViewSet(
+    ApiErrorsMixin,
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.DestroyModelMixin,
