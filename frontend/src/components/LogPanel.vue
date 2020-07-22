@@ -2,9 +2,8 @@
     <div>
         <b-card no-body class="mt-3" header-tag="header" bg-variant="dark" text-variant="white">
             <template v-slot:header>
-                <div class="d-flex justify-content-between"><span>日志监控</span>
-                    <!-- <toggle-button :value="robotEnabled" :sync="true" :disabled="robotSwitchDisabled"
-                        @change="handleRobotSwitch" :labels="{checked: 'On', unchecked: 'Off'}" /> -->
+                <div class="d-flex justify-content-between">
+                    <span>日志监控</span>
                 </div>
             </template>
             <ul class="list-unstyled robot-log-ul px-3 pt-2 pb-5 small mb-0 log-content" ref="robotLogUl">
@@ -12,6 +11,7 @@
                     <span>{{log.timestamp}}</span> <span :class="['mx-1', levelColor(log.level)]">{{log.level}}</span>
                     {{log.msg}}
                 </li>
+                <li v-if="!logList.length">正在等待接收日志......</li>
             </ul>
         </b-card>
     </div>
@@ -21,11 +21,6 @@
     export default {
         name: 'LogPanel',
         props: ['logList'],
-        data() {
-            return {
-
-            }
-        },
         watch: {
             logList() {
                 this.updateScroll()
