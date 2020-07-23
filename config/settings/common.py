@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import sys
+
 import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -50,16 +51,13 @@ THIRD_PARTY_APPS = [
     "webpack_loader",
 ]
 LOCAL_APPS = [
-    # 项目应用
-    "grids.apps.GridsConfig",
+    "core.apps.CoreConfig",
+    "streams.apps.StreamsConfig",
     "users.apps.UsersConfig",
     "robots.apps.RobotsConfig",
-    "streams.apps.StreamsConfig",
     "credentials.apps.CredentialsConfig",
     "exchanges.apps.ExchangesConfig",
-    "core.apps.CoreConfig",
-    "assets.apps.AssetsConfig",
-    "positions.apps.PositionsConfig",
+    "strategies.apps.StrategiesConfig",
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 

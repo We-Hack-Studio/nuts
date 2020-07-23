@@ -1,16 +1,14 @@
 from django.contrib import admin
 
-from .models import Exchange
+from .models import StrategyTemplate
 
 
-@admin.register(Exchange)
-class ExchangeAdmin(admin.ModelAdmin):
+@admin.register(StrategyTemplate)
+class StrategyTemplateAdmin(admin.ModelAdmin):
     list_display = [
         "id",
-        "rank",
         "code",
         "name",
-        "name_zh",
         "created_at",
         "modified_at",
     ]

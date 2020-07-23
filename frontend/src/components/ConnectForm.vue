@@ -44,9 +44,9 @@
     </b-col>
     <b-col md="12">
       <b-form-checkbox
-              id="id_test_net"
+              id="id_is_test_net"
               v-model="form.testNet"
-              name="test_net"
+              name="is_test_net"
               value="true"
               unchecked-value="false"
       >
@@ -84,7 +84,7 @@
                     "api_key": this.form.apiKey,
                     "secret": this.form.secret,
                     "exchange": this.form.exchange,
-                    "test_net": this.form.testNet,
+                    "is_test_net": this.form.testNet,
                 }
                 createCredential(data).then(response => {
                     let cred = response.data
@@ -116,10 +116,11 @@
             getExchangeList().then(response => {
                 this.setExchangeOptions(response.data)
             }).catch(err => {
-                this.$bvToast.toast(`无法获取可接入的交易所数据，错误信息： ${err.data}`, {
+                console.log(err);
+                this.$bvToast.toast(`无法获取可接入的交易所列表。错误信息：${err.data || '未知错误'}`, {
                     title: '数据获取失败',
-                    autoHideDelay: 3000,
-                    toaster: 'b-toaster-top-center',
+                    autoHideDelay: 5000,
+                    toaster: 'b-toaster-top-right',
                     variant: 'danger',
                     appendToast: false
                 });

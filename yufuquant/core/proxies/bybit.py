@@ -1,10 +1,6 @@
-from typing import Any, Dict, List, Optional
-
 import ccxt
-from django.core.exceptions import ValidationError
 
 from . import ExchangeProxy
-from .exceptions import ExchangeProxyException
 
 
 class BybitExchangeProxy(ExchangeProxy):
@@ -29,15 +25,3 @@ class BybitExchangeProxy(ExchangeProxy):
         # 这里我们对 extend 方法进行 monkey path，使查询参数变为空。
         self.ccxt_exchange.extend = extend
         return super().fetch_balance()
-
-
-if __name__ == "__main__":
-    proxy = BybitExchangeProxy(pair="BTCUSD")
-    proxy.auth(
-        {
-            "api_key": "BmCgHSnWrjSpanVGlP",
-            "secret": "IKMpJD9KVWsAHvbtzmVZjzSBKVUmORdqBGGb",
-        }
-    )
-    proxy.enable_test_net()
-    print(proxy.fetch_balance())

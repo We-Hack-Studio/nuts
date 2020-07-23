@@ -3,6 +3,7 @@ import os
 from django.contrib.auth.models import AbstractUser
 from django.core.files.base import ContentFile
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
@@ -20,9 +21,9 @@ class User(AbstractUser):
     AVATAR_ALLOWED_EXTENSIONS = ["png", "jpg", "jpeg"]
     AVATAR_DEFAULT_FILENAME = "default.jpeg"
 
-    nickname = models.CharField("昵称", max_length=50, blank=True)
+    nickname = models.CharField(_("nickname"), max_length=30, blank=True)
     avatar = models.ImageField(
-        "头像",
+        _("avatar"),
         upload_to=user_avatar_path,
         validators=[
             FileValidator(

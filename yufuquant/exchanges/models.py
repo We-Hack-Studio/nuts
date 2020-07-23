@@ -1,28 +1,29 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
-from model_utils.fields import AutoCreatedField, AutoLastModifiedField
+
+from core.models import TimeStampedModel
 
 
-class Exchange(models.Model):
-    code = models.CharField("代码", max_length=20)
-    name = models.CharField("名字", max_length=20)
-    name_zh = models.CharField("中文名", max_length=20, blank=True)
-    created_at = AutoCreatedField("创建于")
-    modified_at = AutoLastModifiedField("修改于")
-    logo = models.ImageField(upload_to="exchanges/logos", blank=True)
+class Exchange(TimeStampedModel):
+    code = models.CharField(_("code"), max_length=20)
+    name = models.CharField(_("name"), max_length=20)
+    name_zh = models.CharField(_("chinese name"), max_length=20, blank=True)
+    logo = models.ImageField(_("logo"), upload_to="exchanges/logos", blank=True)
     logo_thumbnail = ImageSpecField(
         source="logo",
         processors=[ResizeToFill(32, 32)],
         format="png",
         options={"quality": 100},
     )
-    active = models.BooleanField("启用", default=False)
-    rank = models.SmallIntegerField("排序", default=0)
+    active = models.BooleanField(_("active"), default=False)
+    rank = models.SmallIntegerField(_("rank"), default=0)
 
     class Meta:
-        verbose_name = "交易所"
-        verbose_name_plural = verbose_name
+        verbose_name = _("exchange")
+        verbose_name_plural = _("exchanges")
+        ordering = ["rank", "-created_at"]
 
     def __str__(self):
         return self.name

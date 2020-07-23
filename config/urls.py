@@ -17,21 +17,21 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework_bulk.routes import BulkRouter
 
-import assets.views
 import credentials.views
 import exchanges.views
-import grids.views
-import positions.views
 import robots.views
+import strategies.views
 import users.views
 from core.views import IndexView
 
 router = BulkRouter()
-router.register("grids", grids.views.GridViewSet, basename="grid")
-router.register("positions", positions.views.PositionViewSet, basename="position")
 router.register("users", users.views.UserViewSet, basename="user")
-router.register("assets", assets.views.AssetViewSet, basename="asset")
 router.register("robots", robots.views.RobotViewSet, basename="robot")
+router.register(
+    "strategy-templates",
+    strategies.views.StrategyTemplateViewSet,
+    basename="strategy-template",
+)
 router.register("exchanges", exchanges.views.ExchangeViewSet, basename="exchange")
 router.register(
     "credentials", credentials.views.CredentialViewSet, basename="credential"

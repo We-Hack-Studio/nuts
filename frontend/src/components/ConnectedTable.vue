@@ -52,7 +52,7 @@
         },
         methods: {
             showMsgBox(credId, index) {
-                this.$bvModal.msgBoxConfirm('删除交易所凭证将同时清除关联的资产和机器人数据。', {
+                this.$bvModal.msgBoxConfirm('删除交易所凭证将同时清除关联的机器人。', {
                     title: '确认删除？',
                     size: 'sm',
                     buttonSize: 'sm',

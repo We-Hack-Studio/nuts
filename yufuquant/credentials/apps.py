@@ -1,9 +1,10 @@
 from django.apps import AppConfig
+from django.utils.translation import gettext_lazy as _
 
 
 class CredentialsConfig(AppConfig):
     name = "credentials"
-    verbose_name = "交易所凭证"
+    verbose_name = _("Credentials")
 
     def ready(self):
         try:

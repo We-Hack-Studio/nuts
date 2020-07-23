@@ -1,23 +1,24 @@
 import VueRouter from "vue-router";
-import Ranking from "../views/Ranking";
-import RobotList from "../views/RobotList";
+import RobotCreateView from "../views/RobotCreateView";
+import RobotListView from "../views/RobotListView";
 import RobotView from "../views/RobotView";
 import LoginView from "../views/LoginView";
 import ConnectView from "../views/ConnectView";
 import Account from "../views/Account";
-import Market from "../views/Market";
+import StrategyTemplateListView from "../views/StrategyTemplateListView";
 import Vue from 'vue'
 
 Vue.use(VueRouter)
 const routes = [
-    {path: '/', component: Market},
-    {path: '/ranking', component: Ranking},
-    {path: '/robot/list', component: RobotList},
+    {path: '/', component: RobotListView},
+    {path: '/robot/list', component: RobotListView},
+    {path: '/robot/create', component: RobotCreateView},
+    // {path: '/robot/update', component: RobotCreateView},
     {path: '/robot/:id', component: RobotView},
     {path: '/login', component: LoginView},
     {path: '/connect', component: ConnectView},
     {path: '/account', component: Account},
-    {path: '/market', component: Market},
+    {path: '/strategy-template/list', component: StrategyTemplateListView},
 ]
 const router = new VueRouter({
     routes // (缩写) 相当于 routes: routes

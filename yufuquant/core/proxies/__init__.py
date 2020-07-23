@@ -40,6 +40,9 @@ class ExchangeProxy:
         if passphrase:
             self.ccxt_exchange.password = passphrase
 
+    def set_market_type(self, market_type: str):
+        pass
+
     def fetch_balance(self, params=None):
         try:
             result = self.ccxt_exchange.fetch_balance(params=params)

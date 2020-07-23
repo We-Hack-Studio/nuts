@@ -50,3 +50,7 @@ export function createGrids(robotId, data) {
 export function clearGrids(robotId) {
     return authInstance.delete('/robots/' + robotId + '/grids/clear/')
 }
+
+export function getStrategyTemplateList() {
+    return annonInstance.get('/strategy-templates/')
+}

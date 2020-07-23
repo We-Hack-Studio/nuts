@@ -8,8 +8,10 @@ class CredentialAdmin(admin.ModelAdmin):
     fields = [
         "note",
     ]
-    list_display = (
+    list_display = [
         "id",
         "note",
+        "user",
         "created_at",
-    )
+    ]
+    list_select_related = ["user"]

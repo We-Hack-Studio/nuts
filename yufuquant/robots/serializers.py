@@ -4,9 +4,10 @@ from rest_framework.serializers import FloatField
 
 from credentials.serializers import CredentialKeysSerializer
 from exchanges.serializers import ExchangeSerializer
+from strategies.serializers import StrategySerializer
 from users.serializers import UserSerializer
 
-from .models import Robot
+from .models import AssetRecord, Robot
 
 
 class DurationField(DrfDurationField):
@@ -20,16 +21,33 @@ class DurationField(DrfDurationField):
 class PercentageField(FloatField):
     def to_representation(self, value):
         result = super().to_representation(value)
-        return "{:.2%}".format(result)
+        return "{:.2f}%".format(result)
+
+
+class AssetRecordSerializer(serializers.ModelSerializer):
+    total_pnl_abs = serializers.FloatField(read_only=True)
+    total_pnl_abs_24h = serializers.FloatField(read_only=True)
+    total_pnl_rel_ptg = PercentageField(source="total_pnl_rel", read_only=True)
+    total_pnl_rel_ptg_24h = PercentageField(source="total_pnl_rel_24h", read_only=True)
+
+    class Meta:
+        model = AssetRecord
+        fields = [
+            "currency",
+            "total_principal",
+            "total_balance",
+            "total_pnl_abs",
+            "total_pnl_abs_24h",
+            "total_pnl_rel_ptg",
+            "total_pnl_rel_ptg_24h",
+        ]
 
 
 class RobotSerializer(serializers.ModelSerializer):
     user = UserSerializer(source="credential.user", read_only=True)
     exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
     duration_display = DurationField(source="duration", read_only=True)
-    balance = serializers.FloatField(source="asset_balance", read_only=True)
-    profit_ratio_ptg = PercentageField(source="asset_profit_ratio", read_only=True)
-    test_net = serializers.BooleanField(source="credential.test_net", read_only=True)
+    asset_record = AssetRecordSerializer(read_only=True)
 
     class Meta:
         model = Robot
@@ -37,25 +55,24 @@ class RobotSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "pair",
-            "margin_currency",
+            "target_currency",
+            "base_currency",
+            "quote_currency",
             "enabled",
-            "test_net",
             "start_time",
             "ping_time",
             "duration_display",
-            "profit_ratio_ptg",
-            "order_sync_ts",
-            "balance",
+            "asset_record",
             "credential",
+            "strategy_template",
+            "strategy_parameters",
             "user",
             "exchange",
-            "stream_key",
             "created_at",
             "modified_at",
         ]
         read_only_fields = [
             "ping_time",
-            "stream_key",
             "created_at",
             "modified_at",
         ]
@@ -69,9 +86,9 @@ class RobotConfigSerializer(serializers.ModelSerializer):
     exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
     credential_keys = CredentialKeysSerializer(source="credential", read_only=True)
     principal = serializers.FloatField(source="asset_principal", read_only=True)
-    position_id = serializers.IntegerField(source="position.id", read_only=True)
-    asset_id = serializers.IntegerField(read_only=True)
-    test_net = serializers.BooleanField(source="credential.test_net", read_only=True)
+    is_test_net = serializers.BooleanField(
+        source="credential.is_test_net", read_only=True
+    )
 
     class Meta:
         model = Robot
@@ -82,11 +99,9 @@ class RobotConfigSerializer(serializers.ModelSerializer):
             "margin_currency",
             "enabled",
             "order_sync_ts",
-            "test_net",
+            "is_test_net",
             "user",
             "exchange",
-            "position_id",
-            "asset_id",
             "credential_keys",
             "principal",
             "stream_key",
