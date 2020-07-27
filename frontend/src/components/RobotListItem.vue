@@ -1,9 +1,11 @@
 <template>
-  <b-card class="mb-4">
-    <div class="d-flex">
-      <span class="mr-1 text-success"><b-icon icon="circle-fill" animation="throb"></b-icon></span>
-      <a href="#" class="font-weight-bold">{{robot.name}}</a>
-      <span class="ml-auto">
+  <b-card class="mb-4 card">
+    <div class="d-flex align-items-center">
+      <span :class="['mr-1','d-inline-flex', robotStatusClass]">
+        <b-icon icon="circle-fill" font-scale="0.6" :animation="robotStatusAnimation"></b-icon>
+      </span>
+      <a href="#" class="font-weight-bold text-body">{{robot.name}}</a>
+      <span class="ml-auto action-buttons">
         <a href="#" class="mr-2">
           <b-icon-pencil-square></b-icon-pencil-square>
         </a>
@@ -14,10 +16,16 @@
     </div>
     <div class="d-flex justify-content-between mt-2">
       <span><span class="small text-muted">收益率</span><br><span
-              class="text-success h5">{{robot.profitRatioPtg}}</span></span>
-      <span><span class="small text-muted">收益额</span><br><span class="text-success">{{robot.profit}}</span></span>
-      <span><span class="small text-muted">本金</span><br><span class="">{{robot.principal}}</span></span>
-      <span><span class="small text-muted">余额</span><br><span class="">{{robot.balance}}</span></span>
+          :class="[profitColorClass, 'h5']">{{robot.profitRatioPtg}}</span></span>
+      <span><span class="small text-muted">收益额</span><br><span :class="profitColorClass">{{robot.profit}}
+          <span class="font-weight-light"> {{robot.marginCurrency}}</span>
+        </span></span>
+      <span><span class="small text-muted">本金</span><br><span class="">{{robot.principal}}
+          <span class="font-weight-light"> {{robot.marginCurrency}}</span>
+        </span></span>
+      <span><span class="small text-muted">余额</span><br><span class="">{{robot.balance}}
+          <span class="font-weight-light"> {{robot.marginCurrency}}</span>
+        </span></span>
     </div>
     <div class="text-muted mt-2">
       <span class="mr-2">{{robot.exchangeNameZh}}</span>
@@ -27,20 +35,42 @@
     <hr>
     <div class="small">
       <span class="mr-1 text-muted">较前日</span>
-      <span class="text-success mr-1"><b-icon-caret-up-fill></b-icon-caret-up-fill> 1.5%</span>
-      <span class="text-success">4U</span>
+      <span :class="[profit24hColorClass, 'mr-1']">
+        <b-icon-caret-up-fill v-if="robot.profit24h > 0"></b-icon-caret-up-fill>
+        <b-icon-caret-down-fill v-if="robot.profit24h < 0"></b-icon-caret-down-fill>
+        {{robot.profitRatioPtg24h}}
+      </span>
+      <span :class="profit24hColorClass">{{robot.profit24h}}
+        <span class="font-weight-light"> {{robot.marginCurrency}}</span>
+      </span>
       <span class="float-right">网格策略</span>
     </div>
   </b-card>
 </template>
 
 <script>
-    export default {
-        name: 'RobotListCard',
-        props: {
-            robot: Object,
-        }
-    }
+  import moment from 'moment'
+
+  export default {
+    name: 'RobotListCard',
+    props: {
+      robot: Object,
+    },
+    computed: {
+      robotStatusClass() {
+        return moment().diff(this.robot.pingTime, 'seconds') < 60 ? 'text-success' : 'text-danger';
+      },
+      robotStatusAnimation() {
+        return this.robotStatusClass === 'text-danger' ? '' : 'throb'
+      },
+      profitColorClass() {
+        return this.robot.profit > 0 ? 'text-success' : this.robot.profit < 0 ? 'text-danger' : ''
+      },
+      profit24hColorClass() {
+        return this.robot.profit24h > 0 ? 'text-success' : this.robot.profit24h < 0 ? 'text-danger' : ''
+      }
+    },
+  }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -61,5 +91,14 @@
 
   a {
     color: #42b983;
+  }
+
+
+  .action-buttons {
+    display: none;
+  }
+
+  .card:hover .action-buttons {
+    display: inline-block;
   }
 </style>
