@@ -1,15 +1,17 @@
 <template>
-  <b-row>
-    <b-col md="4" v-for="robot in robotList" :key="robot.robotId">
-      <robot-list-item :robot="robot"></robot-list-item>
-    </b-col>
-  </b-row>
+    <b-row>
+        <b-col md="4" v-for="robot in robotList" :key="robot.robotId">
+            <robot-list-item :robot="robot"></robot-list-item>
+        </b-col>
+    </b-row>
 
 </template>
 
 <script>
     import RobotListItem from "../components/RobotListItem";
-    import {getRobotList} from "../api";
+    import {
+        getRobotList
+    } from "../api";
 
     export default {
         name: "robot-list",
@@ -18,7 +20,8 @@
         },
         data() {
             return {
-                robotList: []
+                robotList: [],
+                timer: '', // 定时器id
             }
         },
         methods: {
@@ -28,15 +31,17 @@
                     exchangeNameZh: r.exchange['name_zh'],
                     name: r.name,
                     pair: r.pair,
-                    marginCurrency: r.margin_currency,
+                    marginCurrency: r.target_currency,
                     enable: r.enable,
                     pingTime: r['ping_time'],
                     startTime: r['start_time'],
                     durationDisplay: r['duration_display'],
-                    profitRatioPtg: r['profit_ratio_ptg'],
-                    profit: r.profit,
-                    principal: r.principal,
-                    balance: r.balance,
+                    profitRatioPtg: r['asset_record']['total_pnl_rel_ptg'],
+                    profitRatioPtg24h: r['asset_record']['total_pnl_rel_ptg_24h'],
+                    profit24h: r['asset_record']['total_pnl_abs_24h'],
+                    profit: r['asset_record']['total_pnl_abs'],
+                    principal: r['asset_record']['total_principal'],
+                    balance: r['asset_record']['total_balance'],
                     createdAt: r['created_at'],
                 }))
             },
@@ -50,6 +55,10 @@
         },
         mounted() {
             this.loadRobotList()
+            this.timer = setInterval(this.loadRobotList, 10 * 1000)
+        },
+        beforeDestroy() {
+            clearInterval(this.timer)
         },
     }
 </script>
