@@ -29,6 +29,9 @@ sentry-sdk = "^0.15.1"
 django-webpack-loader = "^0.7.0"
 factory-boy = "^2.12.0"
 jsonfield = "^3.1.0"
+django-admin-sortable2 = "^0.7.6"
+drf-extensions = "^0.6.0"
+djangorestframework-api-key = "^2.0.0"
 
 [tool.poetry.dev-dependencies]
 mkdocs = "^1.1.2"

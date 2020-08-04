@@ -9,7 +9,7 @@ class StrategyTemplate(TimeStampedModel):
     code = models.CharField(_("code"), max_length=20)
     name = models.CharField(_("name"), max_length=20)
     description = models.TextField(_("description"), blank=True)
-    parameters_spec = JSONField(_("parameters specification"), blank=True)
+    param_spec = JSONField(_("parameter specification"), blank=True)
 
     class Meta:
         verbose_name = _("strategy template")

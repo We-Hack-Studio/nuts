@@ -54,3 +54,7 @@ export function clearGrids(robotId) {
 export function getStrategyTemplateList() {
     return annonInstance.get('/strategy-templates/')
 }
+
+export function createStrategyTemplate(data) {
+    return authInstance.post('/strategy-templates/', data)
+}

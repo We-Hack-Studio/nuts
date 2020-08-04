@@ -1,0 +1,23 @@
+{
+  "version": "v1",
+  "fields": {
+    "trade_interval": {
+      "code": "trade_interval",
+      "type": "integer",
+      "default_value": 10,
+      "help_text": "交易时间间隔"
+    },
+    "min_price": {
+      "code": "min_price",
+      "type": "float",
+      "default_value": 0,
+      "help_text": "最低价"
+    },
+    "max_price": {
+      "code": "max_price",
+      "type": "float",
+      "default_value": 0,
+      "help_text": "最高价"
+    }
+  }
+}

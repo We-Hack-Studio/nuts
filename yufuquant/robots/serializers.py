@@ -85,10 +85,11 @@ class RobotConfigSerializer(serializers.ModelSerializer):
     user = UserSerializer(source="credential.user", read_only=True)
     exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
     credential_keys = CredentialKeysSerializer(source="credential", read_only=True)
-    principal = serializers.FloatField(source="asset_principal", read_only=True)
+    # principal = serializers.FloatField(source="asset_principal", read_only=True)
     is_test_net = serializers.BooleanField(
         source="credential.is_test_net", read_only=True
     )
+    strategy_parameters = serializers.JSONField()
 
     class Meta:
         model = Robot
@@ -96,13 +97,12 @@ class RobotConfigSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "pair",
-            "margin_currency",
+            "target_currency",
             "enabled",
-            "order_sync_ts",
             "is_test_net",
             "user",
             "exchange",
             "credential_keys",
-            "principal",
-            "stream_key",
+            # "principal",
+            "strategy_parameters",
         ]

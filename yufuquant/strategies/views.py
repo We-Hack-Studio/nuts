@@ -8,7 +8,9 @@ from .models import StrategyTemplate
 from .serializers import StrategyTemplateSerializer
 
 
-class StrategyTemplateViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class StrategyTemplateViewSet(
+    mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet
+):
     serializer_class = StrategyTemplateSerializer
     permission_classes = [permissions.IsAuthenticated]
 

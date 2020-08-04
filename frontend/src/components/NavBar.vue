@@ -19,6 +19,7 @@
                 <b-icon-plus></b-icon-plus>
               </template>
               <b-dropdown-item to="/robot/create">机器人</b-dropdown-item>
+              <b-dropdown-item to="/strategy-template/create">策略模板</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown right v-if="isAuthenticated">
               <!-- Using 'button-content' slot -->

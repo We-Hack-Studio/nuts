@@ -6,8 +6,10 @@ import App from './App.vue'
 import router from "./router";
 import store from "./store";
 import ToggleButton from 'vue-js-toggle-button'
+import JsonEditor from 'vue-json-edit'
 
 Vue.use(ToggleButton)
+Vue.use(JsonEditor)
 Vue.config.productionTip = false
 
 new Vue({
