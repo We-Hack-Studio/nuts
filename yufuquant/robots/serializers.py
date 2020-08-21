@@ -1,10 +1,12 @@
+import json
+
 from rest_framework import serializers
 from rest_framework.fields import DurationField as DrfDurationField
 from rest_framework.serializers import FloatField
 
 from credentials.serializers import CredentialKeysSerializer
 from exchanges.serializers import ExchangeSerializer
-from strategies.serializers import StrategySerializer
+from strategies.serializers import StrategySerializer, StrategyTemplateSerializer
 from users.serializers import UserSerializer
 
 from .models import AssetRecord, Robot
@@ -48,6 +50,8 @@ class RobotSerializer(serializers.ModelSerializer):
     exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
     duration_display = DurationField(source="duration", read_only=True)
     asset_record = AssetRecordSerializer(read_only=True)
+    strategy_parameters = serializers.JSONField(read_only=True)
+    param_preview = serializers.SerializerMethodField()
 
     class Meta:
         model = Robot
@@ -66,6 +70,7 @@ class RobotSerializer(serializers.ModelSerializer):
             "credential",
             "strategy_template",
             "strategy_parameters",
+            "param_preview",
             "user",
             "exchange",
             "created_at",
@@ -80,12 +85,25 @@ class RobotSerializer(serializers.ModelSerializer):
             "credential": {"write_only": True},
         }
 
+    def get_param_preview(self, obj: Robot):
+        spec = json.loads(obj.strategy_template.param_spec)
+        parameters = obj.strategy_parameters
+        preview = {}
+        for code, field in spec["fields"].items():
+            preview[code] = {
+                "code": field["code"],
+                "name": field.get("name", field["code"].title()),
+                "type": field["type"],
+                "help_text": field["help_text"],
+                "value": parameters["fields"][code],
+            }
+        return preview
+
 
 class RobotConfigSerializer(serializers.ModelSerializer):
     user = UserSerializer(source="credential.user", read_only=True)
     exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
     credential_keys = CredentialKeysSerializer(source="credential", read_only=True)
-    # principal = serializers.FloatField(source="asset_principal", read_only=True)
     is_test_net = serializers.BooleanField(
         source="credential.is_test_net", read_only=True
     )

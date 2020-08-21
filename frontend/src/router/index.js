@@ -1,6 +1,7 @@
 import VueRouter from "vue-router";
 import RobotCreateView from "../views/RobotCreateView";
 import RobotListView from "../views/RobotListView";
+import RobotUpdateView from "../views/RobotUpdateView";
 import RobotView from "../views/RobotView";
 import LoginView from "../views/LoginView";
 import ConnectView from "../views/ConnectView";
@@ -14,8 +15,8 @@ const routes = [
     {path: '/', component: RobotListView},
     {path: '/robot/list', component: RobotListView},
     {path: '/robot/create', component: RobotCreateView},
-    // {path: '/robot/update', component: RobotCreateView},
-    {path: '/robot/:id', component: RobotView},
+    {path: '/robot/:id', name: 'robot', component: RobotView},
+    {path: '/robot/:id/update', name: 'robot-update', component: RobotUpdateView},
     {path: '/login', component: LoginView},
     {path: '/connect', component: ConnectView},
     {path: '/account', component: Account},
