@@ -7,6 +7,7 @@ from .serializers import ExchangeSerializer
 
 class ExchangeViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = ExchangeSerializer
+    pagination_class = None
 
     def get_queryset(self):
         return Exchange.objects.all().order_by("-created_at")

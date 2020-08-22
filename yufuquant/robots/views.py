@@ -59,6 +59,3 @@ class RobotViewSet(
         robot.ping_time = timezone.now()
         robot.save(update_fields=["ping_time"])
         return Response({"detail": "pong"}, status=status.HTTP_200_OK)
-
-
-from rest_framework.serializers import BaseSerializer

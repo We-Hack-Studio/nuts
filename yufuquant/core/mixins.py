@@ -117,7 +117,7 @@ class ErrorsFormatter:
 
         # Note: If 'message' is name of a field we don't want to stop the recursion here!
         if message_value is not None and (
-            type(message_value) in {str, exceptions.ErrorDetail}
+            type(message_value) in {str, rest_exceptions.ErrorDetail}
         ):
             if field_path:
                 errors_dict[self.FIELD] = field_path

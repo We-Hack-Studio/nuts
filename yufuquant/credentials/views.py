@@ -15,6 +15,7 @@ class CredentialViewSet(
     serializer_class = CredentialSerializer
     permission_classes = [permissions.IsAuthenticated]
     throttle_classes = [throttling.UserRateThrottle]
+    pagination_class = None
 
     def get_queryset(self):
         user = self.request.user

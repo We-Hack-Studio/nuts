@@ -52,7 +52,7 @@ export function clearGrids(robotId) {
 }
 
 export function getStrategyTemplateList() {
-    return annonInstance.get('/strategy-templates/')
+    return authInstance.get('/strategy-templates/')
 }
 
 export function createStrategyTemplate(data) {
