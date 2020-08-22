@@ -13,9 +13,9 @@ COPY poetry.lock pyproject.toml /app/
 RUN poetry install --no-dev --no-root --no-interaction
 
 COPY . /app
-RUN poetry install --no-dev --no-interaction
+RUN poetry install --no-root --no-interaction
 
-COPY ./compose/start.sh /start.sh
+COPY ./compose/local/start.sh /start.sh
 RUN sed -i 's/\r$//g' /start.sh
 RUN chmod +x /start.sh
 

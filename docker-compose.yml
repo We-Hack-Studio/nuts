@@ -3,15 +3,14 @@ version: '3'
 volumes:
   staticfiles:
   media:
-  database:
 
 services:
-  yufu.api:
+  yufuquant.api:
     build:
       context: .
-      dockerfile: compose/Dockerfile
-    image: yufu_api
-    container_name: yufu_api
+      dockerfile: compose/prod/Dockerfile
+    image: yufuquant_api
+    container_name: yufuquant_api
     working_dir: /app
     volumes:
       - ./db.sqlite3:/app/db.sqlite3
@@ -23,18 +22,18 @@ services:
       - "8000"
     command: /start.sh
 
-  yufu.nginx:
+  yufuquant.nginx:
     build:
       context: .
-      dockerfile: compose/nginx/Dockerfile
-    image: yufu_nginx
-    container_name: yufu_nginx
+      dockerfile: compose/prod/nginx/Dockerfile
+    image: yufuquant_nginx
+    container_name: yufuquant_nginx
     depends_on:
-      - yufu.api
+      - yufuquant.api
     volumes:
-      - staticfiles:/apps/yufu/staticfiles
-      - media:/apps/yufu/media
-      - ./frontend/dist:/apps/yufu/dist
+      - staticfiles:/apps/yufuquant/staticfiles
+      - media:/apps/yufuquant/media
+      - ./frontend/dist:/apps/yufuquant/dist
     ports:
       - "8080:80"
       - "8443:443"

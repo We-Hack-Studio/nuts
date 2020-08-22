@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  yufuquant.api.local:
+    build:
+      context: .
+      dockerfile: compose/local/Dockerfile
+    image: yufuquant_api_local
+    container_name: yufuquant_api_local
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    command: /start.sh
