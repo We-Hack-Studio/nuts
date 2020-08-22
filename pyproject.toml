@@ -34,6 +34,7 @@ drf-extensions = "^0.6.0"
 djangorestframework-api-key = "^2.0.0"
 drf-yasg = "^1.17.1"
 asgiref = "^3.2.10"
+daphne = "^2.5.0"
 
 [tool.poetry.dev-dependencies]
 mkdocs = "^1.1.2"
