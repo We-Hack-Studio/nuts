@@ -4,7 +4,7 @@ from .models import Strategy, StrategyTemplate
 
 
 class StrategyTemplateSerializer(serializers.ModelSerializer):
-    param_spec = serializers.JSONField()
+    parameter_spec = serializers.JSONField(binary=True)
 
     class Meta:
         model = StrategyTemplate
@@ -13,7 +13,7 @@ class StrategyTemplateSerializer(serializers.ModelSerializer):
             "code",
             "name",
             "description",
-            "param_spec",
+            "parameter_spec",
             "created_at",
             "modified_at",
         ]

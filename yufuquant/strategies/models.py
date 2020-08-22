@@ -6,10 +6,10 @@ from core.models import TimeStampedModel
 
 
 class StrategyTemplate(TimeStampedModel):
-    code = models.CharField(_("code"), max_length=20)
+    code = models.CharField(_("code"), max_length=20, unique=True)
     name = models.CharField(_("name"), max_length=20)
     description = models.TextField(_("description"), blank=True)
-    param_spec = JSONField(_("parameter specification"), blank=True)
+    parameter_spec = JSONField(_("parameter specification"), blank=True)
 
     class Meta:
         verbose_name = _("strategy template")

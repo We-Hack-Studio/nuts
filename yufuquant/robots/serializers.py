@@ -1,12 +1,11 @@
 import json
-
-from rest_framework import serializers
-from rest_framework.fields import DurationField as DrfDurationField
-from rest_framework.serializers import FloatField
+from typing import Dict, Any
 
 from credentials.serializers import CredentialKeysSerializer
 from exchanges.serializers import ExchangeSerializer
-from strategies.serializers import StrategySerializer, StrategyTemplateSerializer
+from rest_framework import serializers
+from rest_framework.fields import DurationField as DrfDurationField
+from rest_framework.serializers import FloatField
 from users.serializers import UserSerializer
 
 from .models import AssetRecord, Robot
@@ -45,13 +44,51 @@ class AssetRecordSerializer(serializers.ModelSerializer):
         ]
 
 
-class RobotSerializer(serializers.ModelSerializer):
+class RobotListSerializer(serializers.ModelSerializer):
+    exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
+    duration_display = DurationField(source="duration", read_only=True)
+    asset_record = AssetRecordSerializer(read_only=True)
+    strategy_template_name = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = Robot
+        fields = [
+            "id",
+            "name",
+            "pair",
+            "target_currency",
+            "base_currency",
+            "quote_currency",
+            "enabled",
+            "start_time",
+            "ping_time",
+            "duration_display",
+            "asset_record",
+            "credential",
+            "strategy_template",
+            "strategy_template_name",
+            "exchange",
+            "created_at",
+            "modified_at",
+        ]
+        read_only_fields = [
+            "ping_time",
+            "created_at",
+            "modified_at",
+        ]
+        extra_kwargs = {
+            "credential": {"write_only": True},
+            "strategy_template": {"write_only": True},
+        }
+
+
+class RobotRetrieveSerializer(serializers.ModelSerializer):
     user = UserSerializer(source="credential.user", read_only=True)
     exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
     duration_display = DurationField(source="duration", read_only=True)
     asset_record = AssetRecordSerializer(read_only=True)
     strategy_parameters = serializers.JSONField(read_only=True)
-    param_preview = serializers.SerializerMethodField()
+    strategy_view = serializers.SerializerMethodField()
 
     class Meta:
         model = Robot
@@ -70,7 +107,7 @@ class RobotSerializer(serializers.ModelSerializer):
             "credential",
             "strategy_template",
             "strategy_parameters",
-            "param_preview",
+            "strategy_view",
             "user",
             "exchange",
             "created_at",
@@ -85,19 +122,12 @@ class RobotSerializer(serializers.ModelSerializer):
             "credential": {"write_only": True},
         }
 
-    def get_param_preview(self, obj: Robot):
-        spec = json.loads(obj.strategy_template.param_spec)
+    def get_strategy_view(self, obj: Robot) -> Dict[str, Any]:
+        spec = json.loads(obj.strategy_template.parameter_spec)
         parameters = obj.strategy_parameters
-        preview = {}
-        for code, field in spec["fields"].items():
-            preview[code] = {
-                "code": field["code"],
-                "name": field.get("name", field["code"].title()),
-                "type": field["type"],
-                "help_text": field["help_text"],
-                "value": parameters["fields"][code],
-            }
-        return preview
+        for field in spec["fields"]:
+            field["value"] = parameters[field["code"]]
+        return spec
 
 
 class RobotConfigSerializer(serializers.ModelSerializer):
@@ -121,6 +151,5 @@ class RobotConfigSerializer(serializers.ModelSerializer):
             "user",
             "exchange",
             "credential_keys",
-            # "principal",
             "strategy_parameters",
         ]

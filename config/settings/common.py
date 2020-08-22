@@ -49,6 +49,7 @@ THIRD_PARTY_APPS = [
     "allauth.account",
     "rest_auth",
     "webpack_loader",
+    "drf_yasg",
 ]
 LOCAL_APPS = [
     "core.apps.CoreConfig",
@@ -156,6 +157,8 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ),
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 100,
 }
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 AUTHENTICATION_BACKENDS = (
