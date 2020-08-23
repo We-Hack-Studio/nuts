@@ -154,7 +154,6 @@ LOGIN_URL = "/auth/login"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
@@ -169,9 +168,6 @@ AUTHENTICATION_BACKENDS = (
 REST_AUTH_SERIALIZERS = {
     "TOKEN_SERIALIZER": "users.serializers.UserDetailTokenSerializer",
 }
-ASSET_CURRENCY_LIST = env.list(
-    "ASSET_CURRENCY_LIST", default=["BTC", "USDT", "ETH", "EOS"]
-)
 
 WEBPACK_LOADER = {
     "DEFAULT": {

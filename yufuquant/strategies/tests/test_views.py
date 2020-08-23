@@ -13,10 +13,11 @@ class StrategyTemplateViewSetTestCase(APITestCase):
         self.user = User.objects.create_superuser(
             username="user", password="test", email="user@yufuquant.cc"
         )
+        self.user_token = self.user.auth_token
 
     def test_list_strategy_template(self):
         StrategyTemplateFactory.create_batch(5)
-        self.client.login(username=self.user.username, password="test")
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.user_token.key)
         response = self.client.get(self.reverse("strategy-template-list"))
         self.response_200(response)
         self.assertEqual(len(response.data["results"]), 5)
@@ -43,7 +44,7 @@ class StrategyTemplateViewSetTestCase(APITestCase):
             "description": "A test strategy template",
             "parameter_spec": json.dumps(parameter_spec),
         }
-        self.client.login(username=self.user.username, password="test")
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.user_token.key)
         response = self.client.post(
             self.reverse("strategy-template-list"), data=data, extra={"format": "json"},
         )
@@ -57,7 +58,7 @@ class StrategyTemplateViewSetTestCase(APITestCase):
             "description": "",
             "parameter_spec": "",
         }
-        self.client.login(username=self.user.username, password="test")
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.user_token.key)
         response = self.client.post(
             self.reverse("strategy-template-list"), data=data, extra={"format": "json"},
         )

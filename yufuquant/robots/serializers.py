@@ -124,9 +124,8 @@ class RobotRetrieveSerializer(serializers.ModelSerializer):
     def get_strategy_view(self, obj: Robot) -> Dict[str, Any]:
         spec = obj.strategy_template.parameter_spec
         parameters = obj.strategy_parameters
-        fields = dict(parameters["fields"])
         for field in spec["fields"]:
-            field["value"] = fields[field["code"]]
+            field["value"] = parameters["fields"]
         return spec
 
 

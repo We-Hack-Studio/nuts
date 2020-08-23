@@ -4,7 +4,7 @@ from core.mixins import ApiErrorsMixin
 from django.utils import timezone
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
 from robots.serializers import RobotConfigSerializer
@@ -22,7 +22,7 @@ class RobotViewSet(
     viewsets.GenericViewSet,
 ):
     serializer_class = RobotListSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
     pagination_class = None
     action_serializer_map = {
         "retrieve": RobotRetrieveSerializer,
@@ -30,7 +30,7 @@ class RobotViewSet(
 
     def get_queryset(self):
         return (
-            Robot.objects.filter(credential__user=self.request.user)
+            Robot.objects.all()
             .select_related("credential__user", "credential__exchange", "asset_record")
             .order_by("-created_at")
         )
@@ -42,9 +42,11 @@ class RobotViewSet(
         methods=["GET"],
         detail=True,
         serializer_class=RobotConfigSerializer,
-        permission_classes=[IsAuthenticated],
+        permission_classes=[IsAdminUser],
+        url_name="config",
+        url_path="config",
     )
-    def config(self, request, *args, **kwargs) -> Response:
+    def retrieve_config(self, request, *args, **kwargs) -> Response:
         robot = self.get_object()
         serializer = self.get_serializer(instance=robot)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -53,7 +55,7 @@ class RobotViewSet(
         methods=["POST"],
         detail=True,
         url_path="ping",
-        permission_classes=[IsAuthenticated],
+        permission_classes=[IsAdminUser],
     )
     def ping(self, request, *args, **kwargs) -> Response:
         robot = self.get_object()

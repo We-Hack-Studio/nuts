@@ -21,9 +21,9 @@ def init_strategy_parameters(sender, instance: Robot, created: bool = False, **k
         parameters = {
             "version": parameter_spec["version"],
         }
-        fields = []
+        fields = {}
         for field in parameter_spec["fields"]:
-            fields.append({field["code"]: field["default"]})
+            fields[field["code"]] = field["default"]
         parameters["fields"] = fields
         instance.strategy_parameters = parameters
         instance.save(update_fields=["strategy_parameters"])

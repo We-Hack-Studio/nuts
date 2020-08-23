@@ -10,6 +10,7 @@ from .managers import RobotManager
 
 class Robot(TimeStampedModel):
     MARKET_TYPE = Choices(("spots", _("spots")), ("futures", _("futures")))
+
     name = models.CharField(_("name"), max_length=20)
     pair = models.CharField(_("pair"), max_length=15)
     market_type = models.CharField(_("market type"), max_length=10, choices=MARKET_TYPE)

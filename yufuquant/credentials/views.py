@@ -18,7 +18,7 @@ class CredentialViewSet(
         "list": CredentialListSerializer,
         "retrieve": CredentialSerializer,
     }
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]
     throttle_classes = [throttling.UserRateThrottle]
     pagination_class = None
 
