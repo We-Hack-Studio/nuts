@@ -176,3 +176,19 @@ class RobotViewSetTestCase(APITestCase):
         response = self.client.post(url)
         self.response_200(response)
         self.assertEqual(response.data, {"detail": "pong"})
+
+    def test_update_valid_robot_strategy_parameters(self):
+        robot = RobotFactory()
+        url = self.reverse("robot-strategy-parameters", pk=robot.pk)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.admin_user_token.key)
+
+        data = {"strategy_parameters_fields": '{"code":"new value"}'}
+        response = self.client.post(url, data=data)
+        self.response_200(response)
+        self.assertEqual(response.data, {"detail": "ok"})
+
+        robot.refresh_from_db()
+        self.assertEqual(
+            robot.strategy_parameters,
+            {"version": "v0", "fields": {"code": "new value"}},
+        )
