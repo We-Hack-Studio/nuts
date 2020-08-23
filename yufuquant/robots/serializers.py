@@ -125,7 +125,7 @@ class RobotRetrieveSerializer(serializers.ModelSerializer):
         spec = obj.strategy_template.parameter_spec
         parameters = obj.strategy_parameters
         for field in spec["fields"]:
-            field["value"] = parameters["fields"]
+            field["value"] = parameters["fields"][field["code"]]
         return spec
 
 
