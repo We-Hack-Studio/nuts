@@ -1,14 +1,18 @@
 <template>
-  <div>
-    <div class="d-flex align-items-center">
-      <span class="mr-1">最低价</span>
-      <b-icon-info-circle class="mr-3" font-scale="0.5"></b-icon-info-circle>
-      <span>12</span>
-    </div>
-    <div class="d-flex align-items-center">
-      <span class="mr-1">最高价</span>
-      <b-icon-info-circle class="mr-3" font-scale="0.5"></b-icon-info-circle>
-      <span>12</span>
+  <div v-if="parameters">
+    <div
+      v-for="paramItem in parameters.fields"
+      :key="paramItem.code"
+      class="d-flex align-items-center mb-2"
+    >
+      <div class="label">
+        <span
+          v-b-tooltip.hover
+          :class="['mr-2', underLineClass(paramItem)]"
+          :title="paramItem.description"
+        >{{paramItem.name}}</span>
+      </div>
+      <span>{{ formatValue(paramItem) || '-'}}</span>
     </div>
   </div>
 </template>
@@ -16,14 +20,34 @@
 <script>
 export default {
   name: "ParamPreview",
+  props: ["parameters"],
   methods: {
-    showParamForm: function () {
-      this.$emit("showParamForm")
-    }
-  }
-}
+    underLineClass(item) {
+      if (item.description) {
+        return "underline";
+      }
+      return "";
+    },
+    formatValue(item) {
+      if (item.type === "enum") {
+        const itemArray = item.items.find((ele) => ele[0] === item.value);
+        if (itemArray) {
+          return itemArray[1];
+        }
+        return "";
+      }
+      return item.value;
+    },
+  },
+};
 </script>
 
 <style scoped>
-
+.label {
+  display: block;
+  min-width: 120px;
+}
+.underline {
+  border-bottom: 1px dotted #888;
+}
 </style>
