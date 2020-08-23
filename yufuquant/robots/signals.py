@@ -7,7 +7,7 @@ from .models import AssetRecord, Robot
 
 
 @receiver(post_save, sender=Robot)
-def init_asset_record(sender, instance: Robot, created=False, **kwargs):
+def init_asset_record(sender, instance: Robot, created: bool = False, **kwargs):
     if created:
         AssetRecord.objects.create(
             currency=instance.target_currency, robot=instance,
@@ -15,15 +15,15 @@ def init_asset_record(sender, instance: Robot, created=False, **kwargs):
 
 
 @receiver(post_save, sender=Robot)
-def init_strategy_parameters(sender, instance: Robot, created=False, **kwargs):
+def init_strategy_parameters(sender, instance: Robot, created: bool = False, **kwargs):
     if created:
-        param_spec = json.loads(instance.strategy_template.param_spec)
+        parameter_spec = instance.strategy_template.parameter_spec
         parameters = {
-            "version": param_spec["version"],
+            "version": parameter_spec["version"],
         }
-        fields = {}
-        for v in param_spec["fields"].values():
-            fields[v["code"]] = v["default_value"]
+        fields = []
+        for field in parameter_spec["fields"]:
+            fields.append({field["code"]: field["default"]})
         parameters["fields"] = fields
         instance.strategy_parameters = parameters
         instance.save(update_fields=["strategy_parameters"])

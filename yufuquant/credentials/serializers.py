@@ -23,6 +23,24 @@ class CredentialKeysSerializer(serializers.ModelSerializer):
         ]
 
 
+class CredentialListSerializer(serializers.ModelSerializer):
+    api_key_masked = CredentialKeyField(source="api_key", read_only=True)
+    secret_masked = CredentialKeyField(source="secret", read_only=True)
+    exchange = ExchangeSerializer(read_only=True)
+
+    class Meta:
+        model = Credential
+        fields = [
+            "id",
+            "note",
+            "api_key_masked",
+            "secret_masked",
+            "is_test_net",
+            "exchange",
+            "created_at",
+        ]
+
+
 class CredentialSerializer(serializers.ModelSerializer):
     api_key_masked = CredentialKeyField(source="api_key", read_only=True)
     secret_masked = CredentialKeyField(source="secret", read_only=True)

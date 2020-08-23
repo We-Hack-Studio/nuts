@@ -23,6 +23,7 @@ class RobotViewSet(
 ):
     serializer_class = RobotListSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = None
     action_serializer_map = {
         "retrieve": RobotRetrieveSerializer,
     }

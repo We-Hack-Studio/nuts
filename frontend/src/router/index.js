@@ -13,14 +13,14 @@ import Vue from 'vue'
 Vue.use(VueRouter)
 const routes = [
     {path: '/', component: RobotListView},
-    {path: '/robot/list', component: RobotListView},
+    {path: '/robot/list', name: 'robot-list', component: RobotListView},
     {path: '/robot/create', component: RobotCreateView},
     {path: '/robot/:id', name: 'robot', component: RobotView},
     {path: '/robot/:id/update', name: 'robot-update', component: RobotUpdateView},
     {path: '/login', component: LoginView},
     {path: '/connect', component: ConnectView},
     {path: '/account', component: Account},
-    {path: '/strategy-template/list', component: StrategyTemplateListView},
+    {path: '/strategy-template/list', name: 'strategy-template-list', component: StrategyTemplateListView},
     {path: '/strategy-template/create', component: StrategyTemplateCreateView},
 ]
 const router = new VueRouter({

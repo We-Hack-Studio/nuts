@@ -82,9 +82,11 @@
 
 <script>
 import {createStrategyTemplate} from "@/api";
+import formErrorMixin from "@/mixins/formError"
 
 export default {
   name: 'StrategyTemplateCreateForm',
+  mixins: [formErrorMixin],
   data() {
     return {
       parameterSpecMode: "ui",
@@ -133,22 +135,6 @@ export default {
             appendToast: false
           });
         }
-      }
-    },
-    validationStateForField(field, errors) {
-      let filtered = errors.filter(error => {
-        return error['field'] === field
-      })
-      if (filtered.length !== 0) {
-        return false
-      }
-    },
-    getErrorForField(field, errors) {
-      let filtered = errors.filter(error => {
-        return error['field'] === field
-      })
-      if (filtered.length !== 0) {
-        return filtered[0].message
       }
     },
   }

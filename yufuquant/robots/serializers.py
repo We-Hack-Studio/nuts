@@ -1,5 +1,4 @@
-import json
-from typing import Dict, Any
+from typing import Any, Dict
 
 from credentials.serializers import CredentialKeysSerializer
 from exchanges.serializers import ExchangeSerializer
@@ -14,7 +13,7 @@ from .models import AssetRecord, Robot
 class DurationField(DrfDurationField):
     def to_representation(self, value):
         days = value.days
-        seconds = value.seconds
+        seconds = value.secondsø
         hours = seconds // 3600
         return f"{days}天{hours}小时"
 
@@ -123,10 +122,11 @@ class RobotRetrieveSerializer(serializers.ModelSerializer):
         }
 
     def get_strategy_view(self, obj: Robot) -> Dict[str, Any]:
-        spec = json.loads(obj.strategy_template.parameter_spec)
+        spec = obj.strategy_template.parameter_spec
         parameters = obj.strategy_parameters
+        fields = dict(parameters["fields"])
         for field in spec["fields"]:
-            field["value"] = parameters[field["code"]]
+            field["value"] = fields[field["code"]]
         return spec
 
 
