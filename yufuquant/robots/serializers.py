@@ -41,6 +41,7 @@ class AssetRecordSerializer(serializers.ModelSerializer):
             "total_pnl_rel_ptg",
             "total_pnl_rel_ptg_24h",
         ]
+        read_only_fields = ["currency"]
 
 
 class RobotListSerializer(serializers.ModelSerializer):

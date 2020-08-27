@@ -2,17 +2,14 @@ from typing import Type
 
 from core.mixins import ApiErrorsMixin
 from django.utils import timezone
-from rest_framework import mixins, status, viewsets
+from rest_framework import mixins, serializers, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
-from rest_framework.serializers import BaseSerializer
-from robots.serializers import RobotConfigSerializer
-from rest_framework import serializers
+from rest_framework.serializers import BaseSerializer, Serializer
 
 from .models import Robot
-from .serializers import RobotListSerializer, RobotRetrieveSerializer
-from rest_framework.serializers import Serializer
+from .serializers import AssetRecordSerializer, RobotConfigSerializer, RobotListSerializer, RobotRetrieveSerializer
 
 
 class RobotStrategyParametersFieldsSerializer(Serializer):
@@ -86,4 +83,20 @@ class RobotViewSet(
         fields = serializer.validated_data["strategy_parameters_fields"]
         robot.strategy_parameters["fields"].update(fields)
         robot.save(update_fields=["strategy_parameters"])
+        return Response({"detail": "ok"}, status=status.HTTP_200_OK)
+
+    @action(
+        methods=["POST"],
+        detail=True,
+        url_path="assetRecord",
+        url_name="asset-record",
+        permission_classes=[IsAdminUser],
+        serializer_class=AssetRecordSerializer,
+    )
+    def update_asset_record(self, request, *args, **kwargs) -> Response:
+        robot = self.get_object()
+        asset_record = robot.asset_record
+        serializer = self.get_serializer(instance=asset_record, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response({"detail": "ok"}, status=status.HTTP_200_OK)
