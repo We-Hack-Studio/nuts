@@ -9,7 +9,12 @@ from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer, Serializer
 
 from .models import Robot
-from .serializers import AssetRecordSerializer, RobotConfigSerializer, RobotListSerializer, RobotRetrieveSerializer
+from .serializers import (
+    AssetRecordSerializer,
+    RobotConfigSerializer,
+    RobotListSerializer,
+    RobotRetrieveSerializer,
+)
 
 
 class RobotStrategyParametersFieldsSerializer(Serializer):
@@ -76,7 +81,7 @@ class RobotViewSet(
         permission_classes=[IsAdminUser],
         serializer_class=RobotStrategyParametersFieldsSerializer,
     )
-    def update_strategy_parameters(self, request, *args, **kwargs) -> Response:
+    def adjust_strategy_parameters(self, request, *args, **kwargs) -> Response:
         robot = self.get_object()
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -86,14 +91,14 @@ class RobotViewSet(
         return Response({"detail": "ok"}, status=status.HTTP_200_OK)
 
     @action(
-        methods=["POST"],
+        methods=["PATCH"],
         detail=True,
         url_path="assetRecord",
         url_name="asset-record",
         permission_classes=[IsAdminUser],
         serializer_class=AssetRecordSerializer,
     )
-    def update_asset_record(self, request, *args, **kwargs) -> Response:
+    def partial_update_asset_record(self, request, *args, **kwargs) -> Response:
         robot = self.get_object()
         asset_record = robot.asset_record
         serializer = self.get_serializer(instance=asset_record, data=request.data)

@@ -193,20 +193,20 @@ class RobotViewSetTestCase(APITestCase):
             {"version": "v0", "fields": {"code": "new value"}},
         )
 
-    def test_update_robot_asset_record(self):
+    def test_partial_update_robot_asset_record(self):
         robot = RobotFactory()
         url = self.reverse("robot-asset-record", pk=robot.pk)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.admin_user_token.key)
 
-        data = {"total_principal": 8888, "total_balance": 9999}
-        response = self.client.post(url, data=data)
+        data = {"total_balance": 9999}
+        response = self.client.patch(url, data=data)
         self.response_200(response)
         self.assertEqual(response.data, {"detail": "ok"})
 
         robot.refresh_from_db()
         self.assertEqual(
             robot.asset_record.total_principal,
-            8888,
+            0,
         )
         self.assertEqual(
             robot.asset_record.total_balance,

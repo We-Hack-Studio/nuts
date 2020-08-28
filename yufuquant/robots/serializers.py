@@ -21,7 +21,7 @@ class DurationField(DrfDurationField):
 class PercentageField(FloatField):
     def to_representation(self, value):
         result = super().to_representation(value)
-        return "{:.2f}%".format(result)
+        return "{:.2f}%".format(result * 100)
 
 
 class AssetRecordSerializer(serializers.ModelSerializer):
@@ -41,7 +41,12 @@ class AssetRecordSerializer(serializers.ModelSerializer):
             "total_pnl_rel_ptg",
             "total_pnl_rel_ptg_24h",
         ]
-        read_only_fields = ["currency"]
+        read_only_fields = [
+            "currency",
+            "total_principal_24h_ago",
+            "total_balance_24h_ago",
+            "robot",
+        ]
 
 
 class RobotListSerializer(serializers.ModelSerializer):
