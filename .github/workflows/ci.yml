@@ -27,6 +27,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-poetry-
 
+      - name: Install Dependencies
+        if: steps.poetry-cache.outputs.cache-hit != 'true'
+        run: poetry install
+
 #      - name: Lint with mypy
 #        run: poetry run mypy .
 #
