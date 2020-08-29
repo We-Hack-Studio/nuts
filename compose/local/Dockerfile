@@ -2,7 +2,7 @@ FROM python:3.7
 
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update && apt-get install -y gettext python3-dev libpq-dev
+RUN apt-get update && apt-get install -y gettext python3-dev
 
 WORKDIR /app
 
@@ -10,10 +10,9 @@ RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poet
 ENV PATH "/root/.poetry/bin:${PATH}"
 RUN poetry config virtualenvs.create false
 COPY poetry.lock pyproject.toml /app/
-RUN poetry install --no-dev --no-root --no-interaction
+RUN poetry install --no-root --no-interaction
 
 COPY . /app
-RUN poetry install --no-root --no-interaction
 
 COPY ./compose/local/start.sh /start.sh
 RUN sed -i 's/\r$//g' /start.sh
