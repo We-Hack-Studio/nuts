@@ -3,11 +3,10 @@ import re
 
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
-from users.models import User
 from django.contrib.auth.models import AnonymousUser
+from users.models import User
 
-public_topic_patterns = [
-]
+public_topic_patterns = []
 private_topic_patterns = [
     r"robot#\d+\.log",
     r"robot#\d+\.asset",
@@ -107,16 +106,15 @@ class StreamConsumer(AsyncJsonWebsocketConsumer):
             await self.send_json({"code": 403, "detail": "认证后才可广播消息"}, close=True)
             return
 
-        topic = message["topic"]
-        if topic == "robotPing":
+        category = message["category"]
+        if category == "robotPing":
             pass
-        elif topic == "robotLog":
+        elif category == "robotLog":
             log_topic_groups = [g for g in self.groups if g.endswith("log")]
             for group in log_topic_groups:
-                await self.channel_layer.group_send(group, {
-                    'type': 'robot.log',
-                    'message': message
-                })
+                await self.channel_layer.group_send(
+                    group, {"type": "robot.log", "message": message}
+                )
         else:
             pass
 

@@ -57,8 +57,8 @@ urlpatterns = [
     path("", IndexView.as_view(), name="index"),
     path("admin/", admin.site.urls),
     path("auth/", include("allauth.account.urls")),
-    path("api/", include("rest_auth.urls")),
-    path("api/", include(router.urls)),
+    path("api/v1/", include("rest_auth.urls")),
+    path("api/v1/", include(router.urls)),
     path(
         "swagger/",
         schema_view.with_ui("swagger", cache_timeout=0),
