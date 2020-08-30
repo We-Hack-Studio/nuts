@@ -1,6 +1,7 @@
 from django.contrib.auth import user_logged_in, user_logged_out
-from rest_framework import status, viewsets
+from rest_framework import mixins, status, viewsets
 from rest_framework.authtoken.models import Token
+from rest_framework.decorators import action
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -10,10 +11,22 @@ from .models import User
 from .serializers import TokenCreateSerializer, TokenSerializer, UserSerializer
 
 
-class UserViewSet(viewsets.GenericViewSet):
-    queryset = User.objects.all()
+class UserViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = User.objects.all().filter(pk=user.pk)
+        return queryset
+
+    def get_instance(self):
+        return self.request.user
+
+    @action(["GET"], detail=False)
+    def me(self, request, *args, **kwargs):
+        self.get_object = self.get_instance
+        return self.retrieve(request, *args, **kwargs)
 
 
 class TokenCreateView(GenericAPIView):

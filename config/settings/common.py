@@ -142,7 +142,7 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     "django.contrib.staticfiles.finders.FileSystemFinder",
 ]
-MEDIA_ROOT = str(ROOT_DIR("media"))
+MEDIA_ROOT = str(APPS_DIR("media"))
 MEDIA_URL = "/media/"
 AUTH_USER_MODEL = "users.User"
 ASGI_APPLICATION = "config.routing.application"

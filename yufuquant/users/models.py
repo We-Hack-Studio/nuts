@@ -36,7 +36,7 @@ class User(AbstractUser):
         source="avatar",
         processors=[ResizeToFill(70, 70)],
         format="jpeg",
-        options={"quality": 90},
+        options={"quality": 100},
     )
 
     class Meta(AbstractUser.Meta):
@@ -54,5 +54,7 @@ class User(AbstractUser):
     def set_default_avatar(self):
         avatar_byte_array = AvatarGenerator.generate(self.username)
         self.avatar.save(
-            self.AVATAR_DEFAULT_FILENAME, ContentFile(avatar_byte_array), save=False,
+            self.AVATAR_DEFAULT_FILENAME,
+            ContentFile(avatar_byte_array),
+            save=False,
         )
