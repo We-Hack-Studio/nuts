@@ -19,14 +19,17 @@
     <div class="d-flex justify-content-between mt-2">
       <span><span class="small text-muted">收益率</span><br><span
           :class="[profitColorClass, 'h5']">{{ robot.profitRatioPtg }}</span></span>
-      <span><span class="small text-muted">收益额</span><br><span :class="profitColorClass">{{ robot.profit }}
-          <span class="font-weight-light"> {{ robot.marginCurrency }}</span>
+      <span><span class="small text-muted">收益额</span><br><span
+          :class="profitColorClass">{{ robot.profit|roundByCurrency(robot.targetCurrency) }}
+          <span class="font-weight-light"> {{ robot.targetCurrency }}</span>
         </span></span>
-      <span><span class="small text-muted">本金</span><br><span class="">{{ robot.principal }}
-          <span class="font-weight-light"> {{ robot.marginCurrency }}</span>
+      <span><span class="small text-muted">本金</span><br><span
+          class="">{{ robot.principal|roundByCurrency(robot.targetCurrency) }}
+          <span class="font-weight-light"> {{ robot.targetCurrency }}</span>
         </span></span>
-      <span><span class="small text-muted">余额</span><br><span class="">{{ robot.balance }}
-          <span class="font-weight-light"> {{ robot.marginCurrency }}</span>
+      <span><span class="small text-muted">余额</span><br><span
+          class="">{{ robot.balance |roundByCurrency(robot.targetCurrency) }}
+          <span class="font-weight-light"> {{ robot.targetCurrency }}</span>
         </span></span>
     </div>
     <div class="text-muted mt-2">
@@ -42,8 +45,8 @@
         <b-icon-caret-down-fill v-if="robot.profit24h < 0"></b-icon-caret-down-fill>
         {{ robot.profitRatioPtg24h }}
       </span>
-      <span :class="profit24hColorClass">{{ robot.profit24h }}
-        <span class="font-weight-light"> {{ robot.marginCurrency }}</span>
+      <span :class="profit24hColorClass">{{ robot.profit24h|roundByCurrency(robot.targetCurrency) }}
+        <span class="font-weight-light"> {{ robot.targetCurrency }}</span>
       </span>
       <span class="float-right">网格策略</span>
     </div>
@@ -54,7 +57,7 @@
 import moment from 'moment'
 
 export default {
-  name: 'RobotListCard',
+  name: 'RobotListItem',
   props: {
     robot: Object,
   },
@@ -72,6 +75,18 @@ export default {
       return this.robot.profit24h > 0 ? 'text-success' : this.robot.profit24h < 0 ? 'text-danger' : ''
     }
   },
+  filters: {
+    roundByCurrency(value, currency) {
+      switch (currency) {
+        case "BTC":
+          return value.toFixed(4)
+        case "USDT":
+          return value.toFixed(2)
+        default:
+          return value
+      }
+    }
+  }
 }
 </script>
 
