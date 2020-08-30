@@ -24,16 +24,19 @@ export default {
     // 建立 websocket 连接
     this.initWebsocket();
   },
+  components: {
+    LogPanel,
+  },
   methods: {
     initWebsocket() {
       // 初始化weosocket
       const wsuri = `${window.conf.websocketApiUri}`; // 这个地址由后端童鞋提供
-      this.websock = new WebSocket(wsuri);
-      this.websock.onmessage = (message) => {
+      this.ws = new WebSocket(wsuri);
+      this.ws.onmessage = (message) => {
         message = JSON.parse(message.data);
         if (message.code) {
           if (message.code === 200) {
-            this._sendInfo({
+            this._send({
               cmd: "sub",
               topics: [`robot#${this.robotId}.log`],
             });
@@ -46,7 +49,7 @@ export default {
             this.logList.push({
               timestamp: Date.now(),
               level: "error",
-              text: "认证失败, 订阅中...",
+              text: "认证失败",
             });
           }
         } else if (message.category === "robotLog") {
@@ -55,57 +58,51 @@ export default {
           console.log(message);
         }
       };
-      this.websock.onopen = () => {
-        console.log("on open");
+      this.ws.onopen = () => {
         this.logList.push({
           timestamp: Date.now(),
-          level: "info",
+          level: "INFO",
           text: "已建立 websocket 连接, token 认证中...",
         });
-        this._sendInfo({
+        this._send({
           cmd: "auth",
           token: this.authToken,
         });
       };
-      this.websock.onerror = (event) => {
+      this.ws.onerror = () => {
         console.log("error");
-        console.log("error event:", event);
       };
-      this.websock.onclose = (event) => {
-        console.log("close event", event);
+      this.ws.onclose = () => {
         this.logList.push({
           timestamp: Date.now(),
-          level: "error",
+          level: "ERROR",
           text: "Websocket 连接已断开！",
         });
-        this.reConnect();
+        this.reconnect();
       };
 
       // setInterval(this.checkConnection, 5000);
     },
-    reConnect() {
+    reconnect() {
       setTimeout(() => {
         this.logList.push({
           timestamp: Date.now(),
-          level: "info",
-          text: "正在尝试重新建立 WebSocket 连接",
+          level: "INFO",
+          text: "正在尝试重新建立 WebSocket 连接...",
         });
         this.initWebsocket();
       }, 5000);
     },
     // checkConnection() {
-    //   this._sendInfo({
+    //   this._send({
     //     cmd: "auth",
     //     token: this.authToken,
     //   });
     // },
 
-    _sendInfo(info) {
-      this.websock.send(JSON.stringify(info));
+    _send(message) {
+      this.ws.send(JSON.stringify(message));
     },
-  },
-  components: {
-    LogPanel,
   },
 };
 </script>
