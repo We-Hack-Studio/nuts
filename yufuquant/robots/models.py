@@ -15,7 +15,6 @@ class Robot(TimeStampedModel):
     pair = models.CharField(_("pair"), max_length=15)
     market_type = models.CharField(_("market type"), max_length=10, choices=MARKET_TYPE)
     enabled = models.BooleanField(_("enabled"), default=True)
-    pull_assets = models.BooleanField(_("pull assets from exchange"), default=True)
     start_time = models.DateTimeField(_("start time"), null=True, blank=True)
     ping_time = models.DateTimeField(_("ping time"), null=True, blank=True)
     credential = models.ForeignKey(
@@ -24,15 +23,15 @@ class Robot(TimeStampedModel):
         on_delete=models.CASCADE,
         related_name="robots",
     )
-    strategy_template = models.ForeignKey(
-        "strategies.StrategyTemplate",
-        verbose_name=_("strategy template"),
+    strategy = models.ForeignKey(
+        "strategies.Strategy",
+        verbose_name=_("strategy"),
         on_delete=models.CASCADE,
         blank=True,
         null=True,
         related_name="robots",
     )
-    strategy_parameters = JSONField(_("strategy parameters"), blank=True)
+    strategy_parameters = JSONField(_("strategy parameters"))
     target_currency = models.CharField(_("target currency"), max_length=10, blank=True)
     # for spots
     base_currency = models.CharField(_("base currency"), max_length=10, blank=True)

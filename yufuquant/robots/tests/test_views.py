@@ -1,5 +1,5 @@
 from credentials.tests.factories import CredentialFactory
-from strategies.tests.factories import StrategyTemplateFactory
+from strategies.tests.factories import StrategyFactory
 from test_plus import APITestCase
 from users.models import User
 
@@ -52,7 +52,7 @@ class RobotViewSetTestCase(APITestCase):
 
     def test_create_valid_robot(self):
         credential = CredentialFactory(user=self.admin_user)
-        strategy_template = StrategyTemplateFactory()
+        strategy = StrategyFactory()
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.admin_user_token.key)
         url = self.reverse("api:robot-list")
         data = {
@@ -61,7 +61,7 @@ class RobotViewSetTestCase(APITestCase):
             "market_type": "futures",
             "enabled": True,
             "credential": credential.pk,
-            "strategy_template": strategy_template.pk,
+            "strategy": strategy.pk,
         }
         response = self.client.post(url, data=data)
         self.response_201(response)
@@ -75,7 +75,7 @@ class RobotViewSetTestCase(APITestCase):
             "market_type": "options",
             "enabled": True,
             "credential": 999,
-            "strategy_template": 999,
+            "strategy": 999,
         }
         response = self.client.post(url, data=data)
         self.response_400(response)
@@ -182,7 +182,7 @@ class RobotViewSetTestCase(APITestCase):
         url = self.reverse("api:robot-strategy-parameters", pk=robot.pk)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.admin_user_token.key)
 
-        data = {"strategy_parameters_fields": '{"code":"new value"}'}
+        data = {"strategy_parameters": '{"code":"new value"}'}
         response = self.client.post(url, data=data)
         self.response_200(response)
         self.assertEqual(response.data, {"detail": "ok"})
@@ -190,7 +190,7 @@ class RobotViewSetTestCase(APITestCase):
         robot.refresh_from_db()
         self.assertEqual(
             robot.strategy_parameters,
-            {"version": "v0", "fields": {"code": "new value"}},
+            {"code": "new value"},
         )
 
     def test_partial_update_robot_asset_record(self):

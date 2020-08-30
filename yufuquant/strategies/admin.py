@@ -1,13 +1,12 @@
 from django.contrib import admin
 
-from .models import StrategyTemplate
+from .models import Strategy
 
 
-@admin.register(StrategyTemplate)
-class StrategyTemplateAdmin(admin.ModelAdmin):
+@admin.register(Strategy)
+class StrategyAdmin(admin.ModelAdmin):
     list_display = [
         "id",
-        "code",
         "name",
         "created_at",
         "modified_at",

@@ -3,7 +3,7 @@ from credentials.tests.factories import CredentialFactory
 from django.utils import timezone
 from factory import DjangoModelFactory
 from robots.models import Robot
-from strategies.tests.factories import StrategyTemplateFactory
+from strategies.tests.factories import StrategyFactory
 
 
 class RobotFactory(DjangoModelFactory):
@@ -12,7 +12,7 @@ class RobotFactory(DjangoModelFactory):
     market_type = "futures"
     target_currency = "BTC"
     credential = factory.SubFactory(CredentialFactory)
-    strategy_template = factory.SubFactory(StrategyTemplateFactory)
+    strategy = factory.SubFactory(StrategyFactory)
 
     class Meta:
         model = Robot

@@ -5,20 +5,20 @@ from django.db.models import QuerySet
 from rest_framework import mixins, permissions, viewsets
 from rest_framework.permissions import BasePermission
 
-from .models import StrategyTemplate
-from .serializers import StrategyTemplateSerializer
+from .models import Strategy
+from .serializers import StrategySerializer
 from rest_framework import pagination
 
 
-class StrategyTemplateViewSet(
+class StrategyViewSet(
     ApiErrorsMixin,
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
     viewsets.GenericViewSet,
 ):
-    serializer_class = StrategyTemplateSerializer
+    serializer_class = StrategySerializer
     permission_classes = [permissions.IsAdminUser]
     pagination_class = pagination.LimitOffsetPagination
 
     def get_queryset(self) -> QuerySet:
-        return StrategyTemplate.objects.all().order_by("-created_at")
+        return Strategy.objects.all().order_by("-created_at")

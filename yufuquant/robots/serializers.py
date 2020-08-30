@@ -13,7 +13,7 @@ from .models import AssetRecord, Robot
 class DurationField(DrfDurationField):
     def to_representation(self, value):
         days = value.days
-        seconds = value.secondsø
+        seconds = value.seconds
         hours = seconds // 3600
         return f"{days}天{hours}小时"
 
@@ -53,7 +53,7 @@ class RobotListSerializer(serializers.ModelSerializer):
     exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
     duration_display = DurationField(source="duration", read_only=True)
     asset_record = AssetRecordSerializer(read_only=True)
-    strategy_template_name = serializers.CharField(read_only=True)
+    strategy_name = serializers.CharField(read_only=True)
 
     class Meta:
         model = Robot
@@ -70,8 +70,8 @@ class RobotListSerializer(serializers.ModelSerializer):
             "duration_display",
             "asset_record",
             "credential",
-            "strategy_template",
-            "strategy_template_name",
+            "strategy",
+            "strategy_name",
             "exchange",
             "created_at",
             "modified_at",
@@ -83,7 +83,7 @@ class RobotListSerializer(serializers.ModelSerializer):
         ]
         extra_kwargs = {
             "credential": {"write_only": True},
-            "strategy_template": {"write_only": True},
+            "strategy": {"write_only": True},
         }
 
 
@@ -93,7 +93,7 @@ class RobotRetrieveSerializer(serializers.ModelSerializer):
     duration_display = DurationField(source="duration", read_only=True)
     asset_record = AssetRecordSerializer(read_only=True)
     strategy_parameters = serializers.JSONField(read_only=True)
-    strategy_view = serializers.SerializerMethodField()
+    strategy_parameters_view = serializers.SerializerMethodField()
 
     class Meta:
         model = Robot
@@ -110,9 +110,9 @@ class RobotRetrieveSerializer(serializers.ModelSerializer):
             "duration_display",
             "asset_record",
             "credential",
-            "strategy_template",
+            "strategy",
             "strategy_parameters",
-            "strategy_view",
+            "strategy_parameters_view",
             "user",
             "exchange",
             "created_at",
@@ -127,11 +127,11 @@ class RobotRetrieveSerializer(serializers.ModelSerializer):
             "credential": {"write_only": True},
         }
 
-    def get_strategy_view(self, obj: Robot) -> Dict[str, Any]:
-        spec = obj.strategy_template.parameter_spec
+    def get_strategy_parameters_view(self, obj: Robot) -> Dict[str, Any]:
+        spec = obj.strategy.specification
         parameters = obj.strategy_parameters
-        for field in spec["fields"]:
-            field["value"] = parameters["fields"][field["code"]]
+        for parameter in spec["parameters"]:
+            parameter["value"] = parameters[parameter["code"]]
         return spec
 
 

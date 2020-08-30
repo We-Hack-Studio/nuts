@@ -17,8 +17,8 @@ from .serializers import (
 )
 
 
-class RobotStrategyParametersFieldsSerializer(Serializer):
-    strategy_parameters_fields = serializers.JSONField(binary=True)
+class RobotStrategyParametersSerializer(Serializer):
+    strategy_parameters = serializers.JSONField(binary=True)
 
 
 class RobotViewSet(
@@ -76,17 +76,17 @@ class RobotViewSet(
     @action(
         methods=["POST"],
         detail=True,
-        url_path="strategy_parameters",
+        url_path="strategyParameters",
         url_name="strategy-parameters",
         permission_classes=[IsAdminUser],
-        serializer_class=RobotStrategyParametersFieldsSerializer,
+        serializer_class=RobotStrategyParametersSerializer,
     )
     def adjust_strategy_parameters(self, request, *args, **kwargs) -> Response:
         robot = self.get_object()
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        fields = serializer.validated_data["strategy_parameters_fields"]
-        robot.strategy_parameters["fields"].update(fields)
+        parameters = serializer.validated_data["strategy_parameters"]
+        robot.strategy_parameters.update(parameters)
         robot.save(update_fields=["strategy_parameters"])
         return Response({"detail": "ok"}, status=status.HTTP_200_OK)
 

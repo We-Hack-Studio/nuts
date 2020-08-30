@@ -3,7 +3,7 @@ import json
 from test_plus.test import APITestCase
 from users.models import User
 
-from .factories import StrategyTemplateFactory
+from .factories import StrategyFactory
 
 
 class StrategyTemplateViewSetTestCase(APITestCase):
@@ -16,9 +16,9 @@ class StrategyTemplateViewSetTestCase(APITestCase):
         self.user_token = self.user.auth_token
 
     def test_list_strategy_template(self):
-        StrategyTemplateFactory.create_batch(5)
+        StrategyFactory.create_batch(5)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.user_token.key)
-        response = self.client.get(self.reverse("api:strategy-template-list"))
+        response = self.client.get(self.reverse("api:strategy-list"))
         self.response_200(response)
         self.assertEqual(len(response.data["results"]), 5)
 
@@ -42,11 +42,11 @@ class StrategyTemplateViewSetTestCase(APITestCase):
             "code": "test",
             "name": "Test",
             "description": "A test strategy template",
-            "parameter_spec": json.dumps(parameter_spec),
+            "specification": json.dumps(parameter_spec),
         }
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.user_token.key)
         response = self.client.post(
-            self.reverse("api:strategy-template-list"), data=data, extra={"format": "json"},
+            self.reverse("api:strategy-list"), data=data, extra={"format": "json"},
         )
         self.response_201(response)
         # todo: assert response schema
@@ -56,10 +56,10 @@ class StrategyTemplateViewSetTestCase(APITestCase):
             "code": "",
             "name": "",
             "description": "",
-            "parameter_spec": "",
+            "specification": "",
         }
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.user_token.key)
         response = self.client.post(
-            self.reverse("api:strategy-template-list"), data=data, extra={"format": "json"},
+            self.reverse("api:strategy-list"), data=data, extra={"format": "json"},
         )
         self.response_400(response)

@@ -20,9 +20,9 @@ else:
 router.register("users", users.views.UserViewSet, basename="user")
 router.register("robots", robots.views.RobotViewSet, basename="robot")
 router.register(
-    "strategy-templates",
-    strategies.views.StrategyTemplateViewSet,
-    basename="strategy-template",
+    "strategies",
+    strategies.views.StrategyViewSet,
+    basename="strategy",
 )
 router.register("exchanges", exchanges.views.ExchangeViewSet, basename="exchange")
 router.register(

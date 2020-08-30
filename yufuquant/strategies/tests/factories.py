@@ -1,17 +1,16 @@
 import factory
 from factory import DjangoModelFactory
-from strategies.models import StrategyTemplate
+from strategies.models import Strategy
 
 
-class StrategyTemplateFactory(DjangoModelFactory):
-    code = factory.Faker("word")
-    name = factory.LazyAttribute(lambda obj: obj.code.title())
+class StrategyFactory(DjangoModelFactory):
+    name = factory.Faker("word")
     description = factory.Faker("paragraph")
-    parameter_spec = factory.LazyFunction(
+    specification = factory.LazyFunction(
         lambda: {
             "version": "v0",
             "specVersion": "v1.0",
-            "fields": [
+            "parameters": [
                 {
                     "code": "code",
                     "name": "Code",
@@ -25,4 +24,4 @@ class StrategyTemplateFactory(DjangoModelFactory):
     )
 
     class Meta:
-        model = StrategyTemplate
+        model = Strategy
