@@ -34,6 +34,7 @@
 
 <script>
 import {getUsersMe, postAuthLogin} from "../api";
+import storage from "../utils"
 
 export default {
   data() {
@@ -55,15 +56,16 @@ export default {
         const loginRes = await postAuthLogin(this.form)
         const authToken = loginRes.data["auth_token"]
         this.$store.commit("SET_AUTH_TOKEN", authToken)
+        storage.saveAuthToken(authToken)
 
         const usersMeRes = await getUsersMe()
-        console.log(usersMeRes)
         const user = {
           userId: usersMeRes.data.id,
           username: usersMeRes.data.username,
           nickname: usersMeRes.data.nickname
         }
         this.$store.commit("SET_USER", user)
+        storage.saveUser(user)
         this.formProcessing = false
         await this.$router.push({name: 'robot-list'})
       } catch (error) {
@@ -93,6 +95,7 @@ export default {
         }
         this.$store.commit("REMOVE_AUTH_TOKEN")
         this.$store.commit("REMOVE_USER")
+        storage.clear()
         this.formProcessing = false
       }
     }

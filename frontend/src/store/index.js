@@ -2,17 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import mutations from './mutations'
 import getters from "./getters";
+import storage from "../utils";
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
-        authToken: "",
-        user: {
-            "username": "",
-            "userId": -1,
-            "nickname": "",
-        }
+        authToken: storage.loadAuthToken(),
+        user: storage.loadUser()
     },
     mutations,
     getters,

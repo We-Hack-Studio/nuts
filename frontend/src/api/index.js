@@ -39,20 +39,8 @@ export function getRobot(robotId) {
     return authInstance.get("/robots/" + robotId + "/");
 }
 
-export function getRobotList() {
+export function getRobots() {
     return authInstance.get("/robots/");
-}
-
-export function getGridList(robotId) {
-    return authInstance.get("/robots/" + robotId + "/grids/");
-}
-
-export function createGrids(robotId, data) {
-    return authInstance.post("/robots/" + robotId + "/grids/make/", data);
-}
-
-export function clearGrids(robotId) {
-    return authInstance.delete("/robots/" + robotId + "/grids/clear/");
 }
 
 export function getStrategyTemplateList() {

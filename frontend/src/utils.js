@@ -1,20 +1,26 @@
-const userLocalStorage = {
-    storageKey: 'yufu:user',
-    load: function () {
-        let user = JSON.parse(localStorage.getItem(this.storageKey) || 'null');
+const storage = {
+    storageKeyPrefix: 'yufuquant:',
+    loadUser: function () {
+        let user = JSON.parse(localStorage.getItem(this.storageKeyPrefix + 'user') || 'null');
         return user || {
             userId: -1,
             username: '',
             nickname: '',
-            token: '',
         }
     },
-    save: function (user) {
-        localStorage.setItem(this.storageKey, JSON.stringify(user))
+    saveUser: function (user) {
+        localStorage.setItem(this.storageKeyPrefix + 'user', JSON.stringify(user))
+    },
+    loadAuthToken: function () {
+        return localStorage.getItem(this.storageKeyPrefix + 'auth-token') || ''
+    },
+    saveAuthToken: function (authToken) {
+        localStorage.setItem(this.storageKeyPrefix + 'auth-token', authToken)
     },
     clear: function () {
-        localStorage.removeItem(this.storageKey)
+        localStorage.removeItem(this.storageKeyPrefix + 'user')
+        localStorage.removeItem(this.storageKeyPrefix + 'auth-token')
     }
 };
 
-export default userLocalStorage
+export default storage
