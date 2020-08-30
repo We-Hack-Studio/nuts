@@ -18,7 +18,7 @@ class StrategyTemplateViewSetTestCase(APITestCase):
     def test_list_strategy_template(self):
         StrategyTemplateFactory.create_batch(5)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.user_token.key)
-        response = self.client.get(self.reverse("strategy-template-list"))
+        response = self.client.get(self.reverse("api:strategy-template-list"))
         self.response_200(response)
         self.assertEqual(len(response.data["results"]), 5)
 
@@ -46,7 +46,7 @@ class StrategyTemplateViewSetTestCase(APITestCase):
         }
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.user_token.key)
         response = self.client.post(
-            self.reverse("strategy-template-list"), data=data, extra={"format": "json"},
+            self.reverse("api:strategy-template-list"), data=data, extra={"format": "json"},
         )
         self.response_201(response)
         # todo: assert response schema
@@ -60,6 +60,6 @@ class StrategyTemplateViewSetTestCase(APITestCase):
         }
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.user_token.key)
         response = self.client.post(
-            self.reverse("strategy-template-list"), data=data, extra={"format": "json"},
+            self.reverse("api:strategy-template-list"), data=data, extra={"format": "json"},
         )
         self.response_400(response)

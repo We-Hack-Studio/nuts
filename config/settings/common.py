@@ -21,10 +21,10 @@ APPS_DIR = ROOT_DIR.path("yufuquant")
 sys.path.insert(0, str(APPS_DIR))
 
 env = environ.Env()
-READ_ENV_FILE = env.bool("READ_ENV_FILE", default=False)
+READ_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
 if READ_ENV_FILE:
     # OS environment variables take precedence over variables from .env
-    env.read_env(os.path.join(ROOT_DIR, "yufuquant.env"))
+    env.read_env(os.path.join(ROOT_DIR, ".env"))
 
 SITE_ID = 1
 ALLOWED_HOSTS = ["*"]
@@ -45,10 +45,6 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "rest_framework",
     "rest_framework.authtoken",
-    "allauth",
-    "allauth.account",
-    "rest_auth",
-    "webpack_loader",
     "drf_yasg",
 ]
 LOCAL_APPS = [
@@ -72,7 +68,6 @@ DATABASES = {
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",  # cross domain
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -80,7 +75,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "core.middleware.DisableCSRFCheckMiddleware",
+    # "core.middleware.DisableCSRFCheckMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -109,9 +104,15 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
 ]
 
 # Internationalization
@@ -147,35 +148,11 @@ AUTH_USER_MODEL = "users.User"
 ASGI_APPLICATION = "config.routing.application"
 CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
 
-ACCOUNT_AUTHENTICATION_METHOD = "username_email"
-ACCOUNT_EMAIL_VERIFICATION = "optional"
-ACCOUNT_LOGOUT_ON_GET = True
-LOGIN_URL = "/auth/login"
-
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.TokenAuthentication",
     ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
-    "PAGE_SIZE": 100,
+    "PAGE_SIZE": 50,
 }
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-AUTHENTICATION_BACKENDS = (
-    "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",  # login by email
-)
-
-REST_AUTH_SERIALIZERS = {
-    "TOKEN_SERIALIZER": "users.serializers.UserDetailTokenSerializer",
-}
-
-WEBPACK_LOADER = {
-    "DEFAULT": {
-        "CACHE": False,
-        "BUNDLE_DIR_NAME": "",  # must end with slash
-        "STATS_FILE": ROOT_DIR.path("frontend", "webpack-stats.json"),
-        "POLL_INTERVAL": 0.1,
-        "TIMEOUT": None,
-        "IGNORE": [r".+\.hot-update.js", r".+\.map"],
-    }
-}
+AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)

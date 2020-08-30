@@ -13,32 +13,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path
-from rest_framework_bulk.routes import BulkRouter
-
-import credentials.views
-import exchanges.views
-import robots.views
-import strategies.views
-import users.views
-from core.views import IndexView
-from rest_framework import permissions
-from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from rest_framework import permissions
 
-router = BulkRouter()
-router.register("users", users.views.UserViewSet, basename="user")
-router.register("robots", robots.views.RobotViewSet, basename="robot")
-router.register(
-    "strategy-templates",
-    strategies.views.StrategyTemplateViewSet,
-    basename="strategy-template",
-)
-router.register("exchanges", exchanges.views.ExchangeViewSet, basename="exchange")
-router.register(
-    "credentials", credentials.views.CredentialViewSet, basename="credential"
-)
+urlpatterns = [
+    path("admin/", admin.site.urls),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    # Static file serving when using Gunicorn + Uvicorn for local web socket development
+    urlpatterns += staticfiles_urlpatterns()
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -53,15 +42,23 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
+# API URLS
 urlpatterns = [
-    path("", IndexView.as_view(), name="index"),
-    path("admin/", admin.site.urls),
-    path("auth/", include("allauth.account.urls")),
-    path("api/v1/", include("rest_auth.urls")),
-    path("api/v1/", include(router.urls)),
+    path("api/v1/", include("config.api_router")),
     path(
         "swagger/",
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
 ]
+
+if settings.DEBUG:
+    # https://www.django-rest-framework.org/#installation
+    urlpatterns += [
+        path("api-auth/", include("rest_framework.urls", namespace="rest_framework"))
+    ]
+
+    if "debug_toolbar" in settings.INSTALLED_APPS:
+        import debug_toolbar
+
+        urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns

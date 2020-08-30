@@ -20,7 +20,7 @@ class RobotViewSetTestCase(APITestCase):
         self.user_token = self.user.auth_token
 
     def test_list_robot_permission(self):
-        url = self.reverse("robot-list")
+        url = self.reverse("api:robot-list")
         response = self.client.get(url)
         self.response_401(response)
 
@@ -34,19 +34,19 @@ class RobotViewSetTestCase(APITestCase):
 
     def test_list_robot(self):
         RobotFactory.create_batch(5)
-        url = self.reverse("robot-list")
+        url = self.reverse("api:robot-list")
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.admin_user_token.key)
         response = self.client.get(url)
         self.response_200(response)
         self.assertEqual(len(response.data), 5)
 
     def test_create_robot_permission(self):
-        url = self.reverse("robot-list")
+        url = self.reverse("api:robot-list")
         response = self.client.post(url)
         self.response_401(response)
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.user_token.key)
-        url = self.reverse("robot-list")
+        url = self.reverse("api:robot-list")
         response = self.client.post(url)
         self.response_403(response)
 
@@ -54,7 +54,7 @@ class RobotViewSetTestCase(APITestCase):
         credential = CredentialFactory(user=self.admin_user)
         strategy_template = StrategyTemplateFactory()
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.admin_user_token.key)
-        url = self.reverse("robot-list")
+        url = self.reverse("api:robot-list")
         data = {
             "name": "Robot-1",
             "pair": "BTCUSDT",
@@ -68,7 +68,7 @@ class RobotViewSetTestCase(APITestCase):
 
     def test_create_invalid_robot(self):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.admin_user_token.key)
-        url = self.reverse("robot-list")
+        url = self.reverse("api:robot-list")
         data = {
             "name": "Robot-1",
             "pair": "BTCUSDT",
@@ -82,7 +82,7 @@ class RobotViewSetTestCase(APITestCase):
 
     def test_retrieve_robot_permission(self):
         robot = RobotFactory()
-        url = self.reverse("robot-detail", pk=robot.pk)
+        url = self.reverse("api:robot-detail", pk=robot.pk)
 
         response = self.client.get(url)
         self.response_401(response)
@@ -96,14 +96,14 @@ class RobotViewSetTestCase(APITestCase):
         self.response_200(response)
 
     def test_retrieve_robot(self):
-        url = self.reverse("robot-detail", pk=9999)
+        url = self.reverse("api:robot-detail", pk=9999)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.admin_user_token.key)
 
         response = self.client.get(url)
         self.response_404(response)
 
         robot = RobotFactory()
-        url = self.reverse("robot-detail", pk=robot.pk)
+        url = self.reverse("api:robot-detail", pk=robot.pk)
         response = self.client.get(url)
         self.response_200(response)
 
@@ -124,7 +124,7 @@ class RobotViewSetTestCase(APITestCase):
 
     def test_retrieve_robot_config_permission(self):
         robot = RobotFactory()
-        url = self.reverse("robot-config", pk=robot.pk)
+        url = self.reverse("api:robot-config", pk=robot.pk)
 
         response = self.client.get(url)
         self.response_401(response)
@@ -138,20 +138,20 @@ class RobotViewSetTestCase(APITestCase):
         self.response_200(response)
 
     def test_retrieve_robot_config(self):
-        url = self.reverse("robot-config", pk=9999)
+        url = self.reverse("api:robot-config", pk=9999)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.admin_user_token.key)
 
         response = self.client.get(url)
         self.response_404(response)
 
         robot = RobotFactory()
-        url = self.reverse("robot-config", pk=robot.pk)
+        url = self.reverse("api:robot-config", pk=robot.pk)
         response = self.client.get(url)
         self.response_200(response)
 
     def test_ping_robot_permission(self):
         robot = RobotFactory()
-        url = self.reverse("robot-ping", pk=robot.pk)
+        url = self.reverse("api:robot-ping", pk=robot.pk)
 
         response = self.client.post(url)
         self.response_401(response)
@@ -165,21 +165,21 @@ class RobotViewSetTestCase(APITestCase):
         self.response_200(response)
 
     def test_ping_robot(self):
-        url = self.reverse("robot-ping", pk=9999)
+        url = self.reverse("api:robot-ping", pk=9999)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.admin_user_token.key)
 
         response = self.client.post(url)
         self.response_404(response)
 
         robot = RobotFactory()
-        url = self.reverse("robot-ping", pk=robot.pk)
+        url = self.reverse("api:robot-ping", pk=robot.pk)
         response = self.client.post(url)
         self.response_200(response)
         self.assertEqual(response.data, {"detail": "pong"})
 
     def test_update_valid_robot_strategy_parameters(self):
         robot = RobotFactory()
-        url = self.reverse("robot-strategy-parameters", pk=robot.pk)
+        url = self.reverse("api:robot-strategy-parameters", pk=robot.pk)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.admin_user_token.key)
 
         data = {"strategy_parameters_fields": '{"code":"new value"}'}
@@ -195,7 +195,7 @@ class RobotViewSetTestCase(APITestCase):
 
     def test_partial_update_robot_asset_record(self):
         robot = RobotFactory()
-        url = self.reverse("robot-asset-record", pk=robot.pk)
+        url = self.reverse("api:robot-asset-record", pk=robot.pk)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.admin_user_token.key)
 
         data = {"total_balance": 9999}

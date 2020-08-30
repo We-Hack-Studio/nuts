@@ -1,7 +1,6 @@
 import logging
 
 import sentry_sdk
-
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import LoggingIntegration
 
@@ -12,43 +11,42 @@ DEBUG = False
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=[])
 CORS_ORIGIN_ALLOW_ALL = True
 
-INSTALLED_APPS += ["gunicorn"]
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# LOGGING
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#logging
+# See https://docs.djangoproject.com/en/dev/topics/logging for
+# more details on how to customize your logging configuration.
+
 LOGGING = {
     "version": 1,
-    "disable_existing_loggers": False,
-    "filters": {
-        "require_debug_false": {"()": "django.utils.log.RequireDebugFalse",},
-        "require_debug_true": {"()": "django.utils.log.RequireDebugTrue",},
-    },
+    "disable_existing_loggers": True,
     "formatters": {
-        "django.server": {
-            "()": "django.utils.log.ServerFormatter",
-            "format": "[{server_time}] {message}",
-            "style": "{",
+        "verbose": {
+            "format": "%(levelname)s %(asctime)s %(module)s "
+            "%(process)d %(thread)d %(message)s"
         }
     },
     "handlers": {
         "console": {
-            "level": "INFO",
-            "filters": ["require_debug_true"],
+            "level": "DEBUG",
             "class": "logging.StreamHandler",
-        },
-        "django.server": {
-            "level": "INFO",
-            "class": "logging.StreamHandler",
-            "formatter": "django.server",
-        },
-        "mail_admins": {
-            "level": "ERROR",
-            "filters": ["require_debug_false"],
-            "class": "django.utils.log.AdminEmailHandler",
-        },
+            "formatter": "verbose",
+        }
     },
+    "root": {"level": "INFO", "handlers": ["console"]},
     "loggers": {
-        "django": {"handlers": ["console", "mail_admins"], "level": "INFO",},
-        "django.server": {
-            "handlers": ["django.server"],
-            "level": "INFO",
+        "django.db.backends": {
+            "level": "ERROR",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        # Errors logged by the SDK itself
+        "sentry_sdk": {"level": "ERROR", "handlers": ["console"], "propagate": False},
+        "django.security.DisallowedHost": {
+            "level": "ERROR",
+            "handlers": ["console"],
             "propagate": False,
         },
     },
@@ -64,5 +62,6 @@ sentry_logging = LoggingIntegration(
     event_level=None,  # Send no events from log messages
 )
 sentry_sdk.init(
-    dsn=SENTRY_DSN, integrations=[sentry_logging, DjangoIntegration()],
+    dsn=SENTRY_DSN,
+    integrations=[sentry_logging, DjangoIntegration()],
 )
