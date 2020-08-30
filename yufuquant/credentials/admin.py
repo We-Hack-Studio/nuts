@@ -7,11 +7,21 @@ from .models import Credential
 class CredentialAdmin(admin.ModelAdmin):
     fields = [
         "note",
+        "is_test_net",
     ]
     list_display = [
         "id",
-        "note",
         "user",
+        "exchange",
+        "is_test_net",
+        "note",
         "created_at",
+        "modified_at",
     ]
     list_select_related = ["user"]
+    readonly_fields = [
+        "user",
+        "exchange",
+        "created_at",
+        "modified_at",
+    ]

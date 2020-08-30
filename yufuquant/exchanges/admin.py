@@ -1,10 +1,11 @@
+from adminsortable2.admin import SortableAdminMixin
 from django.contrib import admin
 
 from .models import Exchange
 
 
 @admin.register(Exchange)
-class ExchangeAdmin(admin.ModelAdmin):
+class ExchangeAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = [
         "id",
         "rank",

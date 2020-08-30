@@ -22,6 +22,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
+admin.site.site_header = "渔夫量化管理"
 urlpatterns = [
     path("admin/", admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
@@ -43,7 +44,7 @@ schema_view = get_schema_view(
 )
 
 # API URLS
-urlpatterns = [
+urlpatterns += [
     path("api/v1/", include("config.api_router")),
     path(
         "swagger/",
