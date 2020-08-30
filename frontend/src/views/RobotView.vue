@@ -12,13 +12,29 @@
               </a>
             </div>
           </template>
-          <param-preview :parameters="strategyParametersView.parameters"></param-preview>
+          <param-preview
+            :parameters="
+              strategyParametersView && strategyParametersView.parameters
+            "
+          ></param-preview>
         </b-card>
-        <b-modal button-size="sm" size="md" id="param-form-modal" centered title="参数设置">
-          <param-form ref="paramForm"
-                      :fields="strategyParametersView && strategyParametersView.parameters"></param-form>
-          <template v-slot:modal-footer="{ok}">
-            <b-button size="sm" variant="primary" @click="onSubmit(ok, $event)">确认</b-button>
+        <b-modal
+          button-size="sm"
+          size="md"
+          id="param-form-modal"
+          centered
+          title="参数设置"
+        >
+          <param-form
+            ref="paramForm"
+            :fields="
+              strategyParametersView && strategyParametersView.parameters
+            "
+          ></param-form>
+          <template v-slot:modal-footer="{ ok }">
+            <b-button size="sm" variant="primary" @click="onSubmit(ok, $event)"
+              >确认</b-button
+            >
           </template>
         </b-modal>
       </b-col>
@@ -27,10 +43,11 @@
 </template>
 
 <script>
-import LogPanel from "../components/LogPanel";
+// import LogPanel from "../components/LogPanel";
+import LogPanel from "./RobotLogView";
 import ParamPreview from "../components/ParamPreview";
 import ParamForm from "../components/ParamForm";
-import {getRobotsId, postRobotsIdStrategyParameters} from "../api";
+import { getRobotsId, postRobotsIdStrategyParameters } from "../api";
 
 export default {
   name: "robot-view",
@@ -63,12 +80,12 @@ export default {
       let vm = this;
       let robotId = vm.$route.params.id;
       let robotSocket = new WebSocket(
-          window.conf.robotStreamWsUri.replace("{pk}", robotId) +
+        window.conf.robotStreamWsUri.replace("{pk}", robotId) +
           "?stream_key=" +
           vm.robotStreamKey
       );
 
-      robotSocket.onmessage = function (e) {
+      robotSocket.onmessage = function(e) {
         let data = JSON.parse(e.data);
         if (data.topic === "log") {
           vm.robotLogList.push(data);
@@ -80,11 +97,11 @@ export default {
         }
       };
 
-      robotSocket.onclose = function () {
+      robotSocket.onclose = function() {
         console.error("Robot socket closed unexpectedly");
       };
 
-      robotSocket.onopen = function () {
+      robotSocket.onopen = function() {
         console.info("Websocket opened!");
       };
     },
@@ -93,8 +110,8 @@ export default {
       // console.log(this.$refs.paramForm.form);
       try {
         await postRobotsIdStrategyParameters(
-            this.$route.params.id,
-            this.$refs.paramForm.form
+          this.$route.params.id,
+          this.$refs.paramForm.form
         );
         this.getRobot();
         this.$bvModal.hide("param-form-modal");
@@ -163,5 +180,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
