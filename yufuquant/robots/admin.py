@@ -1,10 +1,30 @@
 from django.contrib import admin
 
-from .models import Robot
+from .models import AssetRecord, Robot
+
+
+class AssetRecordInline(admin.TabularInline):
+    model = AssetRecord
+
+    fields = [
+        "id",
+        "currency",
+        "total_principal",
+        "total_balance",
+        "total_principal_24h_ago",
+        "total_balance_24h_ago",
+    ]
+    readonly_fields = [
+        "id",
+        "currency",
+        "total_principal_24h_ago",
+        "total_balance_24h_ago",
+    ]
 
 
 @admin.register(Robot)
 class RobotAdmin(admin.ModelAdmin):
+    inlines = [AssetRecordInline]
     list_display = [
         "id",
         "name",
