@@ -29,7 +29,7 @@ export default {
         exchangeNameZh: r.exchange['name_zh'],
         name: r.name,
         pair: r.pair,
-        marginCurrency: r.target_currency,
+        targetCurrency: r.target_currency,
         enable: r.enable,
         pingTime: r['ping_time'],
         startTime: r['start_time'],
