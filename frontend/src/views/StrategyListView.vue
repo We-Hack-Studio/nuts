@@ -1,24 +1,24 @@
 <template>
   <b-row>
     <b-col md="6">
-      <strategy-template-item
+      <strategy-item
           v-for="st in strategyTemplateList"
           :strategyTemplate="st"
           :key="st.id"
           class="mt-3">
-      </strategy-template-item>
+      </strategy-item>
     </b-col>
   </b-row>
 </template>
 
 <script>
-import StrategyTemplateItem from "../components/StrategyTemplateItem";
-import {getStrategyTemplateList} from "../api"
+import StrategyItem from "../components/StrategyItem";
+import {getStrategies} from "../api"
 
 export default {
   name: "strategy-template-list",
   components: {
-    StrategyTemplateItem
+    StrategyItem
   },
   data() {
     return {
@@ -35,7 +35,7 @@ export default {
       }))
     },
     loadStrategyTemplateList() {
-      getStrategyTemplateList().then(response => {
+      getStrategies().then(response => {
         this.setStrategyTemplateList(response.data.results)
       }).catch(err => {
         console.log(err.data);

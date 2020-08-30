@@ -1,4 +1,4 @@
-import {annonInstance, authInstance} from "../axiosService";
+import {annonInstance, authInstance} from "../axiosService"
 
 export async function postAuthLogin(credentials) {
     return annonInstance.post("/auth/login/", {
@@ -11,48 +11,48 @@ export async function getUsersMe() {
     return authInstance.get("/users/me/");
 }
 
-export function getExchangeList() {
+export async function getExchanges() {
     return annonInstance.get("/exchanges/");
 }
 
-export function getCredentialList() {
+export async function getCredentials() {
     return authInstance.get("/credentials/");
 }
 
-export function createCredential(data) {
+export async function postCredentials(data) {
     return authInstance.post("/credentials/", data);
 }
 
-export function deleteCredential(credId) {
+export async function deleteCredentialsId(credId) {
     return authInstance.delete("/credentials/" + credId + "/");
 }
 
-export function createRobot(data) {
+export async function postRobots(data) {
     return authInstance.post("/robots/", data);
 }
 
-export function updateRobot(robotId, data) {
+export async function patchRobotsId(robotId, data) {
     return authInstance.patch("/robots/" + robotId + "/", data);
 }
 
-export function getRobot(robotId) {
+export async function getRobotsId(robotId) {
     return authInstance.get("/robots/" + robotId + "/");
 }
 
-export function getRobots() {
+export async function getRobots() {
     return authInstance.get("/robots/");
 }
 
-export function getStrategyTemplateList() {
-    return authInstance.get("/strategy-templates/");
+export async function getStrategies() {
+    return authInstance.get("/strategies/");
 }
 
-export function createStrategyTemplate(data) {
-    return authInstance.post("/strategy-templates/", data);
+export async function postStrategies(data) {
+    return authInstance.post("/strategies/", data);
 }
 
-export function updateRobotStrategyParams(robotId, data) {
-    return authInstance.post(`/robots/${robotId}/strategy_parameters/`, {
-        strategy_parameters_fields: JSON.stringify(data),
+export async function postRobotsIdStrategyParameters(robotId, data) {
+    return authInstance.post(`/robots/${robotId}/strategyParameters/`, {
+        strategy_parameters: JSON.stringify(data),
     });
 }

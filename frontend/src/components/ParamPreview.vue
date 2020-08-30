@@ -1,18 +1,18 @@
 <template>
   <div v-if="parameters">
     <div
-      v-for="paramItem in parameters.fields"
-      :key="paramItem.code"
-      class="d-flex align-items-center mb-2"
+        v-for="paramItem in parameters"
+        :key="paramItem.code"
+        class="d-flex align-items-center mb-2"
     >
       <div class="label">
         <span
-          v-b-tooltip.hover
-          :class="['mr-2', underLineClass(paramItem)]"
-          :title="paramItem.description"
-        >{{paramItem.name}}</span>
+            v-b-tooltip.hover
+            :class="['mr-2', underLineClass(paramItem)]"
+            :title="paramItem.description"
+        >{{ paramItem.name }}</span>
       </div>
-      <span>{{ formatValue(paramItem) || '-'}}</span>
+      <span>{{ formatValue(paramItem) || '-' }}</span>
     </div>
   </div>
 </template>
@@ -47,6 +47,7 @@ export default {
   display: block;
   min-width: 120px;
 }
+
 .underline {
   border-bottom: 1px dotted #888;
 }

@@ -11,7 +11,7 @@
       </b-form-row>
       <b-form-row class="mt-2">
         <b-col md="3">
-          <label>策略模板:</label>
+          <label>策略:</label>
         </b-col>
         <b-col md="9">
           <b-form-select
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import {getRobot, updateRobot, getStrategyTemplateList} from "../api";
+import {getRobotsId, patchRobotsId, getStrategies} from "../api";
 
 export default {
   name: 'RobotUpdateForm',
@@ -67,7 +67,7 @@ export default {
         "enable": this.form.enable,
         "strategy_template": this.form.strategyTemplate,
       }
-      updateRobot(data).then(() => {
+      patchRobotsId(data).then(() => {
         this.$router.push(`/robot/${this.robotId}`)
       }).catch(err => {
         console.log(err.data);
@@ -79,16 +79,16 @@ export default {
     initRobotForm(data) {
       this.form = {
         name: data.name,
-        enable: data.enabled,
-        strategyTemplate: data['strategy_template'],
+        enabled: data.enabled,
+        strategy: data['strategy_template'],
       }
     },
   },
   mounted() {
-    getStrategyTemplateList().then(response => {
+    getStrategies().then(response => {
       this.setStrategyTemplateOptions(response.data)
     }).catch(err => {
-      this.$bvToast.toast(`无法获取策略模板，错误信息：${err.data || '未知错误'}`, {
+      this.$bvToast.toast(`无法获取策略，错误信息：${err.data || '未知错误'}`, {
         title: '数据获取失败',
         autoHideDelay: 3000,
         toaster: 'b-toaster-top-right',
@@ -97,7 +97,7 @@ export default {
       });
     });
 
-    getRobot(this.$route.params.id).then(response => {
+    getRobotsId(this.$route.params.id).then(response => {
       this.initRobotForm(response.data)
     }).catch(err => {
       this.$bvToast.toast(`无法获取机器人数据，错误信息：${err.data || '未知错误'}`, {

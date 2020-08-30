@@ -12,10 +12,11 @@
               </a>
             </div>
           </template>
-          <param-preview :parameters="paramPreview"></param-preview>
+          <param-preview :parameters="strategyParametersView.parameters"></param-preview>
         </b-card>
         <b-modal button-size="sm" size="md" id="param-form-modal" centered title="参数设置">
-          <param-form ref="paramForm" :fields="paramPreview && paramPreview.fields"></param-form>
+          <param-form ref="paramForm"
+                      :fields="strategyParametersView && strategyParametersView.parameters"></param-form>
           <template v-slot:modal-footer="{ok}">
             <b-button size="sm" variant="primary" @click="onSubmit(ok, $event)">确认</b-button>
           </template>
@@ -29,15 +30,15 @@
 import LogPanel from "../components/LogPanel";
 import ParamPreview from "../components/ParamPreview";
 import ParamForm from "../components/ParamForm";
-import { getRobot, updateRobotStrategyParams } from "../api";
+import {getRobotsId, postRobotsIdStrategyParameters} from "../api";
 
 export default {
-  name: "Ranking",
+  name: "robot-view",
   data() {
     return {
       logList: [],
       robotId: null,
-      paramPreview: null,
+      strategyParametersView: null,
     };
   },
   components: {
@@ -62,7 +63,7 @@ export default {
       let vm = this;
       let robotId = vm.$route.params.id;
       let robotSocket = new WebSocket(
-        window.conf.robotStreamWsUri.replace("{pk}", robotId) +
+          window.conf.robotStreamWsUri.replace("{pk}", robotId) +
           "?stream_key=" +
           vm.robotStreamKey
       );
@@ -91,9 +92,9 @@ export default {
       evt.preventDefault();
       // console.log(this.$refs.paramForm.form);
       try {
-        await await updateRobotStrategyParams(
-          this.$route.params.id,
-          this.$refs.paramForm.form
+        await postRobotsIdStrategyParameters(
+            this.$route.params.id,
+            this.$refs.paramForm.form
         );
         this.getRobot();
         this.$bvModal.hide("param-form-modal");
@@ -132,9 +133,9 @@ export default {
     },
     async getRobot() {
       try {
-        const response = await getRobot(this.$route.params.id);
+        const response = await getRobotsId(this.$route.params.id);
         this.robotId = response.data.id;
-        this.paramPreview = response.data["strategy_view"];
+        this.strategyParametersView = response.data["strategy_parameters_view"];
       } catch (error) {
         if (error.response) {
           this.$bvToast.toast(`服务端错误: ${error.response.status}`, {

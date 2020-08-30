@@ -118,11 +118,11 @@
       </b-form-invalid-feedback>
     </b-form-group>
     <b-form-group
-        label="策略模板:"
+        label="策略:"
         label-for="id_strategy_template"
     >
       <b-form-select
-          v-model="form.strategyTemplate"
+          v-model="form.strategy"
           :options="strategyTemplateOptions"
           id="id_strategy_template"
           required
@@ -138,7 +138,7 @@
     >
       <b-form-checkbox
           id="id_enable"
-          v-model="form.enable"
+          v-model="form.enabled"
           name="enable"
           value=true
           unchecked-value=false
@@ -154,7 +154,7 @@
 </template>
 
 <script>
-import {createRobot} from "@/api";
+import {postRobots} from "@/api";
 import formErrorMixin from "@/mixins/formError"
 
 export default {
@@ -179,8 +179,8 @@ export default {
         baseCurrency: '',
         quoteCurrency: '',
         targetCurrency: '',
-        enable: false,
-        strategyTemplate: null,
+        enabled: false,
+        strategy: null,
       },
       marketTypeOptions: [
         {
@@ -213,11 +213,11 @@ export default {
         "base_currency": this.form.baseCurrency,
         "quote_currency": this.form.quoteCurrency,
         "target_currency": this.form.targetCurrency,
-        "enabled": this.form.enable,
-        "strategy_template": this.form.strategyTemplate,
+        "enabled": this.form.enabled,
+        "strategy": this.form.strategy,
       }
       try {
-        await createRobot(data)
+        await postRobots(data)
         this.formProcessing = false
         await this.$router.push({name: 'robot-list'})
       } catch (error) {

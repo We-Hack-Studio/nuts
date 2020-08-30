@@ -1,22 +1,6 @@
 <template>
   <b-form @submit="onSubmit">
     <b-form-group
-        label="策略代码："
-        label-for="id_code"
-    >
-      <b-form-input
-          id="id_code"
-          v-model="form.code"
-          type="text"
-          required
-          :state="validationStateForField('code', formErrors)"
-      ></b-form-input>
-      <b-form-invalid-feedback :state="validationStateForField('code', formErrors)">
-        {{ getErrorForField('code', formErrors) }}
-      </b-form-invalid-feedback>
-    </b-form-group>
-
-    <b-form-group
         label="策略名称："
         label-for="id_name"
     >
@@ -48,23 +32,23 @@
     </b-form-group>
     <b-form-group
         label="策略参数规格："
-        label-for="id_parameter_spec"
+        label-for="id_specification"
     >
       <b-tabs content-class="mt-3" small>
-        <b-tab title="编辑模式" active @click="parameterSpecMode='ui'">
+        <b-tab title="编辑模式" active @click="specInputMode='ui'">
           <JsonEditor
               :options="{
                             confirmText: '确认',
                             cancelText: '取消',
                         }"
-              :objData="form.parameterSpecUI"
-              v-model="form.parameterSpecUI">
+              :objData="form.specificationUI"
+              v-model="form.specificationUI">
           </JsonEditor>
         </b-tab>
-        <b-tab title="文本模式" @click="parameterSpecMode='text'">
+        <b-tab title="文本模式" @click="specInputMode='text'">
           <b-form-textarea
               id="textarea"
-              v-model="form.parameterSpecText"
+              v-model="form.specificationText"
               placeholder=""
               rows="3"
               max-rows="6"
@@ -81,20 +65,19 @@
 </template>
 
 <script>
-import {createStrategyTemplate} from "@/api";
+import {postStrategies} from "@/api";
 import formErrorMixin from "@/mixins/formError"
 
 export default {
-  name: 'StrategyTemplateCreateForm',
+  name: 'StrategyCreateForm',
   mixins: [formErrorMixin],
   data() {
     return {
-      parameterSpecMode: "ui",
+      specInputMode: "ui",
       form: {
-        code: '',
         name: '',
-        parameterSpecUI: {},
-        parameterSpecText: "",
+        specificationUI: {},
+        specificationText: "",
       },
       formProcessing: false,
       formErrors: []
@@ -104,18 +87,17 @@ export default {
     async onSubmit(e) {
       e.preventDefault()
       let data = {
-        "code": this.form.code,
         "name": this.form.name,
-        "parameter_spec": this.parameterSpecMode === "ui" ? JSON.stringify(this.form.parameterSpecUI) : this.form.parameterSpecText,
+        "specification": this.specInputMode === "ui" ? JSON.stringify(this.form.specificationUI) : this.form.specificationText,
       }
       try {
-        await createStrategyTemplate(data)
-        await this.$router.push('/strategy-template/list')
+        await postStrategies(data)
+        await this.$router.push({name: 'strategy-list'})
       } catch (error) {
         if (error.response) {
           if (error.response.status === 500) {
             this.$bvToast.toast('服务端错误', {
-              title: '策略模板创建失败',
+              title: '策略创建失败',
               autoHideDelay: 3000,
               toaster: 'b-toaster-top-center',
               variant: 'danger',
@@ -128,7 +110,7 @@ export default {
           }
         } else {
           this.$bvToast.toast(error.message, {
-            title: '策略模板创建失败',
+            title: '策略创建失败',
             autoHideDelay: 3000,
             toaster: 'b-toaster-top-center',
             variant: 'danger',
