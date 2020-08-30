@@ -41,14 +41,13 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import userLocalStorage from "../utils";
 
 export default {
   name: "NavBar",
   methods: {
     logout: function () {
+      this.$store.commit("REMOVE_AUTH_TOKEN")
       this.$store.commit("REMOVE_USER")
-      userLocalStorage.clear()
     }
   },
   computed: {

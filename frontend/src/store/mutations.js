@@ -7,7 +7,12 @@ export default {
             userId: -1,
             username: '',
             nickname: '',
-            token: '',
         }
-    }
+    },
+    SET_AUTH_TOKEN: (state, authToken) => {
+        state.authToken = authToken
+    },
+    REMOVE_AUTH_TOKEN: (state) => {
+        state.authToken = ""
+    },
 }
