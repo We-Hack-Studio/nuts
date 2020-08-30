@@ -12,17 +12,31 @@ export default {
   data() {
     return {
       logList: [],
+      robotId: null,
+      ws: null,
     };
   },
   computed: {
-    robotId() {
-      return this.$route.params.id;
-    },
+    // robotId() {
+    //   return this.$route.params.id;
+    // },
     ...mapState(["authToken"]),
   },
   mounted() {
+    this.robotId = this.$route.params.id;
     // 建立 websocket 连接
     this.initWebsocket();
+  },
+  beforeDestroy() {
+    if (this.ws) {
+      this._send({
+        cmd: "unsub",
+        topics: [`robot#${this.robotId}.log`],
+      });
+      const ws = this.ws;
+      this.ws = null;
+      ws.close();
+    }
   },
   components: {
     LogPanel,
@@ -69,8 +83,8 @@ export default {
           token: this.authToken,
         });
       };
-      this.ws.onerror = () => {
-        console.log("error");
+      this.ws.onerror = (event) => {
+        console.log("error event:", event);
       };
       this.ws.onclose = () => {
         this.logList.push({
@@ -78,7 +92,9 @@ export default {
           level: "ERROR",
           text: "Websocket 连接已断开！",
         });
-        this.reconnect();
+        if (this.ws) {
+          this.reconnect();
+        }
       };
 
       // setInterval(this.checkConnection, 5000);
