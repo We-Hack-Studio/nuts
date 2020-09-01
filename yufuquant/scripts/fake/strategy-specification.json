@@ -1,0 +1,48 @@
+{
+  "specificationVersion": "v1.0",
+  "description": "指定价格买入卖出，24小时无人值守。",
+  "parameters": [
+    {
+      "code": "entry_price",
+      "name": "入场价格",
+      "type": "float",
+      "description": "",
+      "default": null,
+      "editable": true
+    },
+    {
+      "code": "exit_price",
+      "name": "出场价格",
+      "type": "float",
+      "description": "",
+      "default": null,
+      "editable": true
+    },
+    {
+      "code": "direction",
+      "name": "方向",
+      "type": "enum",
+      "description": "入场方向。如果是现货，做空表示先卖出资产再低价买回。",
+      "default": null,
+      "editable": true,
+      "items": [
+        [
+          1,
+          "做多"
+        ],
+        [
+          -1,
+          "做空"
+        ]
+      ]
+    },
+    {
+      "code": "amount",
+      "name": "数量",
+      "type": "float",
+      "description": "订单数量，必须 >0",
+      "default": null,
+      "editable": true
+    }
+  ]
+}

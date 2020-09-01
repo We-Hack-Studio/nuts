@@ -1,7 +1,7 @@
+from exchanges.serializers import ExchangeSerializer
 from rest_framework import serializers
 
 from .models import Credential
-from exchanges.serializers import ExchangeSerializer
 
 
 class CredentialKeyField(serializers.CharField):
@@ -40,6 +40,9 @@ class CredentialListSerializer(serializers.ModelSerializer):
             "created_at",
         ]
 
+    class JSONAPIMeta:
+        resource_name = "credentials"
+
 
 class CredentialSerializer(serializers.ModelSerializer):
     api_key_masked = CredentialKeyField(source="api_key", read_only=True)
@@ -68,3 +71,6 @@ class CredentialSerializer(serializers.ModelSerializer):
             "api_key": {"write_only": True},
             "secret": {"write_only": True},
         }
+
+    class JSONAPIMeta:
+        resource_name = "credentials"

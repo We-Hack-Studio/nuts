@@ -2,9 +2,9 @@ from typing import Any, Dict
 
 from credentials.serializers import CredentialKeysSerializer
 from exchanges.serializers import ExchangeSerializer
-from rest_framework import serializers
 from rest_framework.fields import DurationField as DrfDurationField
 from rest_framework.serializers import FloatField
+from rest_framework_json_api import serializers
 from users.serializers import UserSerializer
 
 from .models import AssetRecord, Robot
@@ -32,6 +32,7 @@ class AssetRecordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AssetRecord
+        resource_name = "asset_records"
         fields = [
             "currency",
             "total_principal",
@@ -50,10 +51,13 @@ class AssetRecordSerializer(serializers.ModelSerializer):
 
 
 class RobotListSerializer(serializers.ModelSerializer):
-    exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
+    included_serializers = {
+        "exchange": ExchangeSerializer,
+        "asset_record": AssetRecordSerializer,
+    }
     duration_display = DurationField(source="duration", read_only=True)
-    asset_record = AssetRecordSerializer(read_only=True)
     strategy_name = serializers.CharField(read_only=True)
+    exchange = ExchangeSerializer(source="credential.exchange")
 
     class Meta:
         model = Robot
@@ -85,6 +89,10 @@ class RobotListSerializer(serializers.ModelSerializer):
             "credential": {"write_only": True},
             "strategy": {"write_only": True},
         }
+
+    class JSONAPIMeta:
+        resource_name = "robots"
+        included_resources = ["exchange", "asset_record"]
 
 
 class RobotRetrieveSerializer(serializers.ModelSerializer):
@@ -127,6 +135,9 @@ class RobotRetrieveSerializer(serializers.ModelSerializer):
             "credential": {"write_only": True},
         }
 
+    class JSONAPIMeta:
+        resource_name = "robots"
+
     def get_strategy_parameters_view(self, obj: Robot) -> Dict[str, Any]:
         spec = obj.strategy.specification
         parameters = obj.strategy_parameters
@@ -139,9 +150,7 @@ class RobotConfigSerializer(serializers.ModelSerializer):
     user = UserSerializer(source="credential.user", read_only=True)
     exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
     credential_keys = CredentialKeysSerializer(source="credential", read_only=True)
-    is_test_net = serializers.BooleanField(
-        source="credential.is_test_net", read_only=True
-    )
+    test_net = serializers.BooleanField(source="credential.test_net", read_only=True)
     strategy_parameters = serializers.JSONField()
 
     class Meta:
@@ -158,3 +167,6 @@ class RobotConfigSerializer(serializers.ModelSerializer):
             "credential_keys",
             "strategy_parameters",
         ]
+
+    class JSONAPIMeta:
+        resource_name = "robot_configs"

@@ -37,7 +37,7 @@ class TokenCreateView(GenericAPIView):
 
     serializer_class = TokenCreateSerializer
     permission_classes = [AllowAny]
-    resource_name = "tokens"
+    resource_name = "auth_tokens"
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -56,6 +56,7 @@ class TokenDestroyView(APIView):
     """
 
     permission_classes = [IsAuthenticated]
+    resource_name = "auth_tokens"
 
     def post(self, request):
         Token.objects.filter(user=request.user).delete()

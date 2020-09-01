@@ -13,6 +13,7 @@ class StrategyViewSet(
     serializer_class = StrategySerializer
     permission_classes = [permissions.IsAdminUser]
     pagination_class = pagination.LimitOffsetPagination
+    resource_name = "strategies"
 
     def get_queryset(self) -> QuerySet:
         return Strategy.objects.all().order_by("-created_at")

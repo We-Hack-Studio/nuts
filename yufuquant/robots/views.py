@@ -33,6 +33,7 @@ class RobotViewSet(
     action_serializer_map = {
         "retrieve": RobotRetrieveSerializer,
     }
+    resource_name = "robots"
 
     def get_queryset(self):
         return (
