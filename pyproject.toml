@@ -7,7 +7,7 @@ authors = ["zmrenwu <zmrenwu@163.com>"]
 [tool.poetry.dependencies]
 python = ">=3.7,<4"
 ccxt = "^1.30.52"
-django = "^3.1"
+django = "^3.0"
 django-model-utils = "^4.0.0"
 djangorestframework = "^3.11.0"
 djangorestframework-bulk = "^0.2.1"
@@ -30,6 +30,8 @@ drf-extensions = "^0.6.0"
 djangorestframework-api-key = "^2.0.0"
 drf-yasg = "^1.17.1"
 asgiref = "^3.2.10"
+djangorestframework-jsonapi = "^3.2.0"
+django-polymorphic = "^3.0.0"
 
 [tool.poetry.dev-dependencies]
 mkdocs = "^1.1.2"
@@ -47,6 +49,8 @@ isort = "^5.4.2"
 flake8 = "^3.8.3"
 pytest-asyncio = "^0.14.0"
 daphne = "^2.5.0"
+black = "^20.8b1"
+flake8-isort = "^4.0.0"
 
 [build-system]
 requires = ["poetry>=0.12"]
