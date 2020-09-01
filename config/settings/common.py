@@ -152,7 +152,7 @@ CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}
 
 REST_FRAMEWORK = {
     "PAGE_SIZE": 50,
-    "EXCEPTION_HANDLER": "rest_framework_json_api.exceptions.exception_handler",
+    "EXCEPTION_HANDLER": "core.views.exception_handler",
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.TokenAuthentication",
     ),

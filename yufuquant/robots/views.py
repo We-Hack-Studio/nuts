@@ -1,6 +1,5 @@
 from typing import Type
 
-from core.mixins import ApiErrorsMixin
 from django.utils import timezone
 from rest_framework import mixins, serializers, status, viewsets
 from rest_framework.decorators import action
@@ -22,7 +21,6 @@ class RobotStrategyParametersSerializer(Serializer):
 
 
 class RobotViewSet(
-    ApiErrorsMixin,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.CreateModelMixin,
