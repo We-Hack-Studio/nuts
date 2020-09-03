@@ -13,7 +13,7 @@ export async function getExchanges() {
 }
 
 export async function getCredentials() {
-    return authInstance.get("/credentials/");
+    return await authInstance.get("/credentials/?include=exchange");
 }
 
 export async function postCredentials(data) {

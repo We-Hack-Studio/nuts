@@ -2,7 +2,8 @@ const formErrorMixin = {
     methods: {
         validationStateForField(field, errors) {
             let filtered = errors.filter(error => {
-                return error['field'] === field
+                const splits = error.source.pointer.split("/")
+                return splits[splits.length - 1] === field
             })
             if (filtered.length !== 0) {
                 return false
@@ -10,10 +11,11 @@ const formErrorMixin = {
         },
         getErrorForField(field, errors) {
             let filtered = errors.filter(error => {
-                return error['field'] === field
+                const splits = error.source.pointer.split("/")
+                return splits[splits.length - 1] === field
             })
             if (filtered.length !== 0) {
-                return filtered[0].message
+                return filtered[0].detail
             }
         },
     }

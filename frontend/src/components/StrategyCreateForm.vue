@@ -67,10 +67,11 @@
 <script>
 import {postStrategies} from "@/api";
 import formErrorMixin from "@/mixins/formError"
+import formatterMixin from "@/mixins/formatter"
 
 export default {
   name: 'StrategyCreateForm',
-  mixins: [formErrorMixin],
+  mixins: [formErrorMixin, formatterMixin],
   data() {
     return {
       specInputMode: "ui",
@@ -87,11 +88,12 @@ export default {
     async onSubmit(e) {
       e.preventDefault()
       let data = {
+        "type": "strategies",
         "name": this.form.name,
         "specification": this.specInputMode === "ui" ? JSON.stringify(this.form.specificationUI) : this.form.specificationText,
       }
       try {
-        await postStrategies(data)
+        await postStrategies(this.formatter.serialize(data))
         await this.$router.push({name: 'strategy-list'})
       } catch (error) {
         if (error.response) {
@@ -105,7 +107,6 @@ export default {
             });
           } else if (error.response.status === 400) {
             // form validation error
-            console.log(error.response)
             this.formErrors = error.response.data.errors
           }
         } else {

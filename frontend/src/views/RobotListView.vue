@@ -9,13 +9,15 @@
 
 <script>
 import RobotListItem from "../components/RobotListItem";
-import {getRobots} from "../api";
+import {getRobots} from "@/api";
+import formatterMixin from "@/mixins/formatter"
 
 export default {
   name: "robot-list",
   components: {
     RobotListItem
   },
+  mixins: [formatterMixin],
   data() {
     return {
       robotList: [],
@@ -24,36 +26,55 @@ export default {
   },
   methods: {
     setRobotList(data) {
-      this.robotList = data.map(r => ({
-        robotId: r.id,
-        exchangeNameZh: r.exchange['name_zh'],
-        name: r.name,
-        pair: r.pair,
-        targetCurrency: r.target_currency,
-        enable: r.enable,
-        pingTime: r['ping_time'],
-        startTime: r['start_time'],
-        durationDisplay: r['duration_display'],
-        profitRatioPtg: r['asset_record']['total_pnl_rel_ptg'],
-        profitRatioPtg24h: r['asset_record']['total_pnl_rel_ptg_24h'],
-        profit24h: r['asset_record']['total_pnl_abs_24h'],
-        profit: r['asset_record']['total_pnl_abs'],
-        principal: r['asset_record']['total_principal'],
-        balance: r['asset_record']['total_balance'],
-        createdAt: r['created_at'],
+      this.robotList = data.map(robot => ({
+        robotId: robot.id,
+        name: robot.name,
+        pair: robot.pair,
+        targetCurrency: robot.target_currency,
+        enabled: robot.enabled,
+        startTime: robot['start_time'],
+        pingTime: robot['ping_time'],
+        createdAt: robot['created_at'],
+        durationDisplay: robot['duration_display'],
+        exchangeNameZh: robot["exchange"]["data"]['name_zh'],
+        profitRatioPtg: robot['asset_record']['data']['total_pnl_rel_ptg'],
+        profitRatioPtg24h: robot['asset_record']['data']['total_pnl_rel_ptg_24h'],
+        profit24h: robot['asset_record']['data']['total_pnl_abs_24h'],
+        profit: robot['asset_record']['data']['total_pnl_abs'],
+        principal: robot['asset_record']['data']['total_principal'],
+        balance: robot['asset_record']['data']['total_balance'],
       }))
     },
-    loadRobotList() {
-      getRobots().then(response => {
-        this.setRobotList(response.data)
-      }).catch(err => {
-        console.log(err.data);
-      })
+    async getRobotList() {
+      try {
+        const robotsRes = await getRobots()
+        const result = this.formatter.deserialize(robotsRes.data)
+        this.setRobotList(result.data)
+        console.log(result)
+      } catch (error) {
+        if (error.response) {
+          this.$bvToast.toast('无法获取机器人列表数据', {
+            title: '无法获取机器人列表数据',
+            autoHideDelay: 3000,
+            toaster: 'b-toaster-top-center',
+            variant: 'danger',
+            appendToast: false
+          });
+        } else {
+          this.$bvToast.toast(error.message, {
+            title: '无法获取机器人列表数据',
+            autoHideDelay: 3000,
+            toaster: 'b-toaster-top-center',
+            variant: 'danger',
+            appendToast: false
+          });
+        }
+      }
     }
   },
   mounted() {
-    this.loadRobotList()
-    this.timer = setInterval(this.loadRobotList, 10 * 1000)
+    this.getRobotList()
+    this.timer = setInterval(this.getRobotList, 10 * 1000)
   },
   beforeDestroy() {
     clearInterval(this.timer)

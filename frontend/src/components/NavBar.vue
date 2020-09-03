@@ -23,10 +23,10 @@
             <b-navbar-brand href="#" class="d-none d-md-block">
               <b-icon-x-diamond scale="1.5"></b-icon-x-diamond>
             </b-navbar-brand>
-            <b-navbar-nav class="mr-auto">
-              <b-nav-item to="/robot/list" v-if="isAuthenticated">机器人</b-nav-item>
-              <b-nav-item to="/strategy-template/list" v-if="isAuthenticated">策略</b-nav-item>
-              <b-nav-item to="/connect" v-if="isAuthenticated">接入</b-nav-item>
+            <b-navbar-nav class="mr-auto" v-if="isAuthenticated">
+              <b-nav-item :to="{name: 'robot-list'}">机器人</b-nav-item>
+              <b-nav-item :to="{name: 'strategy-list'}">策略</b-nav-item>
+              <b-nav-item to="/connect">接入</b-nav-item>
             </b-navbar-nav>
 
             <template v-if="isAuthenticated">

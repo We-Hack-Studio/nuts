@@ -156,10 +156,11 @@
 <script>
 import {postRobots} from "@/api";
 import formErrorMixin from "@/mixins/formError"
+import formatterMixin from "@/mixins/formatter"
 
 export default {
   name: 'RobotCreateForm',
-  mixins: [formErrorMixin],
+  mixins: [formErrorMixin, formatterMixin],
   props: {
     credentialOptions: {
       type: Array
@@ -201,12 +202,12 @@ export default {
     }
   },
   methods: {
-    async onSubmit(evt) {
+    async onSubmit(event) {
       this.formProcessing = true
-      evt.preventDefault()
+      event.preventDefault()
       let data = {
         "name": this.form.name,
-        "credential": this.form.credential,
+        "credential": {"type": "credentials", "id": this.form.credential},
         "pair": this.form.pair,
         "market_type": this.form.marketType,
         "margin_currency": this.form.marginCurrency,
@@ -214,10 +215,13 @@ export default {
         "quote_currency": this.form.quoteCurrency,
         "target_currency": this.form.targetCurrency,
         "enabled": this.form.enabled,
-        "strategy": this.form.strategy,
+        "strategy": {
+          "type": "strategies", "id": this.form.strategy,
+        }
       }
+      const type = "robots"
       try {
-        await postRobots(data)
+        await postRobots(this.formatter.serialize({type, ...data}))
         this.formProcessing = false
         await this.$router.push({name: 'robot-list'})
       } catch (error) {

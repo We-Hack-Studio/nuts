@@ -57,7 +57,7 @@ class RobotListSerializer(serializers.ModelSerializer):
     }
     duration_display = DurationField(source="duration", read_only=True)
     strategy_name = serializers.CharField(read_only=True)
-    exchange = ExchangeSerializer(source="credential.exchange")
+    exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
 
     class Meta:
         model = Robot
@@ -82,6 +82,7 @@ class RobotListSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             "ping_time",
+            "asset_record",
             "created_at",
             "modified_at",
         ]
