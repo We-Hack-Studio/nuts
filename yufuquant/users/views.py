@@ -37,7 +37,7 @@ class TokenCreateView(GenericAPIView):
 
     serializer_class = TokenCreateSerializer
     permission_classes = [AllowAny]
-    resource_name = "auth_tokens"
+    resource_name = "tokens"
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

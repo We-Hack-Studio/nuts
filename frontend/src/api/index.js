@@ -1,10 +1,7 @@
-import {annonInstance, authInstance} from "../axiosService"
+import {annonInstance, authInstance} from "@/axiosService"
 
-export async function postAuthLogin(credentials) {
-    return annonInstance.post("/auth/login/", {
-        username: credentials.username,
-        password: credentials.password,
-    });
+export async function postAuthLogin(data) {
+    return annonInstance.post("/auth/login/?include=user", data)
 }
 
 export async function getUsersMe() {
