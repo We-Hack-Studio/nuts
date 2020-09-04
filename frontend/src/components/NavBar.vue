@@ -3,35 +3,52 @@
     <div>
       <b-navbar toggleable="lg" type="light" variant="light">
         <b-container>
-          <b-navbar-brand href="#">
-            <b-icon-x-diamond scale="1.5"></b-icon-x-diamond>
-          </b-navbar-brand>
-          <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+          <b-navbar-toggle target="nav-collapse" class="mr-auto"></b-navbar-toggle>
+          <b-dropdown variant="link" right class="d-md-none">
+            <template v-slot:button-content>
+              <b-icon-plus></b-icon-plus>
+            </template>
+            <b-dropdown-item :to="{name: 'robot-create'}">机器人</b-dropdown-item>
+            <b-dropdown-item :to="{name: 'strategy-create'}">策略</b-dropdown-item>
+          </b-dropdown>
+          <b-dropdown variant="link" right class="d-md-none">
+            <template v-slot:button-content>
+              <b-avatar size="sm"></b-avatar>
+            </template>
+            <b-dropdown-item to="/account">账户</b-dropdown-item>
+            <b-dropdown-item to="/login" @click="logout">登出</b-dropdown-item>
+          </b-dropdown>
+
           <b-collapse id="nav-collapse" is-nav>
-            <b-navbar-nav>
-              <b-nav-item to="/robot/list" v-if="isAuthenticated">机器人</b-nav-item>
-              <b-nav-item to="/strategy-template/list" v-if="isAuthenticated">策略</b-nav-item>
-              <b-nav-item to="/connect" v-if="isAuthenticated">接入</b-nav-item>
+            <b-navbar-brand href="#" class="d-none d-md-block">
+              <b-icon-x-diamond scale="1.5"></b-icon-x-diamond>
+            </b-navbar-brand>
+            <b-navbar-nav class="mr-auto" v-if="isAuthenticated">
+              <b-nav-item :to="{name: 'robot-list'}">机器人</b-nav-item>
+              <b-nav-item :to="{name: 'strategy-list'}">策略</b-nav-item>
+              <b-nav-item to="/connect">接入</b-nav-item>
             </b-navbar-nav>
-            <b-navbar-nav class="ml-auto">
-              <b-nav-item-dropdown right v-if="isAuthenticated" class="mr-2">
-                <!-- Using 'button-content' slot -->
+
+            <template v-if="isAuthenticated">
+              <b-dropdown variant="link" right class="d-none d-md-block">
                 <template v-slot:button-content>
                   <b-icon-plus></b-icon-plus>
                 </template>
                 <b-dropdown-item :to="{name: 'robot-create'}">机器人</b-dropdown-item>
                 <b-dropdown-item :to="{name: 'strategy-create'}">策略</b-dropdown-item>
-              </b-nav-item-dropdown>
-              <b-nav-item-dropdown right v-if="isAuthenticated">
-                <!-- Using 'button-content' slot -->
+              </b-dropdown>
+              <b-dropdown variant="link" right class="d-none d-md-block">
                 <template v-slot:button-content>
                   <b-avatar size="sm"></b-avatar>
                 </template>
                 <b-dropdown-item to="/account">账户</b-dropdown-item>
                 <b-dropdown-item to="/login" @click="logout">登出</b-dropdown-item>
-              </b-nav-item-dropdown>
-              <b-nav-item to="/login" v-else>登录</b-nav-item>
+              </b-dropdown>
+            </template>
+            <b-navbar-nav v-else>
+              <b-nav-item to="/login">登录</b-nav-item>
             </b-navbar-nav>
+
           </b-collapse>
         </b-container>
       </b-navbar>

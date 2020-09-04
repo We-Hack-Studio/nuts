@@ -1,6 +1,5 @@
 from typing import Type
 
-from core.mixins import ApiErrorsMixin
 from rest_framework import mixins, permissions, throttling, viewsets
 from rest_framework.serializers import BaseSerializer
 
@@ -8,7 +7,6 @@ from .serializers import CredentialListSerializer, CredentialSerializer
 
 
 class CredentialViewSet(
-    ApiErrorsMixin,
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.DestroyModelMixin,
@@ -21,6 +19,7 @@ class CredentialViewSet(
     permission_classes = [permissions.IsAdminUser]
     throttle_classes = [throttling.UserRateThrottle]
     pagination_class = None
+    resource_name = "credentials"
 
     def get_queryset(self):
         user = self.request.user

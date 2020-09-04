@@ -42,6 +42,9 @@ class User(AbstractUser):
     class Meta(AbstractUser.Meta):
         pass
 
+    class JSONAPIMeta:
+        resource_name = "users"
+
     def save(self, *args, **kwargs):
         if not self.pk:
             if not self.nickname:

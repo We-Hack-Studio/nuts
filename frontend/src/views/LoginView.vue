@@ -4,7 +4,11 @@
       <b-col sm="12" md="4" offset-md="4">
         <b-card title="登录">
           <b-form @submit="onSubmit">
-            <b-alert :show="hasError" variant="danger">{{ errorMsg }}</b-alert>
+            <b-alert :show="errors.length>0" variant="danger">
+              <ul class="pl-2">
+                <li class="small" v-for="(error, index) in errors" :key="index">{{ error.detail }}</li>
+              </ul>
+            </b-alert>
             <b-form-group
                 label="用户名:"
                 label-for="id_username"
@@ -33,8 +37,9 @@
 </template>
 
 <script>
-import {getUsersMe, postAuthLogin} from "../api";
+import {postAuthLogin} from "@/api";
 import storage from "../utils"
+import {Formatter} from "sarala-json-api-data-formatter";
 
 export default {
   data() {
@@ -43,34 +48,44 @@ export default {
         username: '',
         password: '',
       },
-      hasError: false,
-      errorMsg: '',
+      errors: [],
       formProcessing: false,
+      formatter: new Formatter()
     }
   },
   methods: {
-    async onSubmit(evt) {
+    async login(username, password) {
+      const type = "tokens"
+      const data = this.formatter.serialize({type, username, password})
+      return await postAuthLogin(data)
+    },
+
+    async onSubmit(event) {
       this.formProcessing = true
-      evt.preventDefault()
+      event.preventDefault()
       try {
-        const loginRes = await postAuthLogin(this.form)
-        const authToken = loginRes.data["auth_token"]
+        const loginRes = await this.login(this.form.username, this.form.password)
+        const result = this.formatter.deserialize(loginRes.data)
+
+        const authToken = result["auth_token"]
         this.$store.commit("SET_AUTH_TOKEN", authToken)
         storage.saveAuthToken(authToken)
 
-        const usersMeRes = await getUsersMe()
+        const userData = result.user.data
         const user = {
-          userId: usersMeRes.data.id,
-          username: usersMeRes.data.username,
-          nickname: usersMeRes.data.nickname
+          userId: userData.id,
+          username: userData.username,
+          nickname: userData.nickname
         }
         this.$store.commit("SET_USER", user)
         storage.saveUser(user)
+
         this.formProcessing = false
+
         await this.$router.push({name: 'robot-list'})
       } catch (error) {
         if (error.response) {
-          if (error.response.status === 500) {
+          if (error.response.status >= 500) {
             this.$bvToast.toast('服务端错误', {
               title: '登录失败',
               autoHideDelay: 3000,
@@ -78,11 +93,9 @@ export default {
               variant: 'danger',
               appendToast: false
             });
-          } else if (error.response.status === 400) {
+          } else if (error.response.status >= 400) {
             // form validation error
-            let errData = error.response.data
-            this.hasError = true
-            this.errorMsg = errData['non_field_errors'][0]
+            this.errors = error.response.data.errors
           }
         } else {
           this.$bvToast.toast(error.message, {

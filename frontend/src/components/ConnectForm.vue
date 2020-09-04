@@ -61,6 +61,7 @@
 
 <script>
 import {getExchanges, postCredentials} from "../api";
+import formatterMixin from "@/mixins/formatter"
 
 export default {
   name: "ConnectForm",
@@ -76,9 +77,10 @@ export default {
       exchangeOptions: [],
     }
   },
+  mixins: [formatterMixin],
   methods: {
-    onSubmit(evt) {
-      evt.preventDefault()
+    async onSubmit(event) {
+      event.preventDefault()
       let data = {
         "note": this.form.note,
         "api_key": this.form.apiKey,
@@ -86,17 +88,17 @@ export default {
         "exchange": this.form.exchange,
         "is_test_net": this.form.testNet,
       }
-      postCredentials(data).then(response => {
-        let cred = response.data
-        let payload = {
-          credId: cred.id,
-          exchangeNameZh: cred['exchange_info']['name_zh'],
-          note: cred.note,
-          apiKeyMasked: cred['api_key_masked'],
-          secretMasked: cred['secret_masked'],
-          createdAt: cred['created_at'],
-        }
-        this.$emit("credential-added", payload)
+      const type = "credentials"
+      try {
+        await postCredentials(this.formatter.serialize({type, ...data}))
+        this.$bvToast.toast('交易所接入成功！', {
+          title: '成功',
+          autoHideDelay: 3000,
+          toaster: 'b-toaster-top-center',
+          variant: 'success',
+          appendToast: false
+        });
+        this.$emit("credential-added")
         this.form = {
           note: '',
           apiKey: '',
@@ -104,27 +106,57 @@ export default {
           exchange: null,
           testNet: false,
         }
-      }).catch(err => {
-        console.log(err.data);
-      })
+      } catch (error) {
+        if (error.response) {
+          this.$bvToast.toast('接入失败', {
+            title: '接入失败',
+            autoHideDelay: 3000,
+            toaster: 'b-toaster-top-center',
+            variant: 'danger',
+            appendToast: false
+          });
+        } else {
+          this.$bvToast.toast(error.message, {
+            title: '接入失败',
+            autoHideDelay: 3000,
+            toaster: 'b-toaster-top-center',
+            variant: 'danger',
+            appendToast: false
+          });
+        }
+      }
     },
     setExchangeOptions(data) {
       this.exchangeOptions = data.map(e => ({value: e.id, text: e["name_zh"]}))
+    },
+    async getExchangeOptions() {
+      try {
+        const exchangesRes = await getExchanges()
+        const result = this.formatter.deserialize(exchangesRes.data)
+        this.setExchangeOptions(result.data)
+      } catch (error) {
+        if (error.response) {
+          this.$bvToast.toast('无法获取可接入的交易所列表', {
+            title: '无法获取可接入的交易所列表',
+            autoHideDelay: 3000,
+            toaster: 'b-toaster-top-center',
+            variant: 'danger',
+            appendToast: false
+          });
+        } else {
+          this.$bvToast.toast(error.message, {
+            title: '无法获取可接入的交易所列表',
+            autoHideDelay: 3000,
+            toaster: 'b-toaster-top-center',
+            variant: 'danger',
+            appendToast: false
+          });
+        }
+      }
     }
   },
-  mounted() {
-    getExchanges().then(response => {
-      this.setExchangeOptions(response.data)
-    }).catch(err => {
-      console.log(err);
-      this.$bvToast.toast(`无法获取可接入的交易所列表。错误信息：${err.data || '未知错误'}`, {
-        title: '数据获取失败',
-        autoHideDelay: 5000,
-        toaster: 'b-toaster-top-right',
-        variant: 'danger',
-        appendToast: false
-      });
-    })
+  async mounted() {
+    await this.getExchangeOptions()
   },
 }
 </script>

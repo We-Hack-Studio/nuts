@@ -28,5 +28,8 @@ class Credential(TimeStampedModel):
         verbose_name = _("credential")
         verbose_name_plural = _("credentials")
 
+    class JSONAPIMeta:
+        resource_name = "credentials"
+
     def __str__(self):
         return self.note

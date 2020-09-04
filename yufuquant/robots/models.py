@@ -43,6 +43,8 @@ class Robot(TimeStampedModel):
         verbose_name = _("robot")
         verbose_name_plural = _("robots")
 
+    class JSONAPIMeta:
+        resource_name = "robots"
     @property
     def duration(self):
         if self.start_time and self.ping_time:

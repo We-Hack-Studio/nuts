@@ -14,6 +14,7 @@ from .serializers import TokenCreateSerializer, TokenSerializer, UserSerializer
 class UserViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
+    resource_name = "users"
 
     def get_queryset(self):
         user = self.request.user
@@ -36,6 +37,7 @@ class TokenCreateView(GenericAPIView):
 
     serializer_class = TokenCreateSerializer
     permission_classes = [AllowAny]
+    resource_name = "tokens"
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -54,6 +56,7 @@ class TokenDestroyView(APIView):
     """
 
     permission_classes = [IsAuthenticated]
+    resource_name = "auth_tokens"
 
     def post(self, request):
         Token.objects.filter(user=request.user).delete()

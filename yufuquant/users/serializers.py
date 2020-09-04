@@ -7,11 +7,14 @@ from .models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    avatar_url = serializers.ImageField(source="avatar_thumbnail.url")
+    avatar_url = serializers.ImageField(source="avatar_thumbnail")
 
     class Meta:
         model = User
         fields = ["id", "username", "nickname", "avatar_url"]
+
+    class JSONAPIMeta:
+        resource_name = "users"
 
 
 class TokenCreateSerializer(serializers.Serializer):
@@ -33,8 +36,9 @@ class TokenCreateSerializer(serializers.Serializer):
 
 
 class TokenSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
     auth_token = serializers.CharField(source="key")
 
     class Meta:
         model = Token
-        fields = ("auth_token",)
+        fields = ["auth_token", "user"]

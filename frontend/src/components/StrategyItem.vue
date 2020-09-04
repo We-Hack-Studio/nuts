@@ -6,8 +6,8 @@
           <b-icon-graph-up font-scale="1.5" class="text-muted"></b-icon-graph-up>
         </b-media-aside>
         <b-media-body class="ml-3">
-          <h5><a href="">{{strategyTemplate.name}}</a></h5>
-          <div class="small text-muted">{{strategyTemplate.description}}</div>
+          <h5><a href="">{{ strategy.name }}</a></h5>
+          <div class="small text-muted">{{ strategy.description }}</div>
         </b-media-body>
       </b-media>
     </div>
@@ -15,12 +15,12 @@
 </template>
 
 <script>
-    export default {
-        name: 'StrategyTemplateItem',
-        props: {
-            strategyTemplate: Object,
-        },
-    }
+export default {
+  name: 'StrategyItem',
+  props: {
+    strategy: Object,
+  },
+}
 </script>
 
 <style scoped>
