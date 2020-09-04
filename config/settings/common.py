@@ -62,7 +62,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(ROOT_DIR, "db.sqlite3"),
+        "NAME": os.path.join(ROOT_DIR, "database", "db.sqlite3"),
         "ATOMIC_REQUESTS": True,
     }
 }
