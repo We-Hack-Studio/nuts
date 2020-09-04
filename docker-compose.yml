@@ -13,7 +13,7 @@ services:
     container_name: yufuquant_api
     working_dir: /app
     volumes:
-      - ./db.sqlite3:/app/db.sqlite3
+      - ./database:/app/database
       - staticfiles:/app/staticfiles
       - media:/app/media
     env_file:
