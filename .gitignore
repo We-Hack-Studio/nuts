@@ -103,12 +103,11 @@ venv.bak/
 
 # mypy
 .idea/
-database/
 *.sqlite3
 staticfiles/
 media/
 yufuquant.env
-yufu.conf
+yufuquant.conf
 
 config.js
 .DS_Store
