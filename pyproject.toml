@@ -32,6 +32,7 @@ drf-yasg = "^1.17.1"
 asgiref = "^3.2.10"
 djangorestframework-jsonapi = "^3.2.0"
 django-polymorphic = "^3.0.0"
+daphne = "^2.5.0" # required by django-channels though we use uvicorn in production
 
 [tool.poetry.dev-dependencies]
 mkdocs = "^1.1.2"
@@ -48,7 +49,6 @@ djangorestframework-stubs = "^1.2.0"
 isort = "^5.4.2"
 flake8 = "^3.8.3"
 pytest-asyncio = "^0.14.0"
-daphne = "^2.5.0"
 black = "^20.8b1"
 flake8-isort = "^4.0.0"
 mkdocs-material = "^5.5.12"
