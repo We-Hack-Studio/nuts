@@ -35,5 +35,5 @@ services:
       - media:/apps/yufuquant/media
       - ./frontend/dist:/apps/yufuquant/dist
     ports:
-      - "8080:80"
-      - "8443:443"
+      - "80:80"
+      - "443:443"
