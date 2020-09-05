@@ -37,7 +37,7 @@
                 <b-dropdown-item :to="{name: 'robot-create'}">机器人</b-dropdown-item>
                 <b-dropdown-item :to="{name: 'strategy-create'}">策略</b-dropdown-item>
               </b-dropdown>
-              <b-dropdown variant="link" right class="d-none d-md-block">
+              <b-dropdown variant="link" right class="d-none d-md-block" toggle-class="pr-0">
                 <template v-slot:button-content>
                   <b-avatar size="sm"></b-avatar>
                 </template>
@@ -45,7 +45,7 @@
                 <b-dropdown-item to="/login" @click="logout">登出</b-dropdown-item>
               </b-dropdown>
             </template>
-            <b-navbar-nav v-else>
+            <b-navbar-nav v-else class="ml-auto">
               <b-nav-item to="/login">登录</b-nav-item>
             </b-navbar-nav>
 
