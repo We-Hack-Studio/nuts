@@ -97,6 +97,11 @@ class RobotListSerializer(serializers.ModelSerializer):
 
 
 class RobotRetrieveSerializer(serializers.ModelSerializer):
+    included_serializers = {
+        "exchange": ExchangeSerializer,
+        "asset_record": AssetRecordSerializer,
+        "user": UserSerializer,
+    }
     user = UserSerializer(source="credential.user", read_only=True)
     exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
     duration_display = DurationField(source="duration", read_only=True)
@@ -119,7 +124,6 @@ class RobotRetrieveSerializer(serializers.ModelSerializer):
             "duration_display",
             "asset_record",
             "credential",
-            "strategy",
             "strategy_parameters",
             "strategy_parameters_view",
             "user",
@@ -138,6 +142,7 @@ class RobotRetrieveSerializer(serializers.ModelSerializer):
 
     class JSONAPIMeta:
         resource_name = "robots"
+        included_resources = ["exchange", "asset_record", "user"]
 
     def get_strategy_parameters_view(self, obj: Robot) -> Dict[str, Any]:
         spec = obj.strategy.specification

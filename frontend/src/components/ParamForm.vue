@@ -20,12 +20,11 @@ import { BFormInput } from "bootstrap-vue";
 import SelectItem from "./ParamFormSelectItem";
 
 export default {
-  name: "ParamPreview",
+  name: "parameter-form",
   props: {
     fields: Array,
   },
   mounted() {
-    console.log(this.fields);
     this.initForm();
   },
   data() {

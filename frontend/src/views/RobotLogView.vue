@@ -17,9 +17,6 @@ export default {
     };
   },
   computed: {
-    // robotId() {
-    //   return this.$route.params.id;
-    // },
     ...mapState(["authToken"]),
   },
   mounted() {

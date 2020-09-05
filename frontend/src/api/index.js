@@ -49,7 +49,5 @@ export async function postStrategies(data) {
 }
 
 export async function postRobotsIdStrategyParameters(robotId, data) {
-    return authInstance.post(`/robots/${robotId}/strategyParameters/`, {
-        strategy_parameters: JSON.stringify(data),
-    });
+    return authInstance.post(`/robots/${robotId}/strategyParameters/`, data);
 }
