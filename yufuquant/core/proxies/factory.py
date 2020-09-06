@@ -9,7 +9,7 @@ exchange_code_to_proxy_cls = {
 
 
 def exchange_proxy_factory(
-    *, exchange_code: str, pair: str = "", is_test_net: bool = False, credential=None,
+    *, exchange_code: str, pair: str = "", test_net: bool = False, credential=None,
 ) -> ExchangeProxy:
 
     proxy_class = exchange_code_to_proxy_cls[exchange_code]

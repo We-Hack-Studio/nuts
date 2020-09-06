@@ -39,27 +39,41 @@ class StrategyTemplateViewSetTestCase(APITestCase):
             ],
         }
         data = {
-            "code": "test",
-            "name": "Test",
-            "description": "A test strategy template",
-            "specification": json.dumps(parameter_spec),
+            "data": {
+                "type": "strategies",
+                "attributes": {
+                    "code": "test",
+                    "name": "Test",
+                    "description": "A test strategy template",
+                    "specification": json.dumps(parameter_spec),
+                },
+            }
         }
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.user_token.key)
         response = self.client.post(
-            self.reverse("api:strategy-list"), data=data, extra={"format": "json"},
+            self.reverse("api:strategy-list"),
+            data=data,
+            extra={"format": "json"},
         )
         self.response_201(response)
         # todo: assert response schema
 
     def test_create_invalid_strategy_template(self):
         data = {
-            "code": "",
-            "name": "",
-            "description": "",
-            "specification": "",
+            "data": {
+                "type": "strategies",
+                "attributes": {
+                    "code": "",
+                    "name": "",
+                    "description": "",
+                    "specification": "",
+                },
+            }
         }
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.user_token.key)
         response = self.client.post(
-            self.reverse("api:strategy-list"), data=data, extra={"format": "json"},
+            self.reverse("api:strategy-list"),
+            data=data,
+            extra={"format": "json"},
         )
         self.response_400(response)

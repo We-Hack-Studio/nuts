@@ -57,7 +57,7 @@
         {{ robot.profit24h | roundByCurrency(robot.targetCurrency) }}
         <span class="font-weight-light"> {{ robot.targetCurrency }}</span>
       </span>
-      <span class="float-right">网格策略</span>
+      <span class="float-right">{{ robot.strategyName }}</span>
     </div>
   </b-card>
 </template>

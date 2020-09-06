@@ -38,6 +38,7 @@ export default {
         pingTime: robot['ping_time'],
         createdAt: robot['created_at'],
         durationDisplay: robot['duration_display'],
+        strategyName: robot["strategy_name"],
         exchangeNameZh: robot['exchange']['data']['name_zh'],
         profitRatioPtg: robot['asset_record']['data']['total_pnl_rel_ptg'],
         profitRatioPtg24h: robot['asset_record']['data']['total_pnl_rel_ptg_24h'],

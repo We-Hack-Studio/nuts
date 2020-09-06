@@ -1,13 +1,12 @@
 import os
 
+from core.validators import FileValidator
 from django.contrib.auth.models import AbstractUser
 from django.core.files.base import ContentFile
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
-
-from core.validators import FileValidator
 
 from .avatar_generator import AvatarGenerator
 
