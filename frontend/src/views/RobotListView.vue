@@ -37,6 +37,7 @@ export default {
         createdAt: robot['created_at'],
         durationDisplay: robot['duration_display'],
         exchangeNameZh: robot["exchange"]["data"]['name_zh'],
+        strategyName: robot["strategy_name"],
         profitRatioPtg: robot['asset_record']['data']['total_pnl_rel_ptg'],
         profitRatioPtg24h: robot['asset_record']['data']['total_pnl_rel_ptg_24h'],
         profit24h: robot['asset_record']['data']['total_pnl_abs_24h'],

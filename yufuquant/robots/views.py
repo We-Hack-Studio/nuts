@@ -1,5 +1,6 @@
 from typing import Type
 
+from django.db.models import F
 from django.utils import timezone
 from rest_framework import mixins, serializers, status, viewsets
 from rest_framework.decorators import action
@@ -39,6 +40,7 @@ class RobotViewSet(
         return (
             Robot.objects.all()
             .select_related("credential__user", "credential__exchange", "asset_record")
+            .annotate(strategy_name=F("strategy__name"))
             .order_by("-created_at")
         )
 
