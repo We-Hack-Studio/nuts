@@ -10,7 +10,7 @@ class Credential(TimeStampedModel):
     api_key = encrypt(models.CharField(_("API Key"), max_length=50))
     secret = encrypt(models.CharField(_("secret"), max_length=50))
     passphrase = encrypt(models.CharField(_("passphrase"), max_length=30, blank=True))
-    is_test_net = models.BooleanField(_("is test net"), default=False)
+    test_net = models.BooleanField(_("test net"), default=False)
     exchange = models.ForeignKey(
         "exchanges.Exchange",
         verbose_name=_("exchange"),

@@ -56,12 +56,17 @@ class RobotViewSetTestCase(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.admin_user_token.key)
         url = self.reverse("api:robot-list")
         data = {
-            "name": "Robot-1",
-            "pair": "BTCUSDT",
-            "market_type": "futures",
-            "enabled": True,
-            "credential": credential.pk,
-            "strategy": strategy.pk,
+            "data": {
+                "type": "robots",
+                "attributes": {
+                    "name": "Robot-1",
+                    "pair": "BTCUSDT",
+                    "market_type": "futures",
+                    "enabled": True,
+                    "credential": {"type": "credentials", "id": credential.pk},
+                    "strategy": {"type": "strategies", "id": strategy.pk},
+                },
+            }
         }
         response = self.client.post(url, data=data)
         self.response_201(response)
@@ -70,12 +75,17 @@ class RobotViewSetTestCase(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.admin_user_token.key)
         url = self.reverse("api:robot-list")
         data = {
-            "name": "Robot-1",
-            "pair": "BTCUSDT",
-            "market_type": "options",
-            "enabled": True,
-            "credential": 999,
-            "strategy": 999,
+            "data": {
+                "type": "robots",
+                "attributes": {
+                    "name": "Robot-1",
+                    "pair": "BTCUSDT",
+                    "market_type": "options",
+                    "enabled": True,
+                    "credential": {"type": "credentials", "id": 999},
+                    "strategy": {"type": "strategies", "id": 999},
+                },
+            }
         }
         response = self.client.post(url, data=data)
         self.response_400(response)
@@ -182,7 +192,13 @@ class RobotViewSetTestCase(APITestCase):
         url = self.reverse("api:robot-strategy-parameters", pk=robot.pk)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.admin_user_token.key)
 
-        data = {"strategy_parameters": '{"code":"new value"}'}
+        data = {
+            "data": {
+                "type": "robots",
+                "id": robot.pk,
+                "attributes": {"strategy_parameters": '{"code":"new value"}'},
+            }
+        }
         response = self.client.post(url, data=data)
         self.response_200(response)
         self.assertEqual(response.data, {"detail": "ok"})
@@ -198,7 +214,10 @@ class RobotViewSetTestCase(APITestCase):
         url = self.reverse("api:robot-asset-record", pk=robot.pk)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.admin_user_token.key)
 
-        data = {"total_balance": 9999}
+        data = {
+            "data": {"type": "robots", "id": 1, "attributes": {"total_balance": 9999}}
+        }
+
         response = self.client.patch(url, data=data)
         self.response_200(response)
         self.assertEqual(response.data, {"detail": "ok"})

@@ -7,13 +7,13 @@ from .models import Credential
 class CredentialAdmin(admin.ModelAdmin):
     fields = [
         "note",
-        "is_test_net",
+        "test_net",
     ]
     list_display = [
         "id",
         "user",
         "exchange",
-        "is_test_net",
+        "test_net",
         "note",
         "created_at",
         "modified_at",

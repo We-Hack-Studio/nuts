@@ -168,7 +168,7 @@ class RobotConfigSerializer(serializers.ModelSerializer):
             "pair",
             "target_currency",
             "enabled",
-            "is_test_net",
+            "test_net",
             "user",
             "exchange",
             "credential_keys",

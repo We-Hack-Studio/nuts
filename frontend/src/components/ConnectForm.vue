@@ -44,9 +44,9 @@
     </b-col>
     <b-col md="12">
       <b-form-checkbox
-          id="id_is_test_net"
+          id="id_test_net"
           v-model="form.testNet"
-          name="is_test_net"
+          name="test_net"
           value="true"
           unchecked-value="false"
       >
@@ -86,7 +86,7 @@ export default {
         "api_key": this.form.apiKey,
         "secret": this.form.secret,
         "exchange": this.form.exchange,
-        "is_test_net": this.form.testNet,
+        "test_net": this.form.testNet,
       }
       const type = "credentials"
       try {
