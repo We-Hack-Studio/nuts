@@ -68,12 +68,13 @@ description = "Classes Without Boilerplate"
 name = "attrs"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "20.1.0"
+version = "20.2.0"
 
 [package.extras]
 dev = ["coverage (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "zope.interface", "sphinx", "sphinx-rtd-theme", "pre-commit"]
 docs = ["sphinx", "sphinx-rtd-theme", "zope.interface"]
 tests = ["coverage (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "zope.interface"]
+tests_no_zope = ["coverage (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six"]
 
 [[package]]
 category = "main"
@@ -154,7 +155,7 @@ description = "A JavaScript / Python / PHP cryptocurrency trading library with s
 name = "ccxt"
 optional = false
 python-versions = "*"
-version = "1.33.97"
+version = "1.34.3"
 
 [package.dependencies]
 certifi = ">=2018.1.18"
@@ -204,7 +205,7 @@ description = "Redis-backed ASGI channel layer implementation"
 name = "channels-redis"
 optional = false
 python-versions = ">=3.6"
-version = "3.0.1"
+version = "3.1.0"
 
 [package.extras]
 cryptography = ["cryptography (>=1.3.0)"]
@@ -399,7 +400,7 @@ description = "Extensions for Django"
 name = "django-extensions"
 optional = false
 python-versions = ">=3.5"
-version = "3.0.7"
+version = "3.0.8"
 
 [[package]]
 category = "main"
@@ -1289,7 +1290,7 @@ description = "C version of reader, parser and emitter for ruamel.yaml derived f
 name = "ruamel.yaml.clib"
 optional = false
 python-versions = "*"
-version = "0.2.1"
+version = "0.2.2"
 
 [[package]]
 category = "main"
@@ -1367,7 +1368,7 @@ description = "A collection of helpers and mock objects for unit tests and doc t
 name = "testfixtures"
 optional = false
 python-versions = "*"
-version = "6.14.1"
+version = "6.14.2"
 
 [package.extras]
 build = ["setuptools-git", "wheel", "twine"]
@@ -1571,7 +1572,7 @@ test = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [metadata]
-content-hash = "6d14f42f2b3fb06ca9a06fcc09e58e0af00912bc2bd7b7b5bbcfcdf1c8da4d7e"
+content-hash = "bbb700a9021173264b172ff88488fb6995d776720e6e0259e9e0fdd4dc1656eb"
 lock-version = "1.1"
 python-versions = ">=3.7,<4"
 
@@ -1611,8 +1612,8 @@ atomicwrites = [
     {file = "atomicwrites-1.4.0.tar.gz", hash = "sha256:ae70396ad1a434f9c7046fd2dd196fc04b12f9e91ffb859164193be8b6168a7a"},
 ]
 attrs = [
-    {file = "attrs-20.1.0-py2.py3-none-any.whl", hash = "sha256:2867b7b9f8326499ab5b0e2d12801fa5c98842d2cbd22b35112ae04bf85b4dff"},
-    {file = "attrs-20.1.0.tar.gz", hash = "sha256:0ef97238856430dcf9228e07f316aefc17e8939fc8507e18c6501b761ef1a42a"},
+    {file = "attrs-20.2.0-py2.py3-none-any.whl", hash = "sha256:fce7fc47dfc976152e82d53ff92fa0407700c21acd20886a13777a0d20e655dc"},
+    {file = "attrs-20.2.0.tar.gz", hash = "sha256:26b54ddbbb9ee1d34d5d3668dd37d6cf74990ab23c828c2888dccdceee395594"},
 ]
 autobahn = [
     {file = "autobahn-20.7.1-py2.py3-none-any.whl", hash = "sha256:24ce276d313e84d68241c3aef30d484f352b90a40168981b3640312c821df77b"},
@@ -1630,7 +1631,8 @@ black = [
     {file = "black-20.8b1.tar.gz", hash = "sha256:1c02557aa099101b9d21496f8a914e9ed2222ef70336404eeeac8edba836fbea"},
 ]
 ccxt = [
-    {file = "ccxt-1.33.97-py2.py3-none-any.whl", hash = "sha256:90f16e7d7780dda6202475f6f210e5aad8991d316a5a1117c841996ac9c37194"},
+    {file = "ccxt-1.34.3-py2.py3-none-any.whl", hash = "sha256:5171d937d2bb9adb677b28e9c411168c92781e5d20d0bbc97a7cb278f43aacad"},
+    {file = "ccxt-1.34.3.tar.gz", hash = "sha256:bd8d295533ae3f1a98350b61dc5d68e01ff5ad436f6c5502155c8bd457fd0db0"},
 ]
 certifi = [
     {file = "certifi-2020.6.20-py2.py3-none-any.whl", hash = "sha256:8fc0819f1f30ba15bdb34cceffb9ef04d99f420f68eb75d901e9560b8749fc41"},
@@ -1671,8 +1673,8 @@ channels = [
     {file = "channels-2.4.0.tar.gz", hash = "sha256:08e756406d7165cb32f6fc3090c0643f41ca9f7e0f7fada0b31194662f20f414"},
 ]
 channels-redis = [
-    {file = "channels_redis-3.0.1-py2.py3-none-any.whl", hash = "sha256:be7c14526ab924a091a66ad72a8be57a34900440b1126d520ac7742c0e2add03"},
-    {file = "channels_redis-3.0.1.tar.gz", hash = "sha256:b4bcee949032cd838abdffd10da056930fca1a5a7ebc52139f8537aa622ac8d5"},
+    {file = "channels_redis-3.1.0-py2.py3-none-any.whl", hash = "sha256:41ee0af352d3b6b31a6b613985b51dc5695d2da60688c38e6caa0a1772735a9f"},
+    {file = "channels_redis-3.1.0.tar.gz", hash = "sha256:3ce9832b64a2d7f950dd11e4f0dca784de7cbee99e95a3c345a1460c8878b682"},
 ]
 chardet = [
     {file = "chardet-3.0.4-py2.py3-none-any.whl", hash = "sha256:fc323ffcaeaed0e0a02bf4d117757b98aed530d9ed4531e3e15460124c106691"},
@@ -1790,8 +1792,8 @@ django-environ = [
     {file = "django_environ-0.4.5-py2.py3-none-any.whl", hash = "sha256:c57b3c11ec1f319d9474e3e5a79134f40174b17c7cc024bbb2fad84646b120c4"},
 ]
 django-extensions = [
-    {file = "django-extensions-3.0.7.tar.gz", hash = "sha256:b49388a943368417d4c203d51866ca4ffe3011bb240679558521762c4b452b8a"},
-    {file = "django_extensions-3.0.7-py2.py3-none-any.whl", hash = "sha256:0ede618f3d933317737406c979753bb91436c3b3e93a452638a1483b624aa89d"},
+    {file = "django-extensions-3.0.8.tar.gz", hash = "sha256:a67747508ec39583892fbddf57e0b66b3f332a885ef5520698bc2e1cb351955a"},
+    {file = "django_extensions-3.0.8-py3-none-any.whl", hash = "sha256:c7c2ca48ccc2ecc4427c908cd3a6dc114fc7534092de51209b02f84ccafe648b"},
 ]
 django-filter = [
     {file = "django-filter-2.3.0.tar.gz", hash = "sha256:11e63dd759835d9ba7a763926ffb2662cf8a6dcb4c7971a95064de34dbc7e5af"},
@@ -2256,28 +2258,28 @@ requests = [
     {file = "ruamel.yaml-0.16.12.tar.gz", hash = "sha256:076cc0bc34f1966d920a49f18b52b6ad559fbe656a0748e3535cf7b3f29ebf9e"},
 ]
 "ruamel.yaml.clib" = [
-    {file = "ruamel.yaml.clib-0.2.1-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:a05bb6110141663a7dd1c7b7342a131befac227e36dbe67241d767ae32e2d60e"},
-    {file = "ruamel.yaml.clib-0.2.1-cp27-cp27m-manylinux1_x86_64.whl", hash = "sha256:f41328994e6d8c24781a93d2f87c0f3b04344ac221264167db4fccd3cb182d73"},
-    {file = "ruamel.yaml.clib-0.2.1-cp27-cp27m-win32.whl", hash = "sha256:56d360b31d20642e34b4a674574a5ca18ca0697560109771dba874c6d8d05051"},
-    {file = "ruamel.yaml.clib-0.2.1-cp27-cp27m-win_amd64.whl", hash = "sha256:72016119d344cca19ae9be5ef5ea367183601f084537be2838617fe5ee8377a1"},
-    {file = "ruamel.yaml.clib-0.2.1-cp27-cp27mu-manylinux1_x86_64.whl", hash = "sha256:bfabd74e168921c922558d627ac304766507360b7714181a30007f61a015a390"},
-    {file = "ruamel.yaml.clib-0.2.1-cp35-cp35m-macosx_10_6_intel.whl", hash = "sha256:af6d2a1acfd0147a2068a2830edb8a836550f59ffc296dfb6d41b784155eb7c8"},
-    {file = "ruamel.yaml.clib-0.2.1-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:d5c07b0ddf3a0fc1e9199ccc0b9e024cfd9d4bb6a10758fb1f1d051d7473ccd6"},
-    {file = "ruamel.yaml.clib-0.2.1-cp35-cp35m-win32.whl", hash = "sha256:cca72427e99ad7aa5d5653da3da4fd5d48abd9616a87510795e5fbb00ab43115"},
-    {file = "ruamel.yaml.clib-0.2.1-cp35-cp35m-win_amd64.whl", hash = "sha256:57981b92d365b48e76b12a8876ba615129ddb08e6db455e4876e7c07fd6eb42c"},
-    {file = "ruamel.yaml.clib-0.2.1-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:5e79641f8b1e7baa30f451a884fbf435dfe5af65940ab3ce838805c67f301424"},
-    {file = "ruamel.yaml.clib-0.2.1-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:ea27f382e4d3e6563278c1293728848052f84f748b63444b3b3c602be8653d80"},
-    {file = "ruamel.yaml.clib-0.2.1-cp36-cp36m-win32.whl", hash = "sha256:374fa418d35098d46b29839f8a7684916ed2ea4136da5898c9cff15d3dd15b00"},
-    {file = "ruamel.yaml.clib-0.2.1-cp36-cp36m-win_amd64.whl", hash = "sha256:930208902bd3c1017e7924368250440b5aec627f9bd3a13b11160d4af239b392"},
-    {file = "ruamel.yaml.clib-0.2.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:56cdbf29c95b1a14a340b9a67aba4f99f3b8343e5bf977020bf585c05de8c4c7"},
-    {file = "ruamel.yaml.clib-0.2.1-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:f98ea39bbb0f678bc4e0fd85233882e2bbe1e7ddd5fd79551e19d646a8a6e5e8"},
-    {file = "ruamel.yaml.clib-0.2.1-cp37-cp37m-win32.whl", hash = "sha256:4e800124b0ffdb38f48d656d0bb042bad6e327773079dd659b0a4fb5dc49773e"},
-    {file = "ruamel.yaml.clib-0.2.1-cp37-cp37m-win_amd64.whl", hash = "sha256:214fe032ab26fcccb51d5982664ba2bab2df6dde93bf49988537cc27f33cb2a8"},
-    {file = "ruamel.yaml.clib-0.2.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:ae4e7c97d38fb132b5c84518088b4ec1fa4c5b599aca74bc22123da73c1b90eb"},
-    {file = "ruamel.yaml.clib-0.2.1-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:f9d9c7a3edf2b4b46b25ba64466de018584e4319070c495dad8a1c87fcc1c601"},
-    {file = "ruamel.yaml.clib-0.2.1-cp38-cp38-win32.whl", hash = "sha256:7fea41ba38572e08f32f4b9a785eee474ad152f205e4564e11c9692feb0e22d2"},
-    {file = "ruamel.yaml.clib-0.2.1-cp38-cp38-win_amd64.whl", hash = "sha256:e36d5b2c4b448838a579ae89c7b71970a9520c2818d8e98dc7dd4f73393985bb"},
-    {file = "ruamel.yaml.clib-0.2.1.tar.gz", hash = "sha256:356f607ab54c8fa09220432d64f5e4fc56202606f79b13caf12412405f189205"},
+    {file = "ruamel.yaml.clib-0.2.2-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:28116f204103cb3a108dfd37668f20abe6e3cafd0d3fd40dba126c732457b3cc"},
+    {file = "ruamel.yaml.clib-0.2.2-cp27-cp27m-manylinux1_x86_64.whl", hash = "sha256:daf21aa33ee9b351f66deed30a3d450ab55c14242cfdfcd377798e2c0d25c9f1"},
+    {file = "ruamel.yaml.clib-0.2.2-cp27-cp27m-win32.whl", hash = "sha256:30dca9bbcbb1cc858717438218d11eafb78666759e5094dd767468c0d577a7e7"},
+    {file = "ruamel.yaml.clib-0.2.2-cp27-cp27m-win_amd64.whl", hash = "sha256:f6061a31880c1ed6b6ce341215336e2f3d0c1deccd84957b6fa8ca474b41e89f"},
+    {file = "ruamel.yaml.clib-0.2.2-cp27-cp27mu-manylinux1_x86_64.whl", hash = "sha256:73b3d43e04cc4b228fa6fa5d796409ece6fcb53a6c270eb2048109cbcbc3b9c2"},
+    {file = "ruamel.yaml.clib-0.2.2-cp35-cp35m-macosx_10_6_intel.whl", hash = "sha256:53b9dd1abd70e257a6e32f934ebc482dac5edb8c93e23deb663eac724c30b026"},
+    {file = "ruamel.yaml.clib-0.2.2-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:839dd72545ef7ba78fd2aa1a5dd07b33696adf3e68fae7f31327161c1093001b"},
+    {file = "ruamel.yaml.clib-0.2.2-cp35-cp35m-win32.whl", hash = "sha256:b1e981fe1aff1fd11627f531524826a4dcc1f26c726235a52fcb62ded27d150f"},
+    {file = "ruamel.yaml.clib-0.2.2-cp35-cp35m-win_amd64.whl", hash = "sha256:4e52c96ca66de04be42ea2278012a2342d89f5e82b4512fb6fb7134e377e2e62"},
+    {file = "ruamel.yaml.clib-0.2.2-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:a873e4d4954f865dcb60bdc4914af7eaae48fb56b60ed6daa1d6251c72f5337c"},
+    {file = "ruamel.yaml.clib-0.2.2-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:ab845f1f51f7eb750a78937be9f79baea4a42c7960f5a94dde34e69f3cce1988"},
+    {file = "ruamel.yaml.clib-0.2.2-cp36-cp36m-win32.whl", hash = "sha256:e9f7d1d8c26a6a12c23421061f9022bb62704e38211fe375c645485f38df34a2"},
+    {file = "ruamel.yaml.clib-0.2.2-cp36-cp36m-win_amd64.whl", hash = "sha256:2602e91bd5c1b874d6f93d3086f9830f3e907c543c7672cf293a97c3fabdcd91"},
+    {file = "ruamel.yaml.clib-0.2.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:44c7b0498c39f27795224438f1a6be6c5352f82cb887bc33d962c3a3acc00df6"},
+    {file = "ruamel.yaml.clib-0.2.2-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:8e8fd0a22c9d92af3a34f91e8a2594eeb35cba90ab643c5e0e643567dc8be43e"},
+    {file = "ruamel.yaml.clib-0.2.2-cp37-cp37m-win32.whl", hash = "sha256:464e66a04e740d754170be5e740657a3b3b6d2bcc567f0c3437879a6e6087ff6"},
+    {file = "ruamel.yaml.clib-0.2.2-cp37-cp37m-win_amd64.whl", hash = "sha256:52ae5739e4b5d6317b52f5b040b1b6639e8af68a5b8fd606a8b08658fbd0cab5"},
+    {file = "ruamel.yaml.clib-0.2.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:4df5019e7783d14b79217ad9c56edf1ba7485d614ad5a385d1b3c768635c81c0"},
+    {file = "ruamel.yaml.clib-0.2.2-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:5254af7d8bdf4d5484c089f929cb7f5bafa59b4f01d4f48adda4be41e6d29f99"},
+    {file = "ruamel.yaml.clib-0.2.2-cp38-cp38-win32.whl", hash = "sha256:74161d827407f4db9072011adcfb825b5258a5ccb3d2cd518dd6c9edea9e30f1"},
+    {file = "ruamel.yaml.clib-0.2.2-cp38-cp38-win_amd64.whl", hash = "sha256:058a1cc3df2a8aecc12f983a48bda99315cebf55a3b3a5463e37bb599b05727b"},
+    {file = "ruamel.yaml.clib-0.2.2.tar.gz", hash = "sha256:2d24bd98af676f4990c4d715bcdc2a60b19c56a3fb3a763164d2d8ca0e806ba7"},
 ]
 sentry-sdk = [
     {file = "sentry-sdk-0.15.1.tar.gz", hash = "sha256:3ac0c430761b3cb7682ce612151d829f8644bb3830d4e530c75b02ceb745ff49"},
@@ -2299,8 +2301,8 @@ termcolor = [
     {file = "termcolor-1.1.0.tar.gz", hash = "sha256:1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"},
 ]
 testfixtures = [
-    {file = "testfixtures-6.14.1-py2.py3-none-any.whl", hash = "sha256:30566e24a1b34e4d3f8c13abf62557d01eeb4480bcb8f1745467bfb0d415a7d9"},
-    {file = "testfixtures-6.14.1.tar.gz", hash = "sha256:58d2b3146d93bc5ddb0cd24e0ccacb13e29bdb61e5c81235c58f7b8ee4470366"},
+    {file = "testfixtures-6.14.2-py2.py3-none-any.whl", hash = "sha256:816557888877f498081c1b5c572049b4a2ddffedb77401308ff4cdc1bb9147b7"},
+    {file = "testfixtures-6.14.2.tar.gz", hash = "sha256:14d9907390f5f9c7189b3d511b64f34f1072d07cc13b604a57e1bb79029376e3"},
 ]
 text-unidecode = [
     {file = "text-unidecode-1.3.tar.gz", hash = "sha256:bad6603bb14d279193107714b288be206cac565dfa49aa5b105294dd5c4aab93"},
