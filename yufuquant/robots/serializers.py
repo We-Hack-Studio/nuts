@@ -65,6 +65,7 @@ class RobotListSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "pair",
+            "market_type",
             "target_currency",
             "base_currency",
             "quote_currency",
