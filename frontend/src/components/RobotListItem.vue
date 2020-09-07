@@ -99,7 +99,7 @@ export default {
   },
   methods: {
     async showMsgBox() {
-      const confirm = await this.$bvModal.msgBoxConfirm('todo.....', {
+      const confirm = await this.$bvModal.msgBoxConfirm('删除机器人将同时删除其所有资产统计数据。', {
         title: '确认删除？',
         size: 'sm',
         buttonSize: 'sm',

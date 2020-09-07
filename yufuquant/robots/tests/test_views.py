@@ -129,8 +129,18 @@ class RobotViewSetTestCase(APITestCase):
     def test_delete_robot_permission(self):
         pass
 
-    def test_delete_robot(self):
-        pass
+    def test_admin_user_can_delete_a_robot(self):
+        robot = RobotFactory()
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.admin_user_token.key)
+        url = self.reverse("api:robot-detail", pk=robot.pk)
+        response = self.client.delete(url)
+        self.response_204(response)
+
+    def test_can_not_delete_a_nonexistent_robot(self):
+        url = self.reverse("api:robot-detail", pk=999)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.admin_user_token.key)
+        response = self.client.delete(url)
+        self.response_404(response)
 
     def test_retrieve_robot_config_permission(self):
         robot = RobotFactory()

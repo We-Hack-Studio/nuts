@@ -21,13 +21,7 @@ class RobotStrategyParametersSerializer(Serializer):
     strategy_parameters = serializers.JSONField(binary=True)
 
 
-class RobotViewSet(
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    mixins.CreateModelMixin,
-    mixins.UpdateModelMixin,
-    viewsets.GenericViewSet,
-):
+class RobotViewSet(viewsets.ModelViewSet):
     serializer_class = RobotListSerializer
     permission_classes = [IsAdminUser]
     pagination_class = None
