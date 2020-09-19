@@ -1,0 +1,779 @@
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Test description">
+      
+      
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.12">
+    
+    
+      
+        <title>部署 - 渔夫量化</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.4dd2dd8d.min.css">
+      
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href=".." title="渔夫量化" class="md-header-nav__button md-logo" aria-label="渔夫量化">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            渔夫量化
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              部署
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/yufuquant/yufuquant/" title="前往 GitHub 仓库" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    yufuquant
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="渔夫量化" class="md-nav__button md-logo" aria-label="渔夫量化">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    渔夫量化
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/yufuquant/yufuquant/" title="前往 GitHub 仓库" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    yufuquant
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="介绍" class="md-nav__link">
+      介绍
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        部署
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" title="部署" class="md-nav__link md-nav__link--active">
+      部署
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    准备工作
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    安装 Docker
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-compose" class="md-nav__link">
+    安装 Docker Compose
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    下载代码
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nginx" class="md-nav__link">
+    配置 Nginx
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    配置接口地址
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    配置环境变量
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker_1" class="md-nav__link">
+    构建 Docker 容器
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    启动系统
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#https" class="md-nav__link">
+    配置 HTTPS
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    重启和停止
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    更新
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      附录
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="附录" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        附录
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../specification/" title="渔夫量化策略规范" class="md-nav__link">
+      渔夫量化策略规范
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    准备工作
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    安装 Docker
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-compose" class="md-nav__link">
+    安装 Docker Compose
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    下载代码
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nginx" class="md-nav__link">
+    配置 Nginx
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    配置接口地址
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    配置环境变量
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker_1" class="md-nav__link">
+    构建 Docker 容器
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    启动系统
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#https" class="md-nav__link">
+    配置 HTTPS
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    重启和停止
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    更新
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/yufuquant/yufuquant/tree/master/docs/deploy.md" title="编辑此页" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  
+                
+                
+                  <h1>部署</h1>
+                
+                <p>强烈推荐使用 <a href="https://www.docker.com/">Docker</a> 无痛部署渔夫量化系统！</p>
+<h2 id="_1">准备工作<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ul>
+<li>一台可安装 Docker 的计算机，推荐使用云服务器。</li>
+<li>一个域名（可选）。</li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">注意</p>
+<p>在非公网访问的环境下部署，可以不用域名。如果在可公网访问的服务器上部署，强烈建议配置域名。配置域名才可开启 HTTPS 安全访问。</p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">云服务器推荐</p>
+<p>阿里云香港节点轻量云服务器仅需 24元/月，足以运行渔夫量化系统。腾讯云、华为云也有类似产品，购买前可加我微信咨询，可获得进一步的折扣优惠。</p>
+</div>
+<h2 id="docker">安装 Docker<a class="headerlink" href="#docker" title="Permanent link">&para;</a></h2>
+<p>如果使用阿里云轻量应用服务器，只需依次执行以下命令即可安装 Docker。</p>
+<ol>
+<li>
+<p>更新 apt 包索引
+    <div class="highlight"><pre><span></span><code>sudo apt-get update
+</code></pre></div></p>
+</li>
+<li>
+<p>安装一些辅助工具
+    <div class="highlight"><pre><span></span><code>sudo apt-get install <span class="se">\</span>
+    apt-transport-https <span class="se">\</span>
+    ca-certificates <span class="se">\</span>
+    curl <span class="se">\</span>
+    gnupg-agent <span class="se">\</span>
+    software-properties-common
+</code></pre></div></p>
+</li>
+<li>
+<p>添加 Docker 官方 GPG key
+    <div class="highlight"><pre><span></span><code>curl -fsSL https://download.docker.com/linux/ubuntu/gpg <span class="p">|</span> sudo apt-key add -
+</code></pre></div></p>
+</li>
+<li>
+<p>再次更新 apt 包索引
+    <div class="highlight"><pre><span></span><code>sudo apt-get update
+</code></pre></div></p>
+</li>
+<li>
+<p>安装 Docker
+    <div class="highlight"><pre><span></span><code>sudo apt-get install docker-ce docker-ce-cli containerd.io
+</code></pre></div></p>
+</li>
+<li>
+<p>验证 Docker 结果
+    <div class="highlight"><pre><span></span><code>sudo docker run hello-world
+</code></pre></div>
+    运行不报错说明安装成功。</p>
+</li>
+<li>
+<p>将用户加入 docker 组，注意将 <code>your-user</code> 替换为当前系统用户名。
+    <div class="highlight"><pre><span></span><code>sudo usermod -aG docker your-user
+</code></pre></div>
+    这样就不用在每次执行 docker 命令前加 sudo 了。</p>
+</li>
+</ol>
+<div class="admonition hint">
+<p>其他操作系统安装 Docker 的方式都大同小异，详细步骤可参考下方列出的官方文档：</p>
+<ul>
+<li><a href="https://docs.docker.com/engine/install/ubuntu/">Install Docker Engine on Ubuntu</a></li>
+<li><a href="https://docs.docker.com/engine/install/centos/">Install Docker Engine on CentOS</a></li>
+<li><a href="https://docs.docker.com/docker-for-windows/install/">Install Docker Desktop on Windows</a></li>
+<li><a href="https://docs.docker.com/docker-for-mac/install/">Install Docker Desktop on Mac</a></li>
+</ul>
+</div>
+<h2 id="docker-compose">安装 Docker Compose<a class="headerlink" href="#docker-compose" title="Permanent link">&para;</a></h2>
+<p>如果使用阿里云轻量应用服务器，只需依次执行以下命令即可安装 Docker Compose。</p>
+<ol>
+<li>
+<p>下载 Docker Compose
+    <div class="highlight"><pre><span></span><code>sudo curl -L <span class="s2">&quot;https://github.com/docker/compose/releases/download/1.26.2/docker-compose-</span><span class="k">$(</span>uname -s<span class="k">)</span><span class="s2">-</span><span class="k">$(</span>uname -m<span class="k">)</span><span class="s2">&quot;</span> -o /usr/local/bin/docker-compose
+</code></pre></div></p>
+</li>
+<li>
+<p>赋予 docker-compose 可执行权限
+    <div class="highlight"><pre><span></span><code>sudo chmod +x /usr/local/bin/docker-compose
+</code></pre></div></p>
+</li>
+<li>
+<p>查看 docker-compose 版本号，验证安装结果
+    <div class="highlight"><pre><span></span><code>docker-compose -v
+</code></pre></div></p>
+</li>
+</ol>
+<h2 id="_2">下载代码<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>使用 Git 拉取渔夫量化系统最新代码。</p>
+<div class="highlight"><pre><span></span><code>git clone https://github.com/yufuquant/yufuquant.git
+</code></pre></div>
+
+<h2 id="nginx">配置 Nginx<a class="headerlink" href="#nginx" title="Permanent link">&para;</a></h2>
+<div class="admonition hint">
+<p>如果不配置域名，可直接跳过此步骤。</p>
+</div>
+<p>将 yufuquant/compose/prod/nginx/conf.d 目录下的 yufuquant.conf.template 文件复制一份到同级目录，新复制的文件命名为 yufuquant.conf。</p>
+<p>yufuquant.conf 配置文件部分内容如下：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>upstream yufuquant_api  {
+    server yufuquant.api:8000;
+}
+
+server {
+    listen 80 default_server;
+    server_name _;
+    # ...
+}
+</code></pre></div>
+</td></tr></table>
+
+<p>将第 7 行的下划线 <code>_</code> 改为域名，例如：</p>
+<div class="highlight"><pre><span></span><code><span class="k">server_name</span> <span class="s">demo.yufuquant.cc</span><span class="p">;</span>
+</code></pre></div>
+
+<div class="admonition important">
+<p class="admonition-title">注意</p>
+<p>请确保已将配置的域名解析到部署渔夫系统的服务器。</p>
+</div>
+<h2 id="_3">配置接口地址<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>配置后端 API 接口请求地址。</p>
+<p>将 yufuquant/frontend/dist 目录下的 config.example.js 文件复制一份到同级目录，新复制的文件命名为 config.js。</p>
+<p>config.js 配置文件初始内容如下：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">window</span><span class="p">.</span><span class="nx">conf</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">restApiBaseUrl</span><span class="o">:</span> <span class="s1">&#39;http://127.0.0.1:8000/api/v1&#39;</span><span class="p">,</span>
+    <span class="nx">websocketApiUri</span><span class="o">:</span> <span class="s1">&#39;ws://127.0.0.1:8000/ws/v1/streams/&#39;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>请根据不同的部署环境进行修改：</p>
+<div class="tabbed-set" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">本地部署</label><div class="tabbed-content">
+<p>无需修改。</p>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">公网未配置域名</label><div class="tabbed-content">
+<p>将 127.0.0.1 改为公网 ip。</p>
+</div>
+<input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><label for="__tabbed_1_3">公网配置域名</label><div class="tabbed-content">
+<ul>
+<li>将 <a href="http://127.0.0.1:8000">http://127.0.0.1:8000</a> 改为 <a href="https://域名">https://域名</a>。</li>
+<li>将 ws://127.0.0.1:8000 改为 wss://域名。</li>
+</ul>
+<p>例如修改后的配置如下：
+<div class="highlight"><pre><span></span><code><span class="nb">window</span><span class="p">.</span><span class="nx">conf</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">restApiBaseUrl</span><span class="o">:</span> <span class="s1">&#39;https://demo.yufuquant.cc/api/v1&#39;</span><span class="p">,</span>
+    <span class="nx">websocketApiUri</span><span class="o">:</span> <span class="s1">&#39;wss://demo.yufuquant.cc/ws/v1/streams/&#39;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+</div>
+</div>
+<h2 id="_4">配置环境变量<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>将项目根目录 yufuquant 下的 yufuquant.example.env 复制一份到同级目录，新复制的文件命名为 yufuquant.env。</p>
+<p>yufuquant.env 内容如下：</p>
+<div class="highlight"><pre><span></span><code>DJANGO_SECRET_KEY=yufuquant.ccufmv!jn)82cu*pcry#3xcag**c#nn)=y0j%2k5dulf43_+omhu
+DJANGO_ALLOWED_HOSTS=192.168.10.72
+SENTRY_DSN=
+</code></pre></div>
+
+<p>各配置项说明：</p>
+<p><strong>DJANGO_SECRET_KEY</strong></p>
+<p>系统密钥，切勿泄露。推荐使用这个工具在线生成：<a href="https://www.zmrenwu.com/webtools/django-secret-key-creator">Django Secret Key Creator</a>。</p>
+<p><strong>DJANGO_ALLOWED_HOSTS</strong></p>
+<p>允许访问的域名。本地环境设为 127.0.0.1；未配置域名设置为服务器公网 ip；配置了域名则设置为域名。</p>
+<p><strong>SENTRY_DSN</strong></p>
+<p><a href="https://sentry.io/">Sentry</a> 服务的 DSN 地址，用于接收系统的错误日志，可以不配置。</p>
+<p>完整示例：</p>
+<div class="highlight"><pre><span></span><code>DJANGO_SECRET_KEY=yufuquantzb^(0kgc3xf8zd#gwy$4v1o$1-%j1qnl!%&amp;1scb$#
+DJANGO_ALLOWED_HOSTS=demo.yufuquant.cc
+SENTRY_DSN=https://b72df2cec6924h7962c61c4e463he09q@o199394.ingest.sentry.io/5144483
+</code></pre></div>
+
+<h2 id="docker_1">构建 Docker 容器<a class="headerlink" href="#docker_1" title="Permanent link">&para;</a></h2>
+<p>一切就绪，开始构建 Docker 容器，渔夫系统将运行于构建的容器内。</p>
+<p>运行下面的命令构建容器：</p>
+<div class="highlight"><pre><span></span><code>docker-compose build
+</code></pre></div>
+
+<h2 id="_5">启动系统<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>docker-compose up -d
+</code></pre></div>
+
+<h2 id="https">配置 HTTPS<a class="headerlink" href="#https" title="Permanent link">&para;</a></h2>
+<div class="admonition hint">
+<p>非公网环境或者未配置域名可跳过。</p>
+</div>
+<p>配置 HTTPS 的命令模板：
+<div class="highlight"><pre><span></span><code>docker <span class="nb">exec</span> -it yufuquant_nginx certbot --nginx -n --agree-tos --redirect --email xxx@xxx.com -d your_domain
+</code></pre></div></p>
+<p>将 --email 后的 <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#120;&#120;&#120;&#64;&#120;&#120;&#120;&#46;&#99;&#111;&#109;">&#120;&#120;&#120;&#64;&#120;&#120;&#120;&#46;&#99;&#111;&#109;</a> 替换为你的邮箱地址。</p>
+<p>将 -d 后的 your_domain 替换为配置的域名。</p>
+<h2 id="_6">重启和停止<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<p>重启系统：</p>
+<div class="highlight"><pre><span></span><code>docker-compose restart
+</code></pre></div>
+
+<p>停止：</p>
+<div class="highlight"><pre><span></span><code>docker-compose stop
+</code></pre></div>
+
+<p>再次启动：</p>
+<div class="highlight"><pre><span></span><code>docker-compose up -d
+</code></pre></div>
+
+<h2 id="_7">更新<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<p>首先拉取最新版本的代码：</p>
+<div class="highlight"><pre><span></span><code>git pull
+</code></pre></div>
+
+<p>重新构建容器：</p>
+<div class="highlight"><pre><span></span><code>docker-compose build
+</code></pre></div>
+
+<p>启动：</p>
+<div class="highlight"><pre><span></span><code>docker-compose up -d
+</code></pre></div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href=".." title="介绍" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                介绍
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../specification/" title="渔夫量化策略规范" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                渔夫量化策略规范
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.3636a4ec.min.js"></script>
+      <script src="../assets/javascripts/bundle.e9fe3281.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "\u590d\u5236", "clipboard.copied": "\u5df2\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\uff0c\\u3002]+", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.5eca75d3.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
