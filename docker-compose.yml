@@ -15,7 +15,7 @@ services:
     volumes:
       - ./database:/app/database
       - staticfiles:/app/staticfiles
-      - media:/app/media
+      - media:/app/yufuquant/media
     env_file:
       - yufuquant.env
     expose:
