@@ -1,17 +1,7 @@
-# Welcome to MkDocs
+# 渔夫量化介绍
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+渔夫量化是一个开源免费的数字货币量化交易系统。使用渔夫量化，你可以轻松接入主流数字货币交易所，从海量开源免费的交易策略中选择策略进行量化交易。你还可以使用手机、平板电脑、PC 等设备监控渔夫量化交易策略的运行状态并根据市场行情随时调整策略参数。
 
-## Commands
+## 架构
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+![](./images/architecture.png)
