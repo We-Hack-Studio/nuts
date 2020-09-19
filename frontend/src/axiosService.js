@@ -32,11 +32,12 @@ authInstance.interceptors.response.use(
   },
   error => {
     if (error.response.status === 401) {
+      storage.clear();
+
       if (window.location.pathname !== '/login') {
         window.location.href = '/#/login';
         return null;
       }
-      storage.clear();
     }
 
     return Promise.reject(error);
