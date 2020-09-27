@@ -61,7 +61,7 @@ class RobotViewSetTestCase(APITestCase):
                 "attributes": {
                     "name": "Robot-1",
                     "pair": "BTCUSDT",
-                    "market_type": "futures",
+                    "market_type": "linear_perpetual",
                     "enabled": True,
                     "credential": {"type": "credentials", "id": credential.pk},
                     "strategy": {"type": "strategies", "id": strategy.pk},

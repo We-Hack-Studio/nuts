@@ -1,15 +1,21 @@
+from core.models import TimeStampedModel
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from jsonfield import JSONField
 from model_utils.choices import Choices
 
-from core.models import TimeStampedModel
-
 from .managers import RobotManager
 
 
 class Robot(TimeStampedModel):
-    MARKET_TYPE = Choices(("spots", _("spots")), ("futures", _("futures")))
+    MARKET_TYPE = Choices(
+        ("spots", _("Spots")),
+        ("margin", _("Margin")),
+        ("linear_delivery", _("Linear delivery contract")),
+        ("linear_perpetual", _("Linear perpetual contract")),
+        ("inverse_delivery", _("Inverse delivery contract")),
+        ("inverse_perpetual", _("Inverse perpetual contract")),
+    )
 
     name = models.CharField(_("name"), max_length=20)
     pair = models.CharField(_("pair"), max_length=15)
@@ -45,6 +51,7 @@ class Robot(TimeStampedModel):
 
     class JSONAPIMeta:
         resource_name = "robots"
+
     @property
     def duration(self):
         if self.start_time and self.ping_time:

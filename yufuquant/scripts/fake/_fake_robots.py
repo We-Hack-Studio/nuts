@@ -10,7 +10,7 @@ fake_data = [
         "name": "Bybit",
         "name_zh": "Bybit",
         "pair": "BTCUSD",
-        "market_type": "futures",
+        "market_type": "inverse_perpetual",
         "target_currency": "BTC",
     },
     {
@@ -18,8 +18,8 @@ fake_data = [
         "name": "Binance",
         "name_zh": "币安",
         "pair": "ETHUSDT",
-        "market_type": "futures",
-        "target_currency": "ETH",
+        "market_type": "linear_perpetual",
+        "target_currency": "USDT",
     },
     {
         "code": "huobi",
@@ -36,7 +36,7 @@ fake_data = [
         "name": "OKEx",
         "name_zh": "OKEx",
         "pair": "EOS-USD-200925",
-        "market_type": "futures",
+        "market_type": "inverse_delivery",
         "target_currency": "EOS",
     },
 ]
