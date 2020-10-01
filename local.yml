@@ -1,15 +1,55 @@
 version: '3'
 
+volumes:
+  local_postgres_data:
+  local_postgres_data_backups:
+
 services:
-  yufuquant.api.local:
+  django:
     build:
       context: .
-      dockerfile: compose/local/Dockerfile
-    image: yufuquant_api_local
-    container_name: yufuquant_api_local
+      dockerfile: compose/local/django/Dockerfile
+    image: yufuquant_local_django
+    container_name: yufuquant_local_django
     working_dir: /app
+    depends_on:
+      - postgres
+      - redis
     volumes:
       - .:/app
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
     ports:
       - "8000:8000"
     command: /start.sh
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/production/postgres/Dockerfile
+    image: yufuquant_production_postgres
+    container_name: yufuquant_local_postgres
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+      - local_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.local/.postgres
+
+  redis:
+    image: redis:5.0
+    container_name: yufuquant_local_redis
+
+  node:
+    build:
+      context: .
+      dockerfile: ./compose/local/node/Dockerfile
+    image: yufuquant_local_node
+    container_name: yufuquant_local_node
+    volumes:
+      - ./frontend:/app
+      # http://jdlm.info/articles/2016/03/06/lessons-building-node-app-docker.html
+      - /app/node_modules
+    command: npm run serve
+    ports:
+      - "8080:8080"

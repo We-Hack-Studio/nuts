@@ -193,8 +193,24 @@ export default {
           'text': '现货',
         },
         {
-          'value': 'futures',
-          'text': '期货',
+          'value': 'margin',
+          'text': '杠杆',
+        },
+        {
+          'value': 'linear_delivery',
+          'text': '线性交割合约',
+        },
+        {
+          'value': 'linear_perpetual',
+          'text': '线性永续合约',
+        },
+        {
+          'value': 'inverse_delivery',
+          'text': '反向交割合约',
+        },
+        {
+          'value': 'inverse_perpetual',
+          'text': '反向永续合约',
         },
       ],
       formProcessing: false,

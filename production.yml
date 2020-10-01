@@ -1,0 +1,54 @@
+version: '3'
+
+volumes:
+  staticfiles:
+  media:
+  letsencrypt:
+  production_postgres_data:
+  production_postgres_data_backups:
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: compose/production/django/Dockerfile
+    image: yufuquant_production_django
+    working_dir: /app
+    volumes:
+      - staticfiles:/app/staticfiles
+      - media:/app/yufuquant/media
+    env_file:
+      - .envs/.production/.django
+      - .envs/.production/.postgres
+    expose:
+      - "8000"
+    command: /start.sh
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/production/postgres/Dockerfile
+    image: yufuquant_production_postgres
+    volumes:
+      - production_postgres_data:/var/lib/postgresql/data
+      - production_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.production/.postgres
+
+  redis:
+    image: redis:5.0
+
+  nginx:
+    build:
+      context: .
+      dockerfile: compose/production/nginx/Dockerfile
+    image: yufuquant_production_nginx
+    volumes:
+      - staticfiles:/apps/yufuquant/staticfiles
+      - media:/apps/yufuquant/media
+      - letsencrypt:/etc/letsencrypt
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - django

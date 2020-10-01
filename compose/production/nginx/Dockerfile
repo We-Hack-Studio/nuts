@@ -4,7 +4,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -yq --allow
 
 RUN rm /etc/nginx/conf.d/default.conf
 
-COPY ./compose/prod/nginx/includes/ /etc/nginx/includes/
-COPY ./compose/prod/nginx/conf.d/ /etc/nginx/conf.d/
+COPY ./compose/production/nginx/includes/ /etc/nginx/includes/
+COPY ./compose/production/nginx/conf.d/ /etc/nginx/conf.d/
 
 

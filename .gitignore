@@ -106,7 +106,7 @@ venv.bak/
 *.sqlite3
 staticfiles/
 media/
-yufuquant.env
+.envs/.production/
 yufuquant.conf
 
 config.js
