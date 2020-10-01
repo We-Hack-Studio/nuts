@@ -33,6 +33,9 @@ asgiref = "^3.2.10"
 djangorestframework-jsonapi = "^3.2.0"
 django-polymorphic = "^3.0.0"
 daphne = "^2.5.0" # required by django-channels though we use uvicorn in production
+psycopg2-binary = "^2.8.6"
+hiredis = "^1.1.0"
+django-redis = "^4.12.1"
 
 [tool.poetry.dev-dependencies]
 mkdocs = "^1.1.2"

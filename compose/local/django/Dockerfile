@@ -1,8 +1,8 @@
-FROM python:3.7
+FROM python:3.8
 
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update && apt-get install -y gettext python3-dev
+RUN apt-get update && apt-get install -y postgresql-client gettext python3-dev libpq-dev
 
 WORKDIR /app
 
@@ -12,9 +12,12 @@ RUN poetry config virtualenvs.create false
 COPY poetry.lock pyproject.toml /app/
 RUN poetry install --no-root --no-interaction
 
-COPY . /app
+COPY ./compose/production/django/entrypoint.sh /entrypoint.sh
+RUN sed -i 's/\r$//g' /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-COPY ./compose/local/start.sh /start.sh
-RUN sed -i 's/\r$//g' /start.sh
+COPY ./compose/local/django/start.sh /start.sh
+RUN sed -i 's/\r//' /start.sh
 RUN chmod +x /start.sh
 
+ENTRYPOINT ["/entrypoint.sh"]
