@@ -18,8 +18,8 @@ class Robot(TimeStampedModel):
     )
 
     name = models.CharField(_("name"), max_length=20)
-    pair = models.CharField(_("pair"), max_length=15)
-    market_type = models.CharField(_("market type"), max_length=10, choices=MARKET_TYPE)
+    pair = models.CharField(_("pair"), max_length=20)
+    market_type = models.CharField(_("market type"), max_length=30, choices=MARKET_TYPE)
     enabled = models.BooleanField(_("enabled"), default=True)
     start_time = models.DateTimeField(_("start time"), null=True, blank=True)
     ping_time = models.DateTimeField(_("ping time"), null=True, blank=True)

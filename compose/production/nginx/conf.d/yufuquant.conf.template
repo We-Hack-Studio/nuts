@@ -1,5 +1,5 @@
-upstream yufuquant_api  {
-    server yufuquant.api:8000;
+upstream django  {
+    server django:8000;
 }
 
 server {
