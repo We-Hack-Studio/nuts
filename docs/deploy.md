@@ -244,6 +244,12 @@ docker-compose -f production.yml up -d
     SECURE_PORT=4443
     ```
 
+## 初始化数据库
+
+```bash
+docker-compose -f production.yml run --rm django python manage.py runscript yufuquant.scripts.db.init_db
+```
+
 ## 配置 HTTPS
 
 !!! hint ""
