@@ -48,7 +48,7 @@ services:
       - media:/apps/yufuquant/media
       - letsencrypt:/etc/letsencrypt
     ports:
-      - "80:80"
-      - "443:443"
+      - "${PORT:-80}:80"
+      - "${SECURE_PORT:-443}:443"
     depends_on:
       - django
