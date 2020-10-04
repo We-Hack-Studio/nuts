@@ -281,6 +281,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#初始化数据库" class="md-nav__link">
+    初始化数据库
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#配置-https" class="md-nav__link">
     配置 HTTPS
   </a>
@@ -431,6 +438,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#初始化数据库" class="md-nav__link">
+    初始化数据库
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#配置-https" class="md-nav__link">
     配置 HTTPS
   </a>
@@ -570,7 +584,7 @@
 <div class="admonition hint">
 <p>如果不配置域名，可直接跳过此步骤。</p>
 </div>
-<p>将 yufuquant/compose/prod/nginx/conf.d 目录下的 yufuquant.conf.template 文件复制一份到同级目录，新复制的文件命名为 yufuquant.conf。</p>
+<p>将 yufuquant/compose/production/nginx/conf.d 目录下的 yufuquant.conf.template 文件复制一份到同级目录，新复制的文件命名为 yufuquant.conf。</p>
 <p>yufuquant.conf 配置文件部分内容如下：</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
 2
@@ -689,6 +703,10 @@ SECURE_PORT=4443
 </code></pre></div>
 
 </div>
+<h2 id="初始化数据库">初始化数据库<a class="headerlink" href="#初始化数据库" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>docker-compose -f production.yml run --rm django python manage.py runscript yufuquant.scripts.db.init_db
+</code></pre></div>
+
 <h2 id="配置-https">配置 HTTPS<a class="headerlink" href="#配置-https" title="Permanent link">&para;</a></h2>
 <div class="admonition hint">
 <p>非公网环境或者未配置域名可跳过。</p>
@@ -700,15 +718,15 @@ SECURE_PORT=4443
 <p>将 -d 后的 your_domain 替换为配置的域名。</p>
 <h2 id="重启和停止">重启和停止<a class="headerlink" href="#重启和停止" title="Permanent link">&para;</a></h2>
 <p>重启系统：</p>
-<div class="highlight"><pre><span></span><code>docker-compose restart
+<div class="highlight"><pre><span></span><code>docker-compose -f production.yml restart
 </code></pre></div>
 
 <p>停止：</p>
-<div class="highlight"><pre><span></span><code>docker-compose stop
+<div class="highlight"><pre><span></span><code>docker-compose -f production.yml stop
 </code></pre></div>
 
 <p>再次启动：</p>
-<div class="highlight"><pre><span></span><code>docker-compose up -d
+<div class="highlight"><pre><span></span><code>docker-compose -f production.yml up -d
 </code></pre></div>
 
 <h2 id="更新">更新<a class="headerlink" href="#更新" title="Permanent link">&para;</a></h2>
@@ -717,11 +735,11 @@ SECURE_PORT=4443
 </code></pre></div>
 
 <p>重新构建容器：</p>
-<div class="highlight"><pre><span></span><code>docker-compose build
+<div class="highlight"><pre><span></span><code>docker-compose -f production.yml build
 </code></pre></div>
 
 <p>启动：</p>
-<div class="highlight"><pre><span></span><code>docker-compose up -d
+<div class="highlight"><pre><span></span><code>docker-compose -f production.yml up -d
 </code></pre></div>
                 
               
