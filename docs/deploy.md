@@ -95,13 +95,13 @@ git clone https://github.com/yufuquant/yufuquant.git
 !!! hint ""
     如果不配置域名，可直接跳过此步骤。
 
-将 yufuquant/compose/prod/nginx/conf.d 目录下的 yufuquant.conf.template 文件复制一份到同级目录，新复制的文件命名为 yufuquant.conf。
+将 yufuquant/compose/production/nginx/conf.d 目录下的 yufuquant.conf.template 文件复制一份到同级目录，新复制的文件命名为 yufuquant.conf。
 
 yufuquant.conf 配置文件部分内容如下：
 
 ```{nginx hl_lines="7" linenums="1"}
-upstream yufuquant_api  {
-    server yufuquant.api:8000;
+upstream django  {
+    server django:8000;
 }
 
 server {
@@ -158,14 +158,16 @@ window.conf = {
 
 ## 配置环境变量
 
-将项目根目录 yufuquant 下的 yufuquant.example.env 复制一份到同级目录，新复制的文件命名为 yufuquant.env。
+在将项目根目录 yufuquant 下的 .envs 目录下创建一个 .production 文件夹，并在 .production 文件夹下创建 .django 和 .postgres 文件，分别写入如下内容：
 
-yufuquant.env 内容如下：
+**.django**
 
 ```
+DJANGO_SETTINGS_MODULE=config.settings.production
 DJANGO_SECRET_KEY=yufuquant.ccufmv!jn)82cu*pcry#3xcag**c#nn)=y0j%2k5dulf43_+omhu
 DJANGO_ALLOWED_HOSTS=192.168.10.72
 SENTRY_DSN=
+REDIS_URL=redis://redis:6379/0
 ```
 
 各配置项说明：
@@ -185,10 +187,36 @@ SENTRY_DSN=
 完整示例：
 
 ```
+DJANGO_SETTINGS_MODULE=config.settings.production
 DJANGO_SECRET_KEY=yufuquantzb^(0kgc3xf8zd#gwy$4v1o$1-%j1qnl!%&1scb$#
 DJANGO_ALLOWED_HOSTS=demo.yufuquant.cc
 SENTRY_DSN=https://b72df2cec6924h7962c61c4e463he09q@o199394.ingest.sentry.io/5144483
+REDIS_URL=redis://redis:6379/0
 ```
+
+**.postgres**
+
+```
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=yufuquant
+POSTGRES_USER=dbuser
+POSTGRES_PASSWORD=dbpwd
+```
+
+各配置项说明：
+
+**POSTGRES_DB**
+
+数据库名，可自行更改。
+
+**POSTGRES_USER**
+
+数据库用户名，可自行更改。
+
+**POSTGRES_PASSWORD**
+
+数据库密码，请自行更改为安全的密码。
 
 ## 构建 Docker 容器
 
@@ -197,14 +225,24 @@ SENTRY_DSN=https://b72df2cec6924h7962c61c4e463he09q@o199394.ingest.sentry.io/514
 运行下面的命令构建容器：
 
 ```bash
-docker-compose build
+docker-compose -f production.yml build
 ```
 
 ## 启动系统
 
+Nginx 默认 80 和 443 端口：
+
 ```bash
-docker-compose up -d
+docker-compose -f production.yml up -d
 ```
+
+!!! 注意
+    如果 80 和 443 端口已被占用，可在项目根目录创建一个 .env 文件，通过 PORT 和 SECURE_PORT 指定 HTTP 和 HTTPS 访问端口：
+
+    ```
+    PORT=4080
+    SECURE_PORT=4443
+    ```
 
 ## 配置 HTTPS
 
@@ -213,7 +251,7 @@ docker-compose up -d
 
 配置 HTTPS 的命令模板：
 ```bash
-docker exec -it yufuquant_nginx certbot --nginx -n --agree-tos --redirect --email xxx@xxx.com -d your_domain
+docker exec -it yufuquant_nginx_1 certbot --nginx -n --agree-tos --redirect --email xxx@xxx.com -d your_domain
 ```
 
 将 --email 后的 xxx@xxx.com 替换为你的邮箱地址。
@@ -225,19 +263,19 @@ docker exec -it yufuquant_nginx certbot --nginx -n --agree-tos --redirect --emai
 重启系统：
 
 ```bash
-docker-compose restart
+docker-compose -f production.yml restart
 ```
 
 停止：
 
 ```bash
-docker-compose stop
+docker-compose -f production.yml stop
 ```
 
 再次启动：
 
 ```bash
-docker-compose up -d
+docker-compose -f production.yml up -d
 ```
 
 ## 更新
@@ -251,11 +289,11 @@ git pull
 重新构建容器：
 
 ```bash
-docker-compose build
+docker-compose -f production.yml build
 ```
 
 启动：
 
 ```bash
-docker-compose up -d
+docker-compose -f production.yml up -d
 ```

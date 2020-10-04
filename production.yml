@@ -47,6 +47,7 @@ services:
       - staticfiles:/apps/yufuquant/staticfiles
       - media:/apps/yufuquant/media
       - letsencrypt:/etc/letsencrypt
+      - ./frontend/dist:/apps/yufuquant/dist
     ports:
       - "${PORT:-80}:80"
       - "${SECURE_PORT:-443}:443"

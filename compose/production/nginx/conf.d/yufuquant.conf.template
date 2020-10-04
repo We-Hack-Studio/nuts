@@ -17,6 +17,6 @@ server {
     }
     location ~ ^/(api|ws|admin) {
         include /etc/nginx/includes/proxy.conf;
-        proxy_pass http://yufuquant_api;
+        proxy_pass http://django;
     }
 }
