@@ -580,8 +580,8 @@
 6
 7
 8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>upstream yufuquant_api  {
-    server yufuquant.api:8000;
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>upstream django  {
+    server django:8000;
 }
 
 server {
@@ -631,11 +631,13 @@ server {
 </div>
 </div>
 <h2 id="配置环境变量">配置环境变量<a class="headerlink" href="#配置环境变量" title="Permanent link">&para;</a></h2>
-<p>将项目根目录 yufuquant 下的 yufuquant.example.env 复制一份到同级目录，新复制的文件命名为 yufuquant.env。</p>
-<p>yufuquant.env 内容如下：</p>
-<div class="highlight"><pre><span></span><code>DJANGO_SECRET_KEY=yufuquant.ccufmv!jn)82cu*pcry#3xcag**c#nn)=y0j%2k5dulf43_+omhu
+<p>在将项目根目录 yufuquant 下的 .envs 目录下创建一个 .production 文件夹，并在 .production 文件夹下创建 .django 和 .postgres 文件，分别写入如下内容：</p>
+<p><strong>.django</strong></p>
+<div class="highlight"><pre><span></span><code>DJANGO_SETTINGS_MODULE=config.settings.production
+DJANGO_SECRET_KEY=yufuquant.ccufmv!jn)82cu*pcry#3xcag**c#nn)=y0j%2k5dulf43_+omhu
 DJANGO_ALLOWED_HOSTS=192.168.10.72
 SENTRY_DSN=
+REDIS_URL=redis://redis:6379/0
 </code></pre></div>
 
 <p>各配置项说明：</p>
@@ -646,27 +648,53 @@ SENTRY_DSN=
 <p><strong>SENTRY_DSN</strong></p>
 <p><a href="https://sentry.io/">Sentry</a> 服务的 DSN 地址，用于接收系统的错误日志，可以不配置。</p>
 <p>完整示例：</p>
-<div class="highlight"><pre><span></span><code>DJANGO_SECRET_KEY=yufuquantzb^(0kgc3xf8zd#gwy$4v1o$1-%j1qnl!%&amp;1scb$#
+<div class="highlight"><pre><span></span><code>DJANGO_SETTINGS_MODULE=config.settings.production
+DJANGO_SECRET_KEY=yufuquantzb^(0kgc3xf8zd#gwy$4v1o$1-%j1qnl!%&amp;1scb$#
 DJANGO_ALLOWED_HOSTS=demo.yufuquant.cc
 SENTRY_DSN=https://b72df2cec6924h7962c61c4e463he09q@o199394.ingest.sentry.io/5144483
+REDIS_URL=redis://redis:6379/0
 </code></pre></div>
 
+<p><strong>.postgres</strong></p>
+<div class="highlight"><pre><span></span><code>POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=yufuquant
+POSTGRES_USER=dbuser
+POSTGRES_PASSWORD=dbpwd
+</code></pre></div>
+
+<p>各配置项说明：</p>
+<p><strong>POSTGRES_DB</strong></p>
+<p>数据库名，可自行更改。</p>
+<p><strong>POSTGRES_USER</strong></p>
+<p>数据库用户名，可自行更改。</p>
+<p><strong>POSTGRES_PASSWORD</strong></p>
+<p>数据库密码，请自行更改为安全的密码。</p>
 <h2 id="构建-docker-容器">构建 Docker 容器<a class="headerlink" href="#构建-docker-容器" title="Permanent link">&para;</a></h2>
 <p>一切就绪，开始构建 Docker 容器，渔夫系统将运行于构建的容器内。</p>
 <p>运行下面的命令构建容器：</p>
-<div class="highlight"><pre><span></span><code>docker-compose build
+<div class="highlight"><pre><span></span><code>docker-compose -f production.yml build
 </code></pre></div>
 
 <h2 id="启动系统">启动系统<a class="headerlink" href="#启动系统" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>docker-compose up -d
+<p>Nginx 默认 80 和 443 端口：</p>
+<div class="highlight"><pre><span></span><code>docker-compose -f production.yml up -d
 </code></pre></div>
 
+<div class="admonition 注意">
+<p class="admonition-title">注意</p>
+<p>如果 80 和 443 端口已被占用，可在项目根目录创建一个 .env 文件，通过 PORT 和 SECURE_PORT 指定 HTTP 和 HTTPS 访问端口：</p>
+<div class="highlight"><pre><span></span><code>PORT=4080
+SECURE_PORT=4443
+</code></pre></div>
+
+</div>
 <h2 id="配置-https">配置 HTTPS<a class="headerlink" href="#配置-https" title="Permanent link">&para;</a></h2>
 <div class="admonition hint">
 <p>非公网环境或者未配置域名可跳过。</p>
 </div>
 <p>配置 HTTPS 的命令模板：
-<div class="highlight"><pre><span></span><code>docker <span class="nb">exec</span> -it yufuquant_nginx certbot --nginx -n --agree-tos --redirect --email xxx@xxx.com -d your_domain
+<div class="highlight"><pre><span></span><code>docker <span class="nb">exec</span> -it yufuquant_nginx_1 certbot --nginx -n --agree-tos --redirect --email xxx@xxx.com -d your_domain
 </code></pre></div></p>
 <p>将 --email 后的 <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#120;&#120;&#120;&#64;&#120;&#120;&#120;&#46;&#99;&#111;&#109;">&#120;&#120;&#120;&#64;&#120;&#120;&#120;&#46;&#99;&#111;&#109;</a> 替换为你的邮箱地址。</p>
 <p>将 -d 后的 your_domain 替换为配置的域名。</p>
