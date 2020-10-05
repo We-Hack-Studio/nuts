@@ -1,15 +1,14 @@
+from core.models import TimeStampedModel
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
-from core.models import TimeStampedModel
-
 
 class Exchange(TimeStampedModel):
-    code = models.CharField(_("code"), max_length=20)
-    name = models.CharField(_("name"), max_length=20)
-    name_zh = models.CharField(_("chinese name"), max_length=20, blank=True)
+    code = models.CharField(_("code"), max_length=50)
+    name = models.CharField(_("name"), max_length=50)
+    name_zh = models.CharField(_("chinese name"), max_length=100, blank=True)
     logo = models.ImageField(_("logo"), upload_to="exchanges/logos", blank=True)
     logo_thumbnail = ImageSpecField(
         source="logo",

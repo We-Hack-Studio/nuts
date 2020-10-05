@@ -18,6 +18,6 @@ REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"] = [
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    "default": env.db("DATABASE_URL", "sqlite:///yufuquant/database/db.sqlite3")
+    "default": env.db("DATABASE_URL", "sqlite:///database/db.sqlite3")
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True

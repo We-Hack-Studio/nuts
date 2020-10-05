@@ -6,10 +6,10 @@ from django_cryptography.fields import encrypt
 
 
 class Credential(TimeStampedModel):
-    note = models.CharField(_("note"), max_length=20, blank=True)
-    api_key = encrypt(models.CharField(_("API Key"), max_length=50))
-    secret = encrypt(models.CharField(_("secret"), max_length=50))
-    passphrase = encrypt(models.CharField(_("passphrase"), max_length=30, blank=True))
+    note = models.CharField(_("note"), max_length=30, blank=True)
+    api_key = encrypt(models.CharField(_("API Key"), max_length=200))
+    secret = encrypt(models.CharField(_("secret"), max_length=200))
+    passphrase = encrypt(models.CharField(_("passphrase"), max_length=100, blank=True))
     test_net = models.BooleanField(_("test net"), default=False)
     exchange = models.ForeignKey(
         "exchanges.Exchange",

@@ -5,7 +5,7 @@ from jsonfield import JSONField
 
 
 class Strategy(TimeStampedModel):
-    name = models.CharField(_("name"), max_length=20, unique=True)
+    name = models.CharField(_("name"), max_length=100, unique=True)
     description = models.TextField(_("description"), blank=True)
     specification = JSONField(_("specification"))
 

@@ -17,8 +17,8 @@ class Robot(TimeStampedModel):
         ("inverse_perpetual", _("Inverse perpetual contract")),
     )
 
-    name = models.CharField(_("name"), max_length=20)
-    pair = models.CharField(_("pair"), max_length=20)
+    name = models.CharField(_("name"), max_length=50)
+    pair = models.CharField(_("pair"), max_length=30)
     market_type = models.CharField(_("market type"), max_length=30, choices=MARKET_TYPE)
     enabled = models.BooleanField(_("enabled"), default=True)
     start_time = models.DateTimeField(_("start time"), null=True, blank=True)
