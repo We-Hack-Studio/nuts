@@ -1,12 +1,14 @@
 import '@babel/polyfill'
 import 'mutationobserver-shim'
-import Vue from 'vue'
 import './plugins/bootstrap-vue'
+import './assets/base.scss';
+
 import App from './App.vue'
+import JsonEditor from 'vue-json-edit'
+import ToggleButton from 'vue-js-toggle-button'
+import Vue from 'vue'
 import router from "./router";
 import store from "./store";
-import ToggleButton from 'vue-js-toggle-button'
-import JsonEditor from 'vue-json-edit'
 
 Vue.use(ToggleButton)
 Vue.use(JsonEditor)
