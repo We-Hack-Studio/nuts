@@ -82,12 +82,17 @@
     text-align: center;
     margin-bottom: 1rem;
     cursor: pointer;
-    &::after {
-      font-weight: 900;
-      content: '\f104';
-      font-family: 'Font Awesome 5 Free';
-      margin-right: 0.1rem;
+
+    .toggle-icon {
+      margin-left: -2px;
+      margin-top: 2px;
     }
+    // &::after {
+    //   font-weight: 900;
+    //   content: '\f104';
+    //   font-family: 'Font Awesome 5 Free';
+    //   margin-right: 0.1rem;
+    // }
     &:hover {
       text-decoration: none;
     }
@@ -115,7 +120,7 @@
     letter-spacing: 0.05rem;
     z-index: 1;
 
-    .sidebar-brand-icon i {
+    .sidebar-brand-icon .bi {
       font-size: 2rem;
     }
     .sidebar-brand-text {
@@ -138,33 +143,13 @@
   .sidebar {
     width: $sidebar-base-width !important;
     .nav-item {
-      // Accordion
-      .collapse {
-        position: relative;
-        left: 0;
-        z-index: 1;
-        top: 0;
-        animation: none;
-        .collapse-inner {
-          border-radius: 0;
-          box-shadow: none;
-        }
-      }
-      .collapsing {
-        display: block;
-        transition: $transition-collapse;
-      }
-      .collapse,
-      .collapsing {
-        margin: 0 1rem;
-      }
       .nav-link {
         display: block;
         width: 100%;
         text-align: left;
         padding: 1rem;
         width: $sidebar-base-width;
-        i {
+        .bi {
           font-size: 0.85rem;
           margin-right: 0.25rem;
         }
@@ -172,26 +157,10 @@
           font-size: 0.85rem;
           display: inline;
         }
-        // Accordion Arrow Icon
-        &[data-toggle='collapse'] {
-          &::after {
-            width: 1rem;
-            text-align: center;
-            float: right;
-            vertical-align: 0;
-            border: 0;
-            font-weight: 900;
-            content: '\f107';
-            font-family: 'Font Awesome 5 Free';
-          }
-          &.collapsed::after {
-            content: '\f105';
-          }
-        }
       }
     }
     .sidebar-brand {
-      .sidebar-brand-icon i {
+      .sidebar-brand-icon .bi {
         font-size: 2rem;
       }
       .sidebar-brand-text {
@@ -205,29 +174,6 @@
       overflow: visible;
       width: $sidebar-collapsed-width !important;
       .nav-item {
-        // Accordion
-        .collapse {
-          position: absolute;
-          left: calc(#{$sidebar-collapsed-width} + #{$grid-gutter-width} / 2);
-          z-index: 1;
-          top: 2px;
-          // Grow In Animation for Toggled State
-          animation-name: growIn;
-          animation-duration: 200ms;
-          animation-timing-function: transform cubic-bezier(0.18, 1.25, 0.4, 1), opacity cubic-bezier(0, 1, 0.4, 1);
-          .collapse-inner {
-            box-shadow: $box-shadow;
-            border-radius: $border-radius;
-          }
-        }
-        .collapsing {
-          display: none;
-          transition: none;
-        }
-        .collapse,
-        .collapsing {
-          margin: 0;
-        }
         &:last-child {
           margin-bottom: 1rem;
         }
@@ -239,16 +185,13 @@
             font-size: 0.65rem;
             display: block;
           }
-          i {
+          .bi {
             margin-right: 0;
-          }
-          &[data-toggle='collapse']::after {
-            display: none;
           }
         }
       }
       .sidebar-brand {
-        .sidebar-brand-icon i {
+        .sidebar-brand-icon .bi {
           font-size: 2rem;
         }
         .sidebar-brand-text {
@@ -278,26 +221,22 @@
   .nav-item {
     .nav-link {
       color: $gray-600;
-      i {
+      .bi {
         color: $gray-400;
       }
       &:active,
       &:focus,
       &:hover {
         color: $gray-700;
-        i {
+        .bi {
           color: $gray-700;
         }
-      }
-      // Accordion
-      &[data-toggle='collapse']::after {
-        color: $gray-500;
       }
     }
     &.active {
       .nav-link {
         color: $gray-700;
-        i {
+        .bi {
           color: $gray-700;
         }
       }
@@ -306,9 +245,9 @@
   // Color the sidebar toggler
   #sidebarToggle {
     background-color: $gray-200;
-    &::after {
-      color: $gray-500;
-    }
+    // &::after {
+    //   color: $gray-500;
+    // }
     &:hover {
       background-color: $gray-300;
     }
@@ -329,26 +268,22 @@
   .nav-item {
     .nav-link {
       color: fade-out($white, 0.2);
-      i {
+      .bi {
         color: fade-out($white, 0.7);
       }
       &:active,
       &:focus,
       &:hover {
         color: $white;
-        i {
+        .bi {
           color: $white;
         }
-      }
-      // Accordion
-      &[data-toggle='collapse']::after {
-        color: fade-out($white, 0.5);
       }
     }
     &.active {
       .nav-link {
         color: $white;
-        i {
+        .bi {
           color: $white;
         }
       }
@@ -357,16 +292,16 @@
   // Color the sidebar toggler
   #sidebarToggle {
     background-color: fade-out($white, 0.8);
-    &::after {
-      color: fade-out($white, 0.5);
-    }
+    // &::after {
+    //   color: fade-out($white, 0.5);
+    // }
     &:hover {
       background-color: fade-out($white, 0.75);
     }
   }
   &.toggled {
-    #sidebarToggle::after {
-      color: fade-out($white, 0.5);
-    }
+    // #sidebarToggle::after {
+    //   color: fade-out($white, 0.5);
+    // }
   }
 }

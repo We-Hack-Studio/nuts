@@ -1,11 +1,10 @@
 <template>
   <div id="app">
-    <nav-bar></nav-bar>
     <side-bar></side-bar>
-
-    <b-container class="mt-4">
+    <div class="content-wrapper">
+      <nav-bar class="mb-4"></nav-bar>
       <router-view></router-view>
-    </b-container>
+    </div>
   </div>
 </template>
 
@@ -23,5 +22,10 @@
 </script>
 
 <style>
-
+#app {
+  display: flex;
+}
+.content-wrapper {
+  width: 100%;
+}
 </style>
