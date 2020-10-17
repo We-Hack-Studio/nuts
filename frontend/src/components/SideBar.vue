@@ -72,21 +72,16 @@
 
 <script>
 export default {
-  data() {
-    return {
-      isToggled: false,
-    }
-  },
+  props:['isToggled'],
   methods: {
     sidebarToggle() {
-      this.isToggled = !this.isToggled;
+      this.$emit('toggleSideBar')
     }
   }
 }
 </script>
 
 <style lang="scss">
-@import '../assets/base.scss';
 @import '../assets/sidebar.scss';
 
 // .sidebar {

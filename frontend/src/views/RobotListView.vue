@@ -1,9 +1,11 @@
 <template>
-  <b-row>
+ <div class="robot-list-view">
+  <b-row class="row">
     <b-col md="6" xl="4" offset-md="3" offset-xl="4" v-for="robot in robotList" :key="robot.robotId">
       <robot-list-item :robot="robot" @refresh="refreshList"></robot-list-item>
     </b-col>
   </b-row>
+  </div>
 </template>
 
 <script>
@@ -85,4 +87,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.robot-list-view {
+  width: 100%;
+  .row {
+    margin :0;
+  }
+}
+</style>
