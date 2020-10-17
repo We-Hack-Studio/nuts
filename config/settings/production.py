@@ -71,3 +71,7 @@ sentry_sdk.init(
     dsn=SENTRY_DSN,
     integrations=[sentry_logging, DjangoIntegration()],
 )
+
+# https://docs.djangoproject.com/en/3.1/ref/settings/#csrf-trusted-origins
+# This setting is especially required if use nginx in docker and bind 443 to another port on host.
+CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS", default=[])
