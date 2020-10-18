@@ -695,3 +695,32 @@ class RobotViewSetTestCase(APITestCase):
             robot.asset_record.total_balance,
             6666,
         )
+
+    # retrieve credential keys
+    def test_retrieve_credential_keys_permission(self):
+        robot = RobotFactory()
+
+        # anonymous user
+        response = self.get("api:robot-credential-keys", pk=robot.pk)
+        self.response_401(response)
+
+        # normal user
+        self.login(username=self.normal_user.username, password="password")
+        response = self.get("api:robot-credential-keys", pk=robot.pk)
+        self.response_403(response)
+
+    def test_retrieve_nonexistent_robot_credential_keys(self):
+        self.login(username=self.admin_user.username, password="password")
+        response = self.get("api:robot-credential-keys", pk=999999)
+        self.response_404(response)
+
+    def test_retrieve_credential_keys(self):
+        robot = RobotFactory(credential=self.admin_user_credential)
+        self.login(username=self.admin_user.username, password="password")
+        response = self.get("api:robot-credential-keys", pk=robot.pk)
+        self.response_200(response)
+        content_json = json.loads(response.content)
+        self.assertEqual(
+            content_json,
+            {"data": robot.credential.keys},
+        )

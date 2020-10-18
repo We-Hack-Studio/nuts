@@ -2,16 +2,15 @@ from typing import Type
 
 from django.db.models import F
 from django.utils import timezone
-from rest_framework import serializers, status, viewsets
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
-from rest_framework.serializers import BaseSerializer, Serializer
+from rest_framework.serializers import BaseSerializer
 
 from .models import Robot
 from .serializers import (
     AssetRecordSerializer,
-    RobotConfigSerializer,
     RobotCreateSerializer,
     RobotListSerializer,
     RobotRetrieveSerializer,
@@ -44,19 +43,6 @@ class RobotViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self) -> Type[BaseSerializer]:
         assert self.action in self.action_serializer_map
         return self.action_serializer_map[self.action]
-
-    @action(
-        methods=["GET"],
-        detail=True,
-        serializer_class=RobotConfigSerializer,
-        permission_classes=[IsAdminUser],
-        url_name="config",
-        url_path="config",
-    )
-    def retrieve_config(self, request, *args, **kwargs) -> Response:
-        robot = self.get_object()
-        serializer = self.get_serializer(instance=robot)
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(
         methods=["POST"],

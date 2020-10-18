@@ -1,11 +1,7 @@
-from typing import Any, Dict
-
 from credentials.serializers import CredentialListSerializer
-from exchanges.serializers import ExchangeSerializer
 from rest_framework.fields import DurationField as DrfDurationField
 from rest_framework.serializers import FloatField
 from rest_framework_json_api import serializers
-from users.serializers import UserSerializer
 
 from .models import AssetRecord, Robot
 
@@ -158,29 +154,3 @@ class RobotUpdateSerializer(serializers.ModelSerializer):
 
     class JSONAPIMeta:
         resource_name = "robots"
-
-
-class RobotConfigSerializer(serializers.ModelSerializer):
-    user = UserSerializer(source="credential.user", read_only=True)
-    exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
-    # credential_keys = CredentialKeysSerializer(source="credential", read_only=True)
-    test_net = serializers.BooleanField(source="credential.test_net", read_only=True)
-    strategy_parameters = serializers.JSONField()
-
-    class Meta:
-        model = Robot
-        fields = [
-            "id",
-            "name",
-            "pair",
-            "target_currency",
-            "enabled",
-            "test_net",
-            "user",
-            "exchange",
-            "credential_keys",
-            "strategy_parameters",
-        ]
-
-    class JSONAPIMeta:
-        resource_name = "robot_configs"
