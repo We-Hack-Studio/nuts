@@ -1,3 +1,5 @@
+from typing import Dict
+
 from core.models import TimeStampedModel
 from django.conf import settings
 from django.db import models
@@ -33,3 +35,11 @@ class Credential(TimeStampedModel):
 
     def __str__(self):
         return self.note
+
+    @property
+    def keys(self) -> Dict[str, str]:
+        return {
+            "api_key": self.api_key,
+            "secret": self.secret,
+            "passphrase": self.passphrase,
+        }

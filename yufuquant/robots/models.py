@@ -20,7 +20,7 @@ class Robot(TimeStampedModel):
     name = models.CharField(_("name"), max_length=50)
     pair = models.CharField(_("pair"), max_length=30)
     market_type = models.CharField(_("market type"), max_length=30, choices=MARKET_TYPE)
-    enabled = models.BooleanField(_("enabled"), default=True)
+    enabled = models.BooleanField(_("enabled"), default=False)
     start_time = models.DateTimeField(_("start time"), null=True, blank=True)
     ping_time = models.DateTimeField(_("ping time"), null=True, blank=True)
     credential = models.ForeignKey(
@@ -56,6 +56,14 @@ class Robot(TimeStampedModel):
     def duration(self):
         if self.start_time and self.ping_time:
             return self.ping_time - self.start_time
+
+    @property
+    def strategy_spec_view(self):
+        spec = self.strategy.specification
+        parameters = self.strategy_parameters
+        for parameter in spec["parameters"]:
+            parameter["value"] = parameters[parameter["code"]]
+        return spec
 
 
 class AssetRecord(TimeStampedModel):
