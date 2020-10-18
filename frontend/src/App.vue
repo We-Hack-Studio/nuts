@@ -1,23 +1,50 @@
 <template>
   <div id="app">
-    <nav-bar></nav-bar>
-    <b-container class="mt-4">
+    <side-bar @toggleSideBar="handleToggleSideBar" :isToggled="isToggled"></side-bar>
+    <div class="content-wrapper">
+      <top-bar class="mb-4" @toggleSideBar="handleToggleSideBar" :isToggled="isToggled"></top-bar>
       <router-view></router-view>
-    </b-container>
+    </div>
   </div>
 </template>
 
 <script>
-    import NavBar from "./components/NavBar";
+    import TopBar from "./components/TopBar";
+    import SideBar from './components/SideBar';
 
     export default {
         name: 'App',
+          data() {
+            return {
+              isToggled: false,
+            }
+          },
+        mounted() {
+          window.onresize = () => {
+              const width =document.documentElement.clientWidth; 
+              if (width < 576) {
+                this.isToggled = true
+              }
+          }
+        },
         components: {
-            NavBar,
+            TopBar,
+            SideBar
+        },
+        methods: {
+            handleToggleSideBar() {
+              this.isToggled = !this.isToggled;
+            }
         }
     }
 </script>
 
-<style>
-
+<style lang="scss">
+@import './assets/nav.scss';
+#app {
+  display: flex;
+}
+.content-wrapper {
+  width: 100%;
+}
 </style>

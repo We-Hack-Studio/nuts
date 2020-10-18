@@ -2,3 +2,13 @@
 // Ref: https://cli.vuejs.org/guide/webpack.html
 
 'use strict'
+
+module.exports = {
+    css: {
+      loaderOptions: {
+        sass: {
+            prependData: `@import "@/assets/base.scss";`
+        }
+      }
+    }
+  };
