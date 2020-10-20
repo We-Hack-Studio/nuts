@@ -5,7 +5,7 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
 
-class Exchange(TimeStampedModel):
+class Exchange(TimeStampedModel, models.Model):
     code = models.CharField(_("code"), max_length=50)
     name = models.CharField(_("name"), max_length=50)
     name_zh = models.CharField(_("chinese name"), max_length=100, blank=True)

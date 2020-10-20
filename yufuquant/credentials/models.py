@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from django_cryptography.fields import encrypt
 
 
-class Credential(TimeStampedModel):
+class Credential(TimeStampedModel, models.Model):
     note = models.CharField(_("note"), max_length=30, blank=True)
     api_key = encrypt(models.CharField(_("API Key"), max_length=200))
     secret = encrypt(models.CharField(_("secret"), max_length=200))

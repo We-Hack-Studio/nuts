@@ -1,12 +1,13 @@
 import asyncio
 import re
+from typing import List
 
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.contrib.auth.models import AnonymousUser
 from users.models import User
 
-public_topic_patterns = []
+public_topic_patterns: List[str] = []
 private_topic_patterns = [
     r"robot#\d+\.log",
     r"robot#\d+\.asset",

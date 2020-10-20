@@ -7,7 +7,9 @@ from model_utils.choices import Choices
 from .managers import RobotManager
 
 
-class Robot(TimeStampedModel):
+# Why inherit models.Model?
+# see https://github.com/typeddjango/django-stubs/issues/68
+class Robot(TimeStampedModel, models.Model):
     MARKET_TYPE = Choices(
         ("spots", _("Spots")),
         ("margin", _("Margin")),
@@ -63,7 +65,7 @@ class Robot(TimeStampedModel):
         return spec
 
 
-class AssetRecord(TimeStampedModel):
+class AssetRecord(TimeStampedModel, models.Model):
     currency = models.CharField(_("currency"), max_length=10)
     total_principal = models.FloatField(_("total principal"), default=0)
     total_balance = models.FloatField(_("total balance"), default=0)

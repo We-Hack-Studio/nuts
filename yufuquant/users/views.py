@@ -17,12 +17,7 @@ class UserViewSet(viewsets.GenericViewSet):
     resource_name = "users"
 
     def get_queryset(self):
-        user = self.request.user
-        queryset = User.objects.all().filter(pk=user.pk)
-        return queryset
-
-    def get_instance(self):
-        return self.request.user
+        return User.objects.all()
 
     @swagger_auto_schema(
         operation_description="User basic profile.",
@@ -35,7 +30,7 @@ class UserViewSet(viewsets.GenericViewSet):
         serializer_class=UserSerializer,
     )
     def me(self, request, *args, **kwargs):
-        instance = self.get_object()
+        instance = self.request.user
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 

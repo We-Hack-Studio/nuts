@@ -7,7 +7,4 @@ class CredentialsConfig(AppConfig):
     verbose_name = _("Credentials")
 
     def ready(self):
-        try:
-            from . import signals  # noqa
-        except ImportError:
-            pass
+        pass

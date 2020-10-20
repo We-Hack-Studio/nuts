@@ -81,7 +81,7 @@ class RobotViewSet(viewsets.ModelViewSet):
         robot = self.get_object()
         return Response(robot.strategy_parameters, status=status.HTTP_200_OK)
 
-    @retrieve_strategy_parameters.mapping.patch
+    @retrieve_strategy_parameters.mapping.patch  # type:ignore
     def adjust_strategy_parameters(self, request, *args, **kwargs) -> Response:
         robot = self.get_object()
         # todo: validate by specification

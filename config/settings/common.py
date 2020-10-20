@@ -213,7 +213,7 @@ elif channel_layers_default_backend == "redis":
     CHANNEL_LAYERS = {
         "default": {
             "BACKEND": "channels_redis.core.RedisChannelLayer",
-            "CONFIG": {
+            "CONFIG": {  # type: ignore
                 "hosts": [
                     {
                         "address": env.str(
@@ -317,4 +317,4 @@ CORS_URLS_REGEX = r"^/api/.*$"
 # ------------------------------------------------------------------------------
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 CONSTANCE_DATABASE_PREFIX = "constance:"
-CONSTANCE_CONFIG = {}
+# CONSTANCE_CONFIG = {}
