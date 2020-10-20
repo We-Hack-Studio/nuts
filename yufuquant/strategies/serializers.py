@@ -16,4 +16,3 @@ class StrategySerializer(serializers.ModelSerializer):
             "created_at",
             "modified_at",
         ]
-

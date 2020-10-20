@@ -49,7 +49,6 @@ class Robot(TimeStampedModel):
         verbose_name = _("robot")
         verbose_name_plural = _("robots")
 
-
     @property
     def duration(self):
         if self.start_time and self.ping_time:
@@ -84,7 +83,6 @@ class AssetRecord(TimeStampedModel):
     class Meta:
         verbose_name = _("asset record")
         verbose_name_plural = _("asset records")
-
 
     @property
     def total_pnl_abs(self):

@@ -1,21 +1,12 @@
-from typing import Any
-
 import credentials.views
 import exchanges.views
 import robots.views
 import strategies.views
 import users.views
-from django.conf import settings
 from django.urls import include, path
-from rest_framework.routers import DefaultRouter, SimpleRouter
-from rest_framework_bulk.routes import BulkRouter
+from rest_framework.routers import SimpleRouter
 
-if settings.DEBUG:
-    # Why type as Any?
-    # See: https://mypy.readthedocs.io/en/stable/common_issues.html#redefinitions-with-incompatible-types
-    router: Any = BulkRouter()
-else:
-    router = SimpleRouter()
+router = SimpleRouter()
 
 router.register("users", users.views.UserViewSet, basename="user")
 router.register("robots", robots.views.RobotViewSet, basename="robot")

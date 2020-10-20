@@ -8,6 +8,6 @@ class CredentialsConfig(AppConfig):
 
     def ready(self):
         try:
-            from . import signals
+            from . import signals  # noqa
         except ImportError:
             pass

@@ -41,7 +41,6 @@ class User(AbstractUser):
     class Meta(AbstractUser.Meta):
         pass
 
-
     def save(self, *args, **kwargs):
         if not self.pk:
             if not self.nickname:

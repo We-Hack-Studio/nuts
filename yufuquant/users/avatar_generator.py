@@ -5,7 +5,6 @@ Taking from https://github.com/maethor/avatar-generator.
 """
 
 import os
-import pathlib
 from io import BytesIO
 from random import randint, seed
 
@@ -21,10 +20,10 @@ class AvatarGenerator:
     @classmethod
     def generate(cls, string, size=100, filetype="PNG"):
         """
-            Generates a squared avatar with random background color.
-            :param size: size of the avatar, in pixels
-            :param string: string to be used to print text and seed the random
-            :param filetype: the file format of the image (i.e. JPEG, PNG)
+        Generates a squared avatar with random background color.
+        :param size: size of the avatar, in pixels
+        :param string: string to be used to print text and seed the random
+        :param filetype: the file format of the image (i.e. JPEG, PNG)
         """
         render_size = max(size, cls.MIN_RENDER_SIZE)
         image = Image.new(
@@ -47,10 +46,10 @@ class AvatarGenerator:
     @staticmethod
     def _background_color(s):
         """
-            Generate a random background color.
-            Brighter colors are dropped, because the text is white.
-            :param s: Seed used by the random generator
-            (same seed will produce the same color).
+        Generate a random background color.
+        Brighter colors are dropped, because the text is white.
+        :param s: Seed used by the random generator
+        (same seed will produce the same color).
         """
         seed(s)
         r = v = b = 255
@@ -63,8 +62,8 @@ class AvatarGenerator:
     @staticmethod
     def _font(size):
         """
-            Returns a PIL ImageFont instance.
-            :param size: size of the avatar, in pixels
+        Returns a PIL ImageFont instance.
+        :param size: size of the avatar, in pixels
         """
         # path = pathlib.Path(".").joinpath("Inconsolata.otf")
         path = os.path.join(os.path.dirname(__file__), "Inconsolata.otf")
@@ -73,14 +72,14 @@ class AvatarGenerator:
     @staticmethod
     def _text(string):
         """
-            Returns the text to draw.
+        Returns the text to draw.
         """
         return string[0].upper()
 
     @staticmethod
     def _text_position(size, text, font):
         """
-            Returns the left-top point where the text should be positioned.
+        Returns the left-top point where the text should be positioned.
         """
         width, height = font.getsize(text)
         left = (size - width) / 2.0

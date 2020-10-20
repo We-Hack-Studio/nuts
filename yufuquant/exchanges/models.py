@@ -24,7 +24,6 @@ class Exchange(TimeStampedModel):
         verbose_name_plural = _("exchanges")
         ordering = ["rank", "-created_at"]
 
-
     def __str__(self):
         return self.name
 

@@ -1,5 +1,3 @@
-import json
-
 from credentials.models import Credential
 from credentials.serializers import CredentialListSerializer
 from django.contrib.auth import get_user_model

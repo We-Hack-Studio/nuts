@@ -3,7 +3,6 @@ import pathlib
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from exchanges.models import Exchange
-from exchanges.tests.factories import ExchangeFactory
 
 
 def run():

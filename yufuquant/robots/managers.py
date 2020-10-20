@@ -1,7 +1,4 @@
-from django.db.models import (
-    Manager,
-    QuerySet,
-)
+from django.db.models import Manager, QuerySet
 
 
 class RobotQuerySet(QuerySet):
