@@ -6,12 +6,12 @@ from .models import Credential
 
 
 class CredentialListSerializer(serializers.ModelSerializer):
-    included_serializers = {
-        "exchange": ExchangeSerializer,
-    }
-    api_key = MaskedCharField(read_only=True)
-    secret = MaskedCharField(read_only=True)
-    passphrase = MaskedCharField(read_only=True, mask_all=True)
+    api_key = MaskedCharField(read_only=True, help_text="Partial masked API key.")
+    secret = MaskedCharField(read_only=True, help_text="Partial masked secret key.")
+    passphrase = MaskedCharField(
+        read_only=True, mask_all=True, help_text="Completely masked passphrase."
+    )
+    exchange = ExchangeSerializer(read_only=True)
 
     class Meta:
         model = Credential
@@ -27,8 +27,9 @@ class CredentialListSerializer(serializers.ModelSerializer):
             "modified_at",
         ]
 
-    class JSONAPIMeta:
-        resource_name = "credentials"
+        extra_kwargs = {
+            "test_net": {"help_text": "Is a credential of exchange test net or not."},
+        }
 
 
 class CredentialCreateSerializer(serializers.ModelSerializer):
@@ -57,5 +58,13 @@ class CredentialCreateSerializer(serializers.ModelSerializer):
             "passphrase": {"write_only": True},
         }
 
-    class JSONAPIMeta:
-        resource_name = "credentials"
+
+class CredentialKeySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Credential
+        fields = [
+            "id",
+            "api_key",
+            "secret",
+            "passphrase",
+        ]

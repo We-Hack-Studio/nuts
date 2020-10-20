@@ -32,6 +32,3 @@ class ExchangeSerializer(serializers.ModelSerializer):
             "created_at",
             "modified_at",
         ]
-
-    class JSONAPIMeta:
-        resource_name = "exchanges"

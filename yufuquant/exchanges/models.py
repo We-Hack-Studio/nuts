@@ -24,8 +24,6 @@ class Exchange(TimeStampedModel):
         verbose_name_plural = _("exchanges")
         ordering = ["rank", "-created_at"]
 
-    class JSONAPIMeta:
-        resource_name = "exchanges"
 
     def __str__(self):
         return self.name

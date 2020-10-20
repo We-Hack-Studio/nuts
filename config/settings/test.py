@@ -35,9 +35,3 @@ PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 
-REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"] = [
-    "rest_framework.authentication.TokenAuthentication",
-    # For browserable API when develop.
-    # Must behind TokenAuthentication, otherwise unauthorized request will response 403 instead of 401.
-    "rest_framework.authentication.SessionAuthentication",
-]

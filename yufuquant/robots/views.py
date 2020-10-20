@@ -1,7 +1,10 @@
 from typing import Type
 
+from credentials.serializers import CredentialKeySerializer
 from django.db.models import F
 from django.utils import timezone
+from django.utils.decorators import method_decorator
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
@@ -18,6 +21,12 @@ from .serializers import (
 )
 
 
+@method_decorator(
+    name="update",
+    decorator=swagger_auto_schema(
+        auto_schema=None,
+    ),
+)
 class RobotViewSet(viewsets.ModelViewSet):
     serializer_class = RobotListSerializer
     permission_classes = [IsAdminUser]
@@ -28,7 +37,8 @@ class RobotViewSet(viewsets.ModelViewSet):
         "create": RobotCreateSerializer,
         "update": RobotUpdateSerializer,
         "partial_update": RobotUpdateSerializer,
-        "update_asset_record": AssetRecordSerializer,
+        "partial_update_asset_record": AssetRecordSerializer,
+        "retrieve_credential_key": CredentialKeySerializer,
     }
     resource_name = "robots"
 
@@ -48,13 +58,17 @@ class RobotViewSet(viewsets.ModelViewSet):
         methods=["POST"],
         detail=True,
         url_path="ping",
+        url_name="ping",
         permission_classes=[IsAdminUser],
     )
     def ping(self, request, *args, **kwargs) -> Response:
         robot = self.get_object()
-        robot.ping_time = timezone.now()
+        now = timezone.now()
+        robot.ping_time = now
         robot.save(update_fields=["ping_time"])
-        return Response({"detail": "pong"}, status=status.HTTP_200_OK)
+        return Response(
+            {"pong": int(now.timestamp() * 1000)}, status=status.HTTP_200_OK
+        )
 
     @action(
         methods=["GET"],
@@ -63,19 +77,17 @@ class RobotViewSet(viewsets.ModelViewSet):
         url_name="strategy-parameters",
         permission_classes=[IsAdminUser],
     )
-    def strategy_parameters(self, request, *args, **kwargs) -> Response:
+    def retrieve_strategy_parameters(self, request, *args, **kwargs) -> Response:
         robot = self.get_object()
         return Response(robot.strategy_parameters, status=status.HTTP_200_OK)
 
-    @strategy_parameters.mapping.post
+    @retrieve_strategy_parameters.mapping.patch
     def adjust_strategy_parameters(self, request, *args, **kwargs) -> Response:
         robot = self.get_object()
         # todo: validate by specification
-        strategy_parameters = request.data.copy()
-        del strategy_parameters["id"]
-        robot.strategy_parameters.update(strategy_parameters)
+        robot.strategy_parameters.update(request.data)
         robot.save(update_fields=["strategy_parameters"])
-        return Response({"detail": "ok"}, status=status.HTTP_200_OK)
+        return Response(robot.strategy_parameters, status=status.HTTP_200_OK)
 
     @action(
         methods=["GET"],
@@ -91,13 +103,13 @@ class RobotViewSet(viewsets.ModelViewSet):
     @action(
         methods=["GET"],
         detail=True,
-        url_path="credentialKeys",
-        url_name="credential-keys",
+        url_path="credentialKey",
+        url_name="credential-key",
         permission_classes=[IsAdminUser],
     )
-    def retrieve_credential_keys(self, request, *args, **kwargs) -> Response:
+    def retrieve_credential_key(self, request, *args, **kwargs) -> Response:
         robot = self.get_object()
-        return Response(robot.credential.keys, status=status.HTTP_200_OK)
+        return Response(robot.credential.key, status=status.HTTP_200_OK)
 
     @action(
         methods=["PATCH"],
@@ -106,11 +118,12 @@ class RobotViewSet(viewsets.ModelViewSet):
         url_name="asset-record",
         permission_classes=[IsAdminUser],
         serializer_class=AssetRecordSerializer,
+        resource_name="asset_records",
     )
-    def update_asset_record(self, request, *args, **kwargs) -> Response:
+    def partial_update_asset_record(self, request, *args, **kwargs) -> Response:
         robot = self.get_object()
         asset_record = robot.asset_record
         serializer = self.get_serializer(instance=asset_record, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"detail": "ok"}, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)

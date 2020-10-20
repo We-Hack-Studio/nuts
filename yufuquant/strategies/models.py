@@ -13,8 +13,6 @@ class Strategy(TimeStampedModel):
         verbose_name = _("strategy")
         verbose_name_plural = _("strategies")
 
-    class JSONAPIMeta:
-        resource_name = "strategies"
 
     def __str__(self):
         return self.name

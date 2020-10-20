@@ -30,14 +30,11 @@ class Credential(TimeStampedModel):
         verbose_name = _("credential")
         verbose_name_plural = _("credentials")
 
-    class JSONAPIMeta:
-        resource_name = "credentials"
-
     def __str__(self):
         return self.note
 
     @property
-    def keys(self) -> Dict[str, str]:
+    def key(self) -> Dict[str, str]:
         return {
             "api_key": self.api_key,
             "secret": self.secret,

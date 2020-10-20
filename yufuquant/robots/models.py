@@ -49,8 +49,6 @@ class Robot(TimeStampedModel):
         verbose_name = _("robot")
         verbose_name_plural = _("robots")
 
-    class JSONAPIMeta:
-        resource_name = "robots"
 
     @property
     def duration(self):
@@ -86,6 +84,7 @@ class AssetRecord(TimeStampedModel):
     class Meta:
         verbose_name = _("asset record")
         verbose_name_plural = _("asset records")
+
 
     @property
     def total_pnl_abs(self):

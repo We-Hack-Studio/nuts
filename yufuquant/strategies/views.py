@@ -1,8 +1,13 @@
 from django.db.models import QuerySet
-from rest_framework import mixins, pagination, permissions, viewsets
+from rest_framework import mixins, permissions, viewsets
+from rest_framework.pagination import LimitOffsetPagination
 
 from .models import Strategy
 from .serializers import StrategySerializer
+
+
+class StrategyPagination(LimitOffsetPagination):
+    default_limit = 50
 
 
 class StrategyViewSet(
@@ -12,7 +17,7 @@ class StrategyViewSet(
 ):
     serializer_class = StrategySerializer
     permission_classes = [permissions.IsAdminUser]
-    pagination_class = pagination.LimitOffsetPagination
+    pagination_class = StrategyPagination
     resource_name = "strategies"
 
     def get_queryset(self) -> QuerySet:

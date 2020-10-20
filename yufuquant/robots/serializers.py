@@ -1,7 +1,7 @@
-from credentials.serializers import CredentialListSerializer
+from exchanges.serializers import ExchangeSerializer
+from rest_framework import serializers
 from rest_framework.fields import DurationField as DrfDurationField
 from rest_framework.serializers import FloatField
-from rest_framework_json_api import serializers
 
 from .models import AssetRecord, Robot
 
@@ -28,7 +28,6 @@ class AssetRecordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AssetRecord
-        resource_name = "asset_records"
         fields = [
             "currency",
             "total_principal",
@@ -47,12 +46,10 @@ class AssetRecordSerializer(serializers.ModelSerializer):
 
 
 class RobotListSerializer(serializers.ModelSerializer):
-    included_serializers = {
-        "credential": CredentialListSerializer,
-        "asset_record": AssetRecordSerializer,
-    }
     duration_display = DurationField(source="duration", read_only=True)
     strategy_name = serializers.CharField(read_only=True)
+    asset_record = AssetRecordSerializer(read_only=True)
+    exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
 
     class Meta:
         model = Robot
@@ -72,23 +69,17 @@ class RobotListSerializer(serializers.ModelSerializer):
             "modified_at",
             # related model fields
             "asset_record",
-            "credential",
-            "strategy",
             # derived fields
             "duration_display",
             "strategy_name",
+            "exchange",
         ]
-
-    class JSONAPIMeta:
-        resource_name = "robots"
 
 
 class RobotRetrieveSerializer(serializers.ModelSerializer):
-    included_serializers = {
-        "credential": CredentialListSerializer,
-        "asset_record": AssetRecordSerializer,
-    }
     duration_display = DurationField(source="duration", read_only=True)
+    asset_record = AssetRecordSerializer(read_only=True)
+    exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
 
     class Meta:
         model = Robot
@@ -104,18 +95,16 @@ class RobotRetrieveSerializer(serializers.ModelSerializer):
             "target_currency",
             "base_currency",
             "quote_currency",
+            "strategy_parameters",
             "created_at",
             "modified_at",
             # related fields
             "asset_record",
-            "credential",
-            "strategy",
             # derived fields
             "duration_display",
+            "strategy_spec_view",
+            "exchange",
         ]
-
-    class JSONAPIMeta:
-        resource_name = "robots"
 
 
 class RobotCreateSerializer(serializers.ModelSerializer):
@@ -140,9 +129,6 @@ class RobotCreateSerializer(serializers.ModelSerializer):
             "modified_at",
         ]
 
-    class JSONAPIMeta:
-        resource_name = "robots"
-
 
 class RobotUpdateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -151,6 +137,3 @@ class RobotUpdateSerializer(serializers.ModelSerializer):
             "id",
             "name",
         ]
-
-    class JSONAPIMeta:
-        resource_name = "robots"

@@ -17,5 +17,3 @@ class StrategySerializer(serializers.ModelSerializer):
             "modified_at",
         ]
 
-    class JSONAPIMeta:
-        resource_name = "strategies"

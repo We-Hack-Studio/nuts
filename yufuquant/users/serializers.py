@@ -13,11 +13,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ["id", "username", "nickname", "avatar_url"]
 
-    class JSONAPIMeta:
-        resource_name = "users"
 
-
-class TokenCreateSerializer(serializers.Serializer):
+class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField(style={"input_type": "password"})
 
@@ -35,9 +32,9 @@ class TokenCreateSerializer(serializers.Serializer):
         return attrs
 
 
-class TokenSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-    auth_token = serializers.CharField(source="key")
+class TokenUserSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    auth_token = serializers.CharField(source="key", read_only=True)
 
     class Meta:
         model = Token

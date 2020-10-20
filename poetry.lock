@@ -579,23 +579,6 @@ djangorestframework = "*"
 setuptools = "*"
 
 [[package]]
-category = "main"
-description = "A Django REST framework API adapter for the JSON API spec."
-name = "djangorestframework-jsonapi"
-optional = false
-python-versions = ">=3.5"
-version = "3.2.0"
-
-[package.dependencies]
-django = ">=1.11,<3.1"
-djangorestframework = ">=3.10,<3.12"
-inflection = ">=0.3.0"
-
-[package.extras]
-django-filter = ["django-filter (>=2.0)"]
-django-polymorphic = ["django-polymorphic (>=2.0)"]
-
-[[package]]
 category = "dev"
 description = "PEP-484 stubs for django-rest-framework"
 name = "djangorestframework-stubs"
@@ -1710,7 +1693,7 @@ test = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [metadata]
-content-hash = "f3dbe47f84fdcce49277b0a39439108d88bca0c58363063d266328794aa3da3c"
+content-hash = "6783ec614597ea0e0e78a548b451b6bb533badae2dc2650ac0d6d833466eb6cf"
 lock-version = "1.0"
 python-versions = ">=3.7,<4"
 
@@ -1977,10 +1960,6 @@ djangorestframework-api-key = [
 ]
 djangorestframework-bulk = [
     {file = "djangorestframework-bulk-0.2.1.tar.gz", hash = "sha256:39230d8379acebd86d313df6c9150cafecb636eae1d097c30a26389ab9fee5b1"},
-]
-djangorestframework-jsonapi = [
-    {file = "djangorestframework-jsonapi-3.2.0.tar.gz", hash = "sha256:8a438fba41c1ef477a2d6da70224e767528ed116ebc1e219c4ca850460ac7d0a"},
-    {file = "djangorestframework_jsonapi-3.2.0-py2.py3-none-any.whl", hash = "sha256:213656fb5d4b336df3ca61bff766d19e926784f9a28c7cc482a7916d335cad40"},
 ]
 djangorestframework-stubs = [
     {file = "djangorestframework-stubs-1.2.0.tar.gz", hash = "sha256:cd98afa2a7a718689c8aafe162120074976c996f755b0c03d106b6c6c73b95f7"},
