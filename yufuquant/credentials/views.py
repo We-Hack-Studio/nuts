@@ -1,7 +1,7 @@
 from typing import Type
 
 from django.utils.decorators import method_decorator
-from drf_yasg.utils import swagger_auto_schema
+from drf_spectacular.utils import extend_schema
 from rest_framework import mixins, permissions, throttling, viewsets
 from rest_framework.serializers import BaseSerializer
 
@@ -11,9 +11,21 @@ from .serializers import CredentialCreateSerializer, CredentialListSerializer
 
 @method_decorator(
     name="create",
-    decorator=swagger_auto_schema(
-        operation_description="",
-        request_body=CredentialCreateSerializer(),
+    decorator=extend_schema(
+        summary="Bind exchange credential",
+        request=CredentialCreateSerializer,
+    ),
+)
+@method_decorator(
+    name="list",
+    decorator=extend_schema(
+        summary="Return bound exchange credentials",
+    ),
+)
+@method_decorator(
+    name="destroy",
+    decorator=extend_schema(
+        summary="Unbind exchange credential",
     ),
 )
 class CredentialViewSet(
@@ -38,9 +50,6 @@ class CredentialViewSet(
         return qs
 
     def get_serializer_class(self) -> Type[BaseSerializer]:
-        if getattr(self, "swagger_fake_view", False):
-            return CredentialListSerializer
-
         assert self.action in self.action_serializer_map
         return self.action_serializer_map[self.action]
 

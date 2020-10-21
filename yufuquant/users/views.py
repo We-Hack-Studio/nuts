@@ -1,5 +1,5 @@
 from django.contrib.auth import user_logged_in, user_logged_out
-from drf_yasg.utils import swagger_auto_schema
+from drf_spectacular.utils import extend_schema
 from rest_framework import status, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
@@ -19,8 +19,8 @@ class UserViewSet(viewsets.GenericViewSet):
     def get_queryset(self):
         return User.objects.all()
 
-    @swagger_auto_schema(
-        operation_description="User basic profile.",
+    @extend_schema(
+        summary="Get current user profile",
     )
     @action(
         ["GET"],
@@ -39,9 +39,10 @@ class LoginView(GenericAPIView):
     serializer_class = LoginSerializer
     permission_classes = [AllowAny]
 
-    @swagger_auto_schema(
-        operation_description="Login a user.",
-        responses={200: TokenUserSerializer()},
+    @extend_schema(
+        summary="Login",
+        description="Obtain an auth token by providing username and password.",
+        responses={200: TokenUserSerializer},
     )
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -61,13 +62,14 @@ class LoginView(GenericAPIView):
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(
-        operation_description="Logout the user.",
-        responses={200: "Logout successfully."},
+    @extend_schema(
+        summary="Logout",
+        description="Delete auth token from server.",
+        responses={"204": None},
     )
     def post(self, request):
         Token.objects.filter(user=request.user).delete()
         user_logged_out.send(
             sender=request.user.__class__, request=request, user=request.user
         )
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_204_NO_CONTENT)

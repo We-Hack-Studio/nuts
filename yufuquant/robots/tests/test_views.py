@@ -1,4 +1,5 @@
 from credentials.tests.factories import CredentialFactory
+from django.contrib.auth import get_user_model
 from django.db.models import F
 from freezegun import freeze_time
 from rest_framework.request import Request
@@ -7,9 +8,10 @@ from robots.models import Robot
 from robots.serializers import RobotListSerializer, RobotRetrieveSerializer
 from strategies.tests.factories import StrategyFactory
 from test_plus import APITestCase
-from users.models import User
 
 from .factories import RobotFactory
+
+User = get_user_model()
 
 
 class RobotViewSetTestCase(APITestCase):

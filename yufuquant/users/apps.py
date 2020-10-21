@@ -7,7 +7,4 @@ class UsersConfig(AppConfig):
     verbose_name = _("Users")
 
     def ready(self):
-        try:
-            from . import signals  # noqa
-        except ImportError:
-            pass
+        pass

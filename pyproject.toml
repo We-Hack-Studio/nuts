@@ -2,7 +2,7 @@
 name = "yufuquant"
 version = "0.1.0"
 description = ""
-authors = ["zmrenwu <zmrenwu@163.com>"]
+authors = ["zmrenwu <zmrenwu@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.7,<4"
@@ -32,12 +32,14 @@ daphne = "^2.5.0" # required by django-channels though we use uvicorn in product
 psycopg2-binary = "^2.8.6"
 hiredis = "^1.1.0"
 django-redis = "^4.12.1"
+drf-spectacular = "^0.10.0"
+argon2-cffi = "^20.1.0"
 
 [tool.poetry.dev-dependencies]
 mkdocs = "^1.1.2"
 django-debug-toolbar = "^2.2"
-pytest = "^5.4.3"
-pytest-django = "^3.9.0"
+pytest = "^6.1.1"
+pytest-django = "^4.0.0"
 pytest-cov = "^2.10.0"
 freezegun = "^0.3.15"
 django-silk = "^4.0.1"

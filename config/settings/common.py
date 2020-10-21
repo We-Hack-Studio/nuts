@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import sys
 from pathlib import Path
+from typing import Any, Dict
 
 import environ
 from django.core.exceptions import ImproperlyConfigured
@@ -71,8 +72,9 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "rest_framework",
     "rest_framework.authtoken",
-    "drf_yasg",
+    # "drf_yasg",
     "adminsortable2",
+    "drf_spectacular",
 ]
 LOCAL_APPS = [
     "core.apps.CoreConfig",
@@ -195,6 +197,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
     ),
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 # django-channels
@@ -318,3 +321,11 @@ CORS_URLS_REGEX = r"^/api/.*$"
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 CONSTANCE_DATABASE_PREFIX = "constance:"
 # CONSTANCE_CONFIG = {}
+
+# drf-spectacular
+# ------------------------------------------------------------------------------
+SPECTACULAR_SETTINGS: Dict[str, Any] = {
+    # path prefix is used for tagging the discovered operations.
+    # use '/api/v[0-9]' for tagging apis like '/api/v1/albums' with ['albums']
+    "SCHEMA_PATH_PREFIX": r"/api/v[0-9]",
+}

@@ -8,6 +8,6 @@ class RobotsConfig(AppConfig):
 
     def ready(self):
         try:
-            from . import signals  # noqa
+            from robots import signals  # noqa
         except ImportError:
             pass

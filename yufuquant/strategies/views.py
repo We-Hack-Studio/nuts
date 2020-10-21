@@ -12,13 +12,13 @@ class StrategyPagination(LimitOffsetPagination):
 
 class StrategyViewSet(
     mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
     mixins.CreateModelMixin,
     viewsets.GenericViewSet,
 ):
     serializer_class = StrategySerializer
     permission_classes = [permissions.IsAdminUser]
     pagination_class = StrategyPagination
-    resource_name = "strategies"
 
     def get_queryset(self) -> QuerySet:
         return Strategy.objects.all().order_by("-created_at")

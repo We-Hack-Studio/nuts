@@ -31,6 +31,9 @@ jobs:
         if: steps.poetry-cache.outputs.cache-hit != 'true'
         run: poetry install
 
+      - name: Lint with mypy
+        run: poetry run mypy .
+
       - name: Lint with flake8
         run: poetry run flake8
 
@@ -62,7 +65,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./compose/dev/django/Dockerfile
+          file: ./compose/production/django/Dockerfile
           push: true
           tags: ghcr.io/yufuquant/yufuquant:latest
           cache-from: type=registry,ref=ghcr.io/yufuquant/yufuquant

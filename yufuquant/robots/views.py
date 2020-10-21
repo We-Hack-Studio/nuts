@@ -4,7 +4,7 @@ from credentials.serializers import CredentialKeySerializer
 from django.db.models import F
 from django.utils import timezone
 from django.utils.decorators import method_decorator
-from drf_yasg.utils import swagger_auto_schema
+from drf_spectacular.utils import extend_schema
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
@@ -23,8 +23,8 @@ from .serializers import (
 
 @method_decorator(
     name="update",
-    decorator=swagger_auto_schema(
-        auto_schema=None,
+    decorator=extend_schema(
+        operation=None,
     ),
 )
 class RobotViewSet(viewsets.ModelViewSet):

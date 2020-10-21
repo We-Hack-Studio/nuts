@@ -4,8 +4,10 @@ from typing import List
 
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
-from users.models import User
+
+User = get_user_model()
 
 public_topic_patterns: List[str] = []
 private_topic_patterns = [

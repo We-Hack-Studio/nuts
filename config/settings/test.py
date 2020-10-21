@@ -5,7 +5,7 @@ SECRET_KEY = "fake-secret-key-for-test"
 ALLOWED_HOSTS = ["*"]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#test-runner
-TEST_RUNNER = "django.test.runner.DiscoverRunner"
+# TEST_RUNNER = "django.test.runner.DiscoverRunner"
 
 # DATABASES
 DATABASES = {
