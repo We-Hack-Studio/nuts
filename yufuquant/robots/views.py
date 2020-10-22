@@ -124,7 +124,7 @@ class RobotViewSet(viewsets.ModelViewSet):
     @extend_schema(
         summary="Adjust robot strategy parameters",
     )
-    @retrieve_strategy_parameters.mapping.patch  # type:ignore
+    @retrieve_strategy_parameters.mapping.patch
     def adjust_strategy_parameters(self, request, *args, **kwargs) -> Response:
         robot = self.get_object()
         # todo: validate by specification
