@@ -20,4 +20,12 @@ COPY ./compose/local/django/start.sh /start.sh
 RUN sed -i 's/\r//' /start.sh
 RUN chmod +x /start.sh
 
+COPY ./compose/local/django/celery/worker/start.sh /start-celeryworker.sh
+RUN sed -i 's/\r$//g' /start-celeryworker.sh
+RUN chmod +x /start-celeryworker.sh
+
+COPY ./compose/local/django/celery/beat/start.sh /start-celerybeat.sh
+RUN sed -i 's/\r$//g' /start-celerybeat.sh
+RUN chmod +x /start-celerybeat.sh
+
 ENTRYPOINT ["/entrypoint.sh"]

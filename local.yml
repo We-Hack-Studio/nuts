@@ -5,7 +5,7 @@ volumes:
   local_postgres_data_backups:
 
 services:
-  django:
+  django: &django
     build:
       context: .
       dockerfile: compose/local/django/Dockerfile
@@ -25,10 +25,7 @@ services:
     command: /start.sh
 
   postgres:
-    build:
-      context: .
-      dockerfile: ./compose/production/postgres/Dockerfile
-    image: yufuquant_production_postgres
+    image: ghcr.io/zmrenwu/docker-postgresql:latest
     container_name: yufuquant_local_postgres
     volumes:
       - local_postgres_data:/var/lib/postgresql/data
@@ -39,6 +36,26 @@ services:
   redis:
     image: redis:5.0
     container_name: yufuquant_local_redis
+
+  celeryworker:
+    <<: *django
+    image: yufuquant_local_celeryworker
+    container_name: yufuquant_local_celeryworker
+    depends_on:
+      - redis
+      - postgres
+    ports: [ ]
+    command: /start-celeryworker.sh
+
+  celerybeat:
+    <<: *django
+    image: yufuquant_local_celerybeat
+    container_name: yufuquant_local_celerybeat
+    depends_on:
+      - redis
+      - postgres
+    ports: [ ]
+    command: /start-celerybeat.sh
 
   node:
     build:
@@ -52,4 +69,4 @@ services:
       - /app/node_modules
     command: npm run serve
     ports:
-      - "8080:8080"
+      - "${PORT:-8080}:8080"

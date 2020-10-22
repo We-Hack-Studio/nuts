@@ -126,10 +126,15 @@ class RobotViewSetTestCase(APITestCase):
         response = self.get("api:robot-detail", pk=robot.pk)
         self.response_200(response)
         request = self.api_request_factory.get(self.nonexistent_robot_detail_url)
+        robot = (
+            Robot.objects.all()
+            .annotate(test_net=F("credential__test_net"))
+            .get(pk=robot.pk)
+        )
         serializer = RobotRetrieveSerializer(
             instance=robot, context={"request": Request(request)}
         )
-        self.assertEqual(response.data, serializer.data)
+        self.assertDictEqual(response.data, serializer.data)
 
     # update
     def test_update_permission(self):
@@ -468,3 +473,27 @@ class RobotViewSetTestCase(APITestCase):
             response.data,
             robot.credential.key,
         )
+
+    # list asset record snaps
+    def test_list_robot_asset_record_snap_permission(self):
+        robot = RobotFactory(credential=self.admin_user_credential)
+
+        # anonymous
+        response = self.get("api:robot-asset-record-snap-list", pk=robot.pk)
+        self.response_401(response)
+
+        # normal user
+        self.login(username=self.normal_user.username, password="password")
+        response = self.get("api:robot-asset-record-snap-list", pk=robot.pk)
+        self.response_403(response)
+
+    def test_list_nonexistent_robot_asset_record_snap(self):
+        self.login(username=self.admin_user.username, password="password")
+        response = self.get("api:robot-asset-record-snap-list", pk=999999)
+        self.response_404(response)
+
+    def test_list_robot_asset_record_snap(self):
+        robot = RobotFactory(credential=self.admin_user_credential)
+        self.login(username=self.admin_user.username, password="password")
+        response = self.get("api:robot-asset-record-snap-list", pk=robot.pk)
+        self.response_200(response)

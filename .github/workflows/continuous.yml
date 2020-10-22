@@ -71,6 +71,16 @@ jobs:
           cache-from: type=registry,ref=ghcr.io/yufuquant/yufuquant-dev
           cache-to: type=inline
 
+      - name: Build and push frontend
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./compose/dev/node/Dockerfile
+          push: true
+          tags: ghcr.io/yufuquant/yufuquant-frontend-dev:latest
+          cache-from: type=registry,ref=ghcr.io/yufuquant/yufuquant-frontend-dev
+          cache-to: type=inline
+
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
 

@@ -14,7 +14,6 @@ from .serializers import LoginSerializer, TokenUserSerializer, UserSerializer
 
 class UserViewSet(viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated]
-    resource_name = "users"
 
     def get_queryset(self):
         return User.objects.all()

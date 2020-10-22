@@ -105,3 +105,24 @@ class AssetRecord(TimeStampedModel, models.Model):
         if not self.total_principal_24h_ago:
             return 0
         return self.total_pnl_abs_24h / self.total_principal_24h_ago
+
+
+class AssetRecordSnap(TimeStampedModel, models.Model):
+    PERIOD = Choices(
+        ("1h", "h1", _("1 hour")),
+        ("1d", "d1", _("1 day")),
+    )
+
+    total_principal = models.FloatField(_("total capital"))
+    total_balance = models.FloatField(_("total balance"))
+    period = models.CharField(_("period"), max_length=10, choices=PERIOD)
+    asset_record = models.ForeignKey(
+        AssetRecord,
+        verbose_name=_("asset record"),
+        related_name="snaps",
+        on_delete=models.CASCADE,
+    )
+
+    class Meta:
+        verbose_name = _("asset record snap")
+        verbose_name_plural = _("asset record snaps")

@@ -11,6 +11,17 @@ async-timeout = "*"
 hiredis = "*"
 
 [[package]]
+category = "main"
+description = "Low-level AMQP client for Python (fork of amqplib)."
+name = "amqp"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+version = "2.6.1"
+
+[package.dependencies]
+vine = ">=1.1.3,<5.0.0a1"
+
+[[package]]
 category = "dev"
 description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
 name = "appdirs"
@@ -129,6 +140,14 @@ pycodestyle = ">=2.6.0"
 toml = "*"
 
 [[package]]
+category = "main"
+description = "Python multiprocessing fork with improvements and bugfixes"
+name = "billiard"
+optional = false
+python-versions = "*"
+version = "3.6.3.0"
+
+[[package]]
 category = "dev"
 description = "The uncompromising code formatter."
 name = "black"
@@ -149,6 +168,54 @@ typing-extensions = ">=3.7.4"
 [package.extras]
 colorama = ["colorama (>=0.4.3)"]
 d = ["aiohttp (>=3.3.2)", "aiohttp-cors"]
+
+[[package]]
+category = "main"
+description = "Distributed Task Queue."
+name = "celery"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+version = "4.4.7"
+
+[package.dependencies]
+billiard = ">=3.6.3.0,<4.0"
+kombu = ">=4.6.10,<4.7"
+pytz = ">0.0-dev"
+vine = "1.3.0"
+
+[package.extras]
+arangodb = ["pyArango (>=1.3.2)"]
+auth = ["cryptography"]
+azureblockblob = ["azure-storage (0.36.0)", "azure-common (1.1.5)", "azure-storage-common (1.1.0)"]
+brotli = ["brotli (>=1.0.0)", "brotlipy (>=0.7.0)"]
+cassandra = ["cassandra-driver (<3.21.0)"]
+consul = ["python-consul"]
+cosmosdbsql = ["pydocumentdb (2.3.2)"]
+couchbase = ["couchbase-cffi (<3.0.0)", "couchbase (<3.0.0)"]
+couchdb = ["pycouchdb"]
+django = ["Django (>=1.11)"]
+dynamodb = ["boto3 (>=1.9.178)"]
+elasticsearch = ["elasticsearch"]
+eventlet = ["eventlet (>=0.24.1)"]
+gevent = ["gevent"]
+librabbitmq = ["librabbitmq (>=1.5.0)"]
+lzma = ["backports.lzma"]
+memcache = ["pylibmc"]
+mongodb = ["pymongo (>=3.3.0)"]
+msgpack = ["msgpack"]
+pymemcache = ["python-memcached"]
+pyro = ["pyro4"]
+redis = ["redis (>=3.2.0)"]
+riak = ["riak (>=2.0)"]
+s3 = ["boto3 (>=1.9.125)"]
+slmq = ["softlayer-messaging (>=1.0.3)"]
+solar = ["ephem"]
+sqlalchemy = ["sqlalchemy"]
+sqs = ["boto3 (>=1.9.125)", "pycurl (7.43.0.5)"]
+tblib = ["tblib (>=1.3.0)", "tblib (>=1.5.0)"]
+yaml = ["PyYAML (>=3.10)"]
+zookeeper = ["kazoo (>=1.3.1)"]
+zstd = ["zstandard"]
 
 [[package]]
 category = "main"
@@ -351,6 +418,31 @@ django = "*"
 
 [[package]]
 category = "main"
+description = "Database-backed Periodic Tasks."
+name = "django-celery-beat"
+optional = false
+python-versions = "*"
+version = "2.1.0"
+
+[package.dependencies]
+Django = ">=2.2"
+celery = ">=4.4,<6.0"
+django-timezone-field = ">=4.0,<5.0"
+python-crontab = ">=2.3.4"
+
+[[package]]
+category = "main"
+description = "Celery result backends for Django."
+name = "django-celery-results"
+optional = false
+python-versions = "*"
+version = "1.2.1"
+
+[package.dependencies]
+celery = ">=4.4,<5.0"
+
+[[package]]
+category = "main"
 description = "django-cors-headers is a Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS)."
 name = "django-cors-headers"
 optional = false
@@ -490,6 +582,18 @@ name = "django-test-plus"
 optional = false
 python-versions = "*"
 version = "1.4.0"
+
+[[package]]
+category = "main"
+description = "A Django app providing database and form fields for pytz timezone objects."
+name = "django-timezone-field"
+optional = false
+python-versions = ">=3.5"
+version = "4.0"
+
+[package.dependencies]
+django = ">=2.2"
+pytz = "*"
 
 [[package]]
 category = "main"
@@ -839,6 +943,37 @@ version = "*"
 [package.extras]
 format = ["idna", "jsonpointer (>1.13)", "rfc3987", "strict-rfc3339", "webcolors"]
 format_nongpl = ["idna", "jsonpointer (>1.13)", "webcolors", "rfc3986-validator (>0.1.0)", "rfc3339-validator"]
+
+[[package]]
+category = "main"
+description = "Messaging library for Python."
+name = "kombu"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+version = "4.6.11"
+
+[package.dependencies]
+amqp = ">=2.6.0,<2.7"
+
+[package.dependencies.importlib-metadata]
+python = "<3.8"
+version = ">=0.18"
+
+[package.extras]
+azureservicebus = ["azure-servicebus (>=0.21.1)"]
+azurestoragequeues = ["azure-storage-queue"]
+consul = ["python-consul (>=0.6.0)"]
+librabbitmq = ["librabbitmq (>=1.5.2)"]
+mongodb = ["pymongo (>=3.3.0)"]
+msgpack = ["msgpack"]
+pyro = ["pyro4"]
+qpid = ["qpid-python (>=0.26)", "qpid-tools (>=0.26)"]
+redis = ["redis (>=3.3.11)"]
+slmq = ["softlayer-messaging (>=1.0.3)"]
+sqlalchemy = ["sqlalchemy"]
+sqs = ["boto3 (>=1.4.4)", "pycurl (7.43.0.2)"]
+yaml = ["PyYAML (>=3.10)"]
+zookeeper = ["kazoo (>=1.3.1)"]
 
 [[package]]
 category = "dev"
@@ -1263,6 +1398,21 @@ termcolor = ">=1.1.0"
 
 [[package]]
 category = "main"
+description = "Python Crontab API"
+name = "python-crontab"
+optional = false
+python-versions = "*"
+version = "2.5.1"
+
+[package.dependencies]
+python-dateutil = "*"
+
+[package.extras]
+cron-description = ["cron-descriptor"]
+cron-schedule = ["croniter"]
+
+[[package]]
+category = "main"
 description = "Extensions to the standard Python datetime module"
 name = "python-dateutil"
 optional = false
@@ -1590,6 +1740,14 @@ version = "0.14.0"
 
 [[package]]
 category = "main"
+description = "Promises, promises, promises."
+name = "vine"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "1.3.0"
+
+[[package]]
+category = "main"
 description = "An implementation of the WebSocket Protocol (RFC 6455 & 7692)"
 name = "websockets"
 optional = false
@@ -1626,7 +1784,7 @@ test = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [metadata]
-content-hash = "7fa139cdc92dabf86362ca4861cec32abba512880da0b55cff217c9a62620c42"
+content-hash = "333eb184fdad41348b77b2e26ce3e1b1d078becec20dbc5e87b0c3e196c17c66"
 lock-version = "1.0"
 python-versions = ">=3.7,<4"
 
@@ -1634,6 +1792,10 @@ python-versions = ">=3.7,<4"
 aioredis = [
     {file = "aioredis-1.3.1-py3-none-any.whl", hash = "sha256:b61808d7e97b7cd5a92ed574937a079c9387fdadd22bfbfa7ad2fd319ecc26e3"},
     {file = "aioredis-1.3.1.tar.gz", hash = "sha256:15f8af30b044c771aee6787e5ec24694c048184c7b9e54c3b60c750a4b93273a"},
+]
+amqp = [
+    {file = "amqp-2.6.1-py2.py3-none-any.whl", hash = "sha256:aa7f313fb887c91f15474c1229907a04dac0b8135822d6603437803424c0aa59"},
+    {file = "amqp-2.6.1.tar.gz", hash = "sha256:70cdb10628468ff14e57ec2f751c7aa9e48e7e3651cfd62d431213c0c4e58f21"},
 ]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
@@ -1684,9 +1846,17 @@ automat = [
 autopep8 = [
     {file = "autopep8-1.5.4.tar.gz", hash = "sha256:d21d3901cb0da6ebd1e83fc9b0dfbde8b46afc2ede4fe32fbda0c7c6118ca094"},
 ]
+billiard = [
+    {file = "billiard-3.6.3.0-py3-none-any.whl", hash = "sha256:bff575450859a6e0fbc2f9877d9b715b0bbc07c3565bb7ed2280526a0cdf5ede"},
+    {file = "billiard-3.6.3.0.tar.gz", hash = "sha256:d91725ce6425f33a97dfa72fb6bfef0e47d4652acd98a032bd1a7fbf06d5fa6a"},
+]
 black = [
     {file = "black-20.8b1-py3-none-any.whl", hash = "sha256:70b62ef1527c950db59062cda342ea224d772abdf6adc58b86a45421bab20a6b"},
     {file = "black-20.8b1.tar.gz", hash = "sha256:1c02557aa099101b9d21496f8a914e9ed2222ef70336404eeeac8edba836fbea"},
+]
+celery = [
+    {file = "celery-4.4.7-py2.py3-none-any.whl", hash = "sha256:a92e1d56e650781fb747032a3997d16236d037c8199eacd5217d1a72893bca45"},
+    {file = "celery-4.4.7.tar.gz", hash = "sha256:d220b13a8ed57c78149acf82c006785356071844afe0b27012a4991d44026f9f"},
 ]
 certifi = [
     {file = "certifi-2020.6.20-py2.py3-none-any.whl", hash = "sha256:8fc0819f1f30ba15bdb34cceffb9ef04d99f420f68eb75d901e9560b8749fc41"},
@@ -1837,6 +2007,14 @@ django-appconf = [
     {file = "django-appconf-1.0.4.tar.gz", hash = "sha256:be58deb54a43d77d2e1621fe59f787681376d3cd0b8bd8e4758ef6c3a6453380"},
     {file = "django_appconf-1.0.4-py2.py3-none-any.whl", hash = "sha256:1b1d0e1069c843ebe8ae5aa48ec52403b1440402b320c3e3a206a0907e97bb06"},
 ]
+django-celery-beat = [
+    {file = "django-celery-beat-2.1.0.tar.gz", hash = "sha256:4eb0e8412e2e05ba0029912a6f80d1054731001eecbcb4d59688c4e07cf4d9d3"},
+    {file = "django_celery_beat-2.1.0-py2.py3-none-any.whl", hash = "sha256:8a169e11d96faed8b72d505ddbc70e7fe0b16cdc854df43cb209c153ed08d651"},
+]
+django-celery-results = [
+    {file = "django_celery_results-1.2.1-py2.py3-none-any.whl", hash = "sha256:a29ab580f0e38c66c39f51cc426bbdbb2a391b8cc0867df9dea748db2c961db2"},
+    {file = "django_celery_results-1.2.1.tar.gz", hash = "sha256:e390f70cc43bbc2cd7c8e4607dc29ab6211a2ab968f93677583f0160921f670c"},
+]
 django-cors-headers = [
     {file = "django-cors-headers-3.5.0.tar.gz", hash = "sha256:db82b2840f667d47872ae3e4a4e0a0d72fbecb42779b8aa233fa8bb965f7836a"},
     {file = "django_cors_headers-3.5.0-py3-none-any.whl", hash = "sha256:9322255c296d5f75089571f29e520c83ff9693df17aa3cf9f6a4bea7c6740169"},
@@ -1882,6 +2060,10 @@ django-stubs = [
 ]
 django-test-plus = [
     {file = "django-test-plus-1.4.0.tar.gz", hash = "sha256:9c3ca75f9ebb0b72d0a16e98b6d80e94b3d0ff007be5fc946d16b423b808bf16"},
+]
+django-timezone-field = [
+    {file = "django-timezone-field-4.0.tar.gz", hash = "sha256:7e3620fe2211c2d372fad54db8f86ff884098d018d56fda4dca5e64929e05ffc"},
+    {file = "django_timezone_field-4.0-py3-none-any.whl", hash = "sha256:758b7d41084e9ea2e89e59eb616e9b6326e6fbbf9d14b6ef062d624fe8cc6246"},
 ]
 djangorestframework = [
     {file = "djangorestframework-3.12.1-py3-none-any.whl", hash = "sha256:5c5071fcbad6dce16f566d492015c829ddb0df42965d488b878594aabc3aed21"},
@@ -2050,6 +2232,10 @@ jsonfield = [
 jsonschema = [
     {file = "jsonschema-3.2.0-py2.py3-none-any.whl", hash = "sha256:4e5b3cf8216f577bee9ce139cbe72eca3ea4f292ec60928ff24758ce626cd163"},
     {file = "jsonschema-3.2.0.tar.gz", hash = "sha256:c8a85b28d377cc7737e46e2d9f2b4f44ee3c0e1deac6bf46ddefc7187d30797a"},
+]
+kombu = [
+    {file = "kombu-4.6.11-py2.py3-none-any.whl", hash = "sha256:be48cdffb54a2194d93ad6533d73f69408486483d189fe9f5990ee24255b0e0a"},
+    {file = "kombu-4.6.11.tar.gz", hash = "sha256:ca1b45faac8c0b18493d02a8571792f3c40291cf2bcf1f55afed3d8f3aa7ba74"},
 ]
 livereload = [
     {file = "livereload-2.6.3.tar.gz", hash = "sha256:776f2f865e59fde56490a56bcc6773b6917366bce0c267c60ee8aaf1a0959869"},
@@ -2323,6 +2509,9 @@ pytest-django = [
 pytest-sugar = [
     {file = "pytest-sugar-0.9.4.tar.gz", hash = "sha256:b1b2186b0a72aada6859bea2a5764145e3aaa2c1cfbb23c3a19b5f7b697563d3"},
 ]
+python-crontab = [
+    {file = "python-crontab-2.5.1.tar.gz", hash = "sha256:4bbe7e720753a132ca4ca9d4094915f40e9d9dc8a807a4564007651018ce8c31"},
+]
 python-dateutil = [
     {file = "python-dateutil-2.8.1.tar.gz", hash = "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c"},
     {file = "python_dateutil-2.8.1-py2.py3-none-any.whl", hash = "sha256:75bb3f31ea686f1197762692a9ee6a7550b59fc6ca3a1f4b5d7e32fb98e2da2a"},
@@ -2534,6 +2723,10 @@ uvloop = [
     {file = "uvloop-0.14.0-cp38-cp38-macosx_10_11_x86_64.whl", hash = "sha256:bcac356d62edd330080aed082e78d4b580ff260a677508718f88016333e2c9c5"},
     {file = "uvloop-0.14.0-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:4315d2ec3ca393dd5bc0b0089d23101276778c304d42faff5dc4579cb6caef09"},
     {file = "uvloop-0.14.0.tar.gz", hash = "sha256:123ac9c0c7dd71464f58f1b4ee0bbd81285d96cdda8bc3519281b8973e3a461e"},
+]
+vine = [
+    {file = "vine-1.3.0-py2.py3-none-any.whl", hash = "sha256:ea4947cc56d1fd6f2095c8d543ee25dad966f78692528e68b4fada11ba3f98af"},
+    {file = "vine-1.3.0.tar.gz", hash = "sha256:133ee6d7a9016f177ddeaf191c1f58421a1dcc6ee9a42c58b34bed40e1d2cd87"},
 ]
 websockets = [
     {file = "websockets-8.1-cp36-cp36m-macosx_10_6_intel.whl", hash = "sha256:3762791ab8b38948f0c4d281c8b2ddfa99b7e510e46bd8dfa942a5fff621068c"},

@@ -3,7 +3,7 @@ from rest_framework import serializers
 from rest_framework.fields import DurationField as DrfDurationField
 from rest_framework.serializers import FloatField
 
-from .models import AssetRecord, Robot
+from .models import AssetRecord, AssetRecordSnap, Robot
 
 
 class DurationField(DrfDurationField):
@@ -138,4 +138,19 @@ class RobotUpdateSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "name",
+        ]
+
+
+class AssetRecordSnapSerializer(serializers.ModelSerializer):
+    currency = serializers.CharField(source="asset_record.currency")
+
+    class Meta:
+        model = AssetRecordSnap
+        fields = [
+            "id",
+            "total_principal",
+            "total_balance",
+            "period",
+            "currency",
+            "created_at",
         ]

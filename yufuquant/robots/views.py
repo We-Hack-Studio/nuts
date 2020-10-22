@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from drf_spectacular.utils import extend_schema
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
@@ -14,11 +15,16 @@ from rest_framework.serializers import BaseSerializer
 from .models import Robot
 from .serializers import (
     AssetRecordSerializer,
+    AssetRecordSnapSerializer,
     RobotCreateSerializer,
     RobotListSerializer,
     RobotRetrieveSerializer,
     RobotUpdateSerializer,
 )
+
+
+class RobotAssetRecordSnapPagination(LimitOffsetPagination):
+    default_limit = 100
 
 
 @method_decorator(
@@ -72,6 +78,7 @@ class RobotViewSet(viewsets.ModelViewSet):
         "partial_update": RobotUpdateSerializer,
         "partial_update_asset_record": AssetRecordSerializer,
         "retrieve_credential_key": CredentialKeySerializer,
+        "list_asset_record_snap": AssetRecordSnapSerializer,
     }
 
     def get_queryset(self):
@@ -170,7 +177,6 @@ class RobotViewSet(viewsets.ModelViewSet):
         url_name="asset-record",
         permission_classes=[IsAdminUser],
         serializer_class=AssetRecordSerializer,
-        resource_name="asset_records",
     )
     def partial_update_asset_record(self, request, *args, **kwargs) -> Response:
         robot = self.get_object()
@@ -179,3 +185,26 @@ class RobotViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @extend_schema(
+        summary="Get asset record snaps",
+    )
+    @action(
+        methods=["GET"],
+        detail=True,
+        url_path="assetRecordSnaps",
+        url_name="asset-record-snap-list",
+        permission_classes=[IsAdminUser],
+        serializer_class=AssetRecordSnapSerializer,
+        # todo: custom filter
+        filter_backends=[],
+        pagination_class=RobotAssetRecordSnapPagination,
+    )
+    def list_asset_record_snap(self, request, *args, **kwargs) -> Response:
+        robot = self.get_object()
+        asset_record = robot.asset_record
+        snaps = asset_record.snaps.select_related("asset_record")
+        filtered = self.filter_queryset(snaps)
+        page = self.paginate_queryset(filtered)
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)

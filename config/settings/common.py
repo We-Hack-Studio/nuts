@@ -75,6 +75,8 @@ THIRD_PARTY_APPS = [
     # "drf_yasg",
     "adminsortable2",
     "drf_spectacular",
+    "django_celery_beat",
+    "django_celery_results",
 ]
 LOCAL_APPS = [
     "core.apps.CoreConfig",
@@ -84,6 +86,7 @@ LOCAL_APPS = [
     "credentials.apps.CredentialsConfig",
     "exchanges.apps.ExchangesConfig",
     "strategies.apps.StrategiesConfig",
+    "taskapp.celery.CeleryAppConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

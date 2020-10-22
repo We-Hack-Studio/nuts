@@ -6,7 +6,6 @@ from .models import Exchange
 class SimpleExchangeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exchange
-        resource_name = "exchanges"
         fields = [
             "id",
             "code",
@@ -20,7 +19,6 @@ class ExchangeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Exchange
-        resource_name = "exchanges"
         fields = [
             "id",
             "code",

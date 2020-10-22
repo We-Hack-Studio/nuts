@@ -41,7 +41,6 @@ class CredentialViewSet(
     permission_classes = [permissions.IsAdminUser]
     throttle_classes = [throttling.UserRateThrottle]
     pagination_class = None
-    resource_name = "credentials"
 
     def get_queryset(self):
         qs = Credential.objects.filter(user=self.request.user)
