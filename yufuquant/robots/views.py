@@ -27,6 +27,40 @@ from .serializers import (
         operation=None,
     ),
 )
+@method_decorator(
+    name="partial_update",
+    decorator=extend_schema(
+        summary="Update a robot",
+        request=RobotUpdateSerializer,
+    ),
+)
+@method_decorator(
+    name="create",
+    decorator=extend_schema(
+        summary="Create a robot",
+        request=RobotCreateSerializer,
+    ),
+)
+@method_decorator(
+    name="list",
+    decorator=extend_schema(
+        summary="Return all robot",
+        request=RobotListSerializer,
+    ),
+)
+@method_decorator(
+    name="retrieve",
+    decorator=extend_schema(
+        summary="Get robot detail",
+        request=RobotRetrieveSerializer,
+    ),
+)
+@method_decorator(
+    name="destroy",
+    decorator=extend_schema(
+        summary="Delete a robot",
+    ),
+)
 class RobotViewSet(viewsets.ModelViewSet):
     serializer_class = RobotListSerializer
     permission_classes = [IsAdminUser]
@@ -54,6 +88,9 @@ class RobotViewSet(viewsets.ModelViewSet):
         assert self.action in self.action_serializer_map
         return self.action_serializer_map[self.action]
 
+    @extend_schema(
+        summary="Ping robot", responses={200: {"pong": "timestamp in milliseconds."}}
+    )
     @action(
         methods=["POST"],
         detail=True,
@@ -70,6 +107,9 @@ class RobotViewSet(viewsets.ModelViewSet):
             {"pong": int(now.timestamp() * 1000)}, status=status.HTTP_200_OK
         )
 
+    @extend_schema(
+        summary="Get robot strategy parameters",
+    )
     @action(
         methods=["GET"],
         detail=True,
@@ -81,7 +121,10 @@ class RobotViewSet(viewsets.ModelViewSet):
         robot = self.get_object()
         return Response(robot.strategy_parameters, status=status.HTTP_200_OK)
 
-    @retrieve_strategy_parameters.mapping.patch  # type:ignore
+    @extend_schema(
+        summary="Adjust robot strategy parameters",
+    )
+    @retrieve_strategy_parameters.mapping.patch
     def adjust_strategy_parameters(self, request, *args, **kwargs) -> Response:
         robot = self.get_object()
         # todo: validate by specification
@@ -89,6 +132,9 @@ class RobotViewSet(viewsets.ModelViewSet):
         robot.save(update_fields=["strategy_parameters"])
         return Response(robot.strategy_parameters, status=status.HTTP_200_OK)
 
+    @extend_schema(
+        summary="Get robot strategy specification view",
+    )
     @action(
         methods=["GET"],
         detail=True,
@@ -100,6 +146,9 @@ class RobotViewSet(viewsets.ModelViewSet):
         robot = self.get_object()
         return Response(robot.strategy_spec_view, status=status.HTTP_200_OK)
 
+    @extend_schema(
+        summary="Get robot exchange credential key",
+    )
     @action(
         methods=["GET"],
         detail=True,
@@ -111,6 +160,9 @@ class RobotViewSet(viewsets.ModelViewSet):
         robot = self.get_object()
         return Response(robot.credential.key, status=status.HTTP_200_OK)
 
+    @extend_schema(
+        summary="Update robot asset record",
+    )
     @action(
         methods=["PATCH"],
         detail=True,
