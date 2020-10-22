@@ -69,12 +69,10 @@ class RobotViewSet(viewsets.ModelViewSet):
         "list": RobotListSerializer,
         "retrieve": RobotRetrieveSerializer,
         "create": RobotCreateSerializer,
-        "update": RobotUpdateSerializer,
         "partial_update": RobotUpdateSerializer,
         "partial_update_asset_record": AssetRecordSerializer,
         "retrieve_credential_key": CredentialKeySerializer,
     }
-    resource_name = "robots"
 
     def get_queryset(self):
         qs = Robot.objects.filter(credential__user=self.request.user).order_by(
@@ -82,6 +80,8 @@ class RobotViewSet(viewsets.ModelViewSet):
         )
         if self.action in {"list"}:
             qs = qs.annotate(strategy_name=F("strategy__name"))
+        if self.action in {"retrieve"}:
+            qs = qs.annotate(test_net=F("credential__test_net"))
         return qs
 
     def get_serializer_class(self) -> Type[BaseSerializer]:

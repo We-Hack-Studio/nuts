@@ -79,6 +79,7 @@ class RobotListSerializer(serializers.ModelSerializer):
 class RobotRetrieveSerializer(serializers.ModelSerializer):
     duration_display = DurationField(source="duration", read_only=True)
     asset_record = AssetRecordSerializer(read_only=True)
+    test_net = serializers.BooleanField(read_only=True)
     exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
 
     class Meta:
@@ -103,6 +104,7 @@ class RobotRetrieveSerializer(serializers.ModelSerializer):
             # derived fields
             "duration_display",
             "strategy_spec_view",
+            "test_net",
             "exchange",
         ]
 
