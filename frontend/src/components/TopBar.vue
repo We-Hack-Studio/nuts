@@ -20,9 +20,7 @@
                         <b-icon icon="person-bounding-box" class="mr-1" /> 账户
                     </b-dropdown-item>
                     <b-dropdown-divider></b-dropdown-divider>
-                    <b-dropdown-item to="/login" @click="logout">
-                        <b-icon icon="box-arrow-right" class="mr-1" /> 登出
-                    </b-dropdown-item>
+                    <b-dropdown-item to="/login"> <b-icon icon="box-arrow-right" class="mr-1" /> 登出 </b-dropdown-item>
                 </b-dropdown>
             </li>
         </ul>

@@ -9,10 +9,8 @@
                     </div>
                     <div class="text-center small text-secondary py-4 mb-2">使用账号密码登录</div>
                     <b-form @submit="onSubmit">
-                        <b-alert :show="errors.length > 0" variant="danger">
-                            <ul class="pl-2">
-                                <li class="small" v-for="(error, index) in errors" :key="index">{{ error.detail }}</li>
-                            </ul>
+                        <b-alert :show="errors && Object.keys(errors).length > 0" variant="danger">
+                            {{ errors['non_field_errors'] && errors['non_field_errors'][0] }}
                         </b-alert>
                         <b-form-group>
                             <b-input-group class="input-group" size="lg">
@@ -21,12 +19,11 @@
                                 </b-input-group-prepend>
                                 <b-form-input
                                     class="input-class"
-                                    id="id_username"
                                     v-model="form.username"
-                                    type="用户名"
+                                    type="text"
                                     placeholder=""
                                     required
-                                ></b-form-input>
+                                />
                             </b-input-group>
                         </b-form-group>
                         <b-form-group>
@@ -34,14 +31,13 @@
                                 <b-input-group-prepend class="prepend-class">
                                     <b-icon icon="key-fill"></b-icon>
                                 </b-input-group-prepend>
-                                <b-form-input
+                                <b-input
                                     class="input-class"
                                     placeholder="密码"
-                                    id="id_password"
                                     v-model="form.password"
                                     type="password"
                                     required
-                                ></b-form-input>
+                                />
                             </b-input-group>
                         </b-form-group>
                         <b-button
@@ -61,9 +57,8 @@
 </template>
 
 <script>
-import { postAuthLogin } from '@/api';
+import { postAuthLogin } from '@/api/loginApi';
 import storage from '../utils';
-import { Formatter } from 'sarala-json-api-data-formatter';
 
 export default {
     data() {
@@ -72,16 +67,14 @@ export default {
                 username: '',
                 password: '',
             },
-            errors: [],
+            errors: {},
             formProcessing: false,
-            formatter: new Formatter(),
         };
     },
     methods: {
-        async login(username, password) {
-            const type = 'tokens';
-            const data = this.formatter.serialize({ type, username, password });
-            return await postAuthLogin(data);
+        login(username, password) {
+            const data = { username, password };
+            return postAuthLogin(data);
         },
 
         async onSubmit(event) {
@@ -89,13 +82,13 @@ export default {
             event.preventDefault();
             try {
                 const loginRes = await this.login(this.form.username, this.form.password);
-                const result = this.formatter.deserialize(loginRes.data);
+                const result = loginRes.data;
 
                 const authToken = result['auth_token'];
                 this.$store.commit('SET_AUTH_TOKEN', authToken);
                 storage.saveAuthToken(authToken);
 
-                const userData = result.user.data;
+                const userData = result.user;
                 const user = {
                     userId: userData.id,
                     username: userData.username,
@@ -119,7 +112,7 @@ export default {
                         });
                     } else if (error.response.status >= 400) {
                         // form validation error
-                        this.errors = error.response.data.errors;
+                        this.errors = error.response.data;
                     }
                 } else {
                     this.$bvToast.toast(error.message, {
