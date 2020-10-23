@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import AssetRecord, Robot
+from .models import AssetRecord, AssetRecordSnap, Robot
 
 
 class AssetRecordInline(admin.TabularInline):
@@ -40,3 +40,17 @@ class RobotAdmin(admin.ModelAdmin):
     readonly_fields = [
         "ping_time",
     ]
+
+
+@admin.register(AssetRecordSnap)
+class AssetRecordSnapAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "period",
+        "total_principal",
+        "total_balance",
+        "created_at",
+        "modified_at",
+    ]
+    list_select_related = ["asset_record", "asset_record__robot"]
+    list_filter = ["period"]
