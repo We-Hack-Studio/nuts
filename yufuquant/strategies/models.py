@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from jsonfield import JSONField
 
 
-class Strategy(TimeStampedModel):
+class Strategy(TimeStampedModel, models.Model):
     name = models.CharField(_("name"), max_length=100, unique=True)
     description = models.TextField(_("description"), blank=True)
     specification = JSONField(_("specification"))
@@ -12,9 +12,6 @@ class Strategy(TimeStampedModel):
     class Meta:
         verbose_name = _("strategy")
         verbose_name_plural = _("strategies")
-
-    class JSONAPIMeta:
-        resource_name = "strategies"
 
     def __str__(self):
         return self.name

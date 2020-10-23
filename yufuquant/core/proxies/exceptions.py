@@ -1,2 +1,0 @@
-class ExchangeProxyException(Exception):
-    pass

@@ -1,79 +1,124 @@
 import json
 
+from django.contrib.auth import get_user_model
+from strategies.models import Strategy
+from strategies.tests.factories import StrategyFactory
 from test_plus.test import APITestCase
-from users.models import User
 
-from .factories import StrategyFactory
+User = get_user_model()
 
 
-class StrategyTemplateViewSetTestCase(APITestCase):
+class StrategyViewSetTestCase(APITestCase):
     maxDiff = None
 
     def setUp(self) -> None:
-        self.user = User.objects.create_superuser(
-            username="user", password="test", email="user@yufuquant.cc"
+        self.admin_user = User.objects.create_superuser(
+            username="admin", password="password", email="admin@yufuquant.cc"
         )
-        self.user_token = self.user.auth_token
+        self.normal_user = self.make_user(username="normal", password="password")
+        self.strategy_list_url = self.reverse("api:strategy-list")
+        self.nonexistent_strategy_detail_url = self.reverse(
+            "api:strategy-detail", pk=9999999
+        )
 
-    def test_list_strategy_template(self):
+    # list robot
+    def test_list_permission(self):
+        # anonymous
+        response = self.get(self.strategy_list_url)
+        self.response_401(response)
+
+        # normal user
+        self.login(username=self.normal_user.username, password="password")
+        response = self.get("api:strategy-list")
+        self.response_403(response)
+
+    def test_list_strategy(self):
         StrategyFactory.create_batch(5)
-        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.user_token.key)
-        response = self.client.get(self.reverse("api:strategy-list"))
+        self.login(username=self.admin_user.username, password="password")
+        response = self.get(self.strategy_list_url)
         self.response_200(response)
         self.assertEqual(len(response.data["results"]), 5)
 
-    def test_create_valid_strategy_template(self):
-        parameter_spec = {
-            "version": "v0",
-            "specVersion": "v1.0",
-            "description": "",
-            "fields": [
+    # retrieve
+    def test_retrieve_permission(self):
+        strategy = StrategyFactory()
+
+        # anonymous user
+        response = self.get("api:strategy-detail", pk=strategy.pk)
+        self.response_401(response)
+
+        # normal user
+        self.login(username=self.normal_user.username, password="password")
+        response = self.get("api:strategy-detail", pk=strategy.pk)
+        self.response_403(response)
+
+    def test_retrieve_nonexistent_strategy(self):
+        self.login(username=self.admin_user.username, password="password")
+        response = self.get(self.nonexistent_strategy_detail_url)
+        self.response_404(response)
+
+    def test_retrieve_strategy(self):
+        strategy = StrategyFactory()
+        self.login(username=self.admin_user.username, password="password")
+        response = self.get("api:strategy-detail", pk=strategy.pk)
+        self.response_200(response)
+
+    # create
+    def test_create_permission(self):
+        # anonymous
+        response = self.post(self.strategy_list_url)
+        self.response_401(response)
+
+        # normal user
+        self.login(username=self.normal_user.username, password="password")
+        response = self.post("api:strategy-list")
+        self.response_403(response)
+
+    def test_create_strategy(self):
+        specification = {
+            "specVersion": "v0.1.0",
+            "parameters": [
                 {
-                    "code": "code",
-                    "name": "Code",
-                    "type": "float",
+                    "code": "param1",
+                    "name": "Param1",
+                    "type": "string",
                     "description": "",
-                    "default": None,
+                    "default": "test1",
+                    "editable": True,
+                },
+                {
+                    "code": "param2",
+                    "name": "Param2",
+                    "type": "string",
+                    "description": "",
+                    "default": "test2",
                     "editable": True,
                 },
             ],
         }
         data = {
-            "data": {
-                "type": "strategies",
-                "attributes": {
-                    "code": "test",
-                    "name": "Test",
-                    "description": "A test strategy template",
-                    "specification": json.dumps(parameter_spec),
-                },
-            }
+            "name": "Test",
+            "description": "A test strategy",
+            "specification": json.dumps(specification),
         }
-        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.user_token.key)
-        response = self.client.post(
-            self.reverse("api:strategy-list"),
+        self.login(username=self.admin_user.username, password="password")
+        response = self.post(
+            self.strategy_list_url,
             data=data,
-            extra={"format": "json"},
         )
         self.response_201(response)
-        # todo: assert response schema
+        self.assertEqual(Strategy.objects.count(), 1)
 
-    def test_create_invalid_strategy_template(self):
+    def test_create_strategy_with_invalid_data(self):
         data = {
-            "data": {
-                "type": "strategies",
-                "attributes": {
-                    "code": "",
-                    "name": "",
-                    "description": "",
-                    "specification": "",
-                },
-            }
+            "name": "",
+            "specification": "",
         }
-        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.user_token.key)
-        response = self.client.post(
-            self.reverse("api:strategy-list"),
+        self.login(username=self.admin_user.username, password="password")
+        response = self.post(
+            self.strategy_list_url,
             data=data,
-            extra={"format": "json"},
         )
         self.response_400(response)
+        self.assertIn("name", response.data)
+        self.assertIn("specification", response.data)

@@ -5,7 +5,7 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
 
-class Exchange(TimeStampedModel):
+class Exchange(TimeStampedModel, models.Model):
     code = models.CharField(_("code"), max_length=50)
     name = models.CharField(_("name"), max_length=50)
     name_zh = models.CharField(_("chinese name"), max_length=100, blank=True)
@@ -23,9 +23,6 @@ class Exchange(TimeStampedModel):
         verbose_name = _("exchange")
         verbose_name_plural = _("exchanges")
         ordering = ["rank", "-created_at"]
-
-    class JSONAPIMeta:
-        resource_name = "exchanges"
 
     def __str__(self):
         return self.name

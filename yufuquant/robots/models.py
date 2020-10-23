@@ -7,7 +7,9 @@ from model_utils.choices import Choices
 from .managers import RobotManager
 
 
-class Robot(TimeStampedModel):
+# Why inherit models.Model?
+# see https://github.com/typeddjango/django-stubs/issues/68
+class Robot(TimeStampedModel, models.Model):
     MARKET_TYPE = Choices(
         ("spots", _("Spots")),
         ("margin", _("Margin")),
@@ -20,7 +22,7 @@ class Robot(TimeStampedModel):
     name = models.CharField(_("name"), max_length=50)
     pair = models.CharField(_("pair"), max_length=30)
     market_type = models.CharField(_("market type"), max_length=30, choices=MARKET_TYPE)
-    enabled = models.BooleanField(_("enabled"), default=True)
+    enabled = models.BooleanField(_("enabled"), default=False)
     start_time = models.DateTimeField(_("start time"), null=True, blank=True)
     ping_time = models.DateTimeField(_("ping time"), null=True, blank=True)
     credential = models.ForeignKey(
@@ -49,16 +51,21 @@ class Robot(TimeStampedModel):
         verbose_name = _("robot")
         verbose_name_plural = _("robots")
 
-    class JSONAPIMeta:
-        resource_name = "robots"
-
     @property
     def duration(self):
         if self.start_time and self.ping_time:
             return self.ping_time - self.start_time
 
+    @property
+    def strategy_spec_view(self):
+        spec = self.strategy.specification
+        parameters = self.strategy_parameters
+        for parameter in spec["parameters"]:
+            parameter["value"] = parameters[parameter["code"]]
+        return spec
 
-class AssetRecord(TimeStampedModel):
+
+class AssetRecord(TimeStampedModel, models.Model):
     currency = models.CharField(_("currency"), max_length=10)
     total_principal = models.FloatField(_("total principal"), default=0)
     total_balance = models.FloatField(_("total balance"), default=0)

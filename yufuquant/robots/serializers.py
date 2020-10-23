@@ -1,11 +1,7 @@
-from typing import Any, Dict
-
-from credentials.serializers import CredentialKeysSerializer
 from exchanges.serializers import ExchangeSerializer
+from rest_framework import serializers
 from rest_framework.fields import DurationField as DrfDurationField
 from rest_framework.serializers import FloatField
-from rest_framework_json_api import serializers
-from users.serializers import UserSerializer
 
 from .models import AssetRecord, Robot
 
@@ -32,7 +28,6 @@ class AssetRecordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AssetRecord
-        resource_name = "asset_records"
         fields = [
             "currency",
             "total_principal",
@@ -51,14 +46,68 @@ class AssetRecordSerializer(serializers.ModelSerializer):
 
 
 class RobotListSerializer(serializers.ModelSerializer):
-    included_serializers = {
-        "exchange": ExchangeSerializer,
-        "asset_record": AssetRecordSerializer,
-    }
     duration_display = DurationField(source="duration", read_only=True)
     strategy_name = serializers.CharField(read_only=True)
+    asset_record = AssetRecordSerializer(read_only=True)
     exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
 
+    class Meta:
+        model = Robot
+        fields = [
+            # plain model fields
+            "id",
+            "name",
+            "pair",
+            "market_type",
+            "enabled",
+            "start_time",
+            "ping_time",
+            "target_currency",
+            "base_currency",
+            "quote_currency",
+            "created_at",
+            "modified_at",
+            # related model fields
+            "asset_record",
+            # derived fields
+            "duration_display",
+            "strategy_name",
+            "exchange",
+        ]
+
+
+class RobotRetrieveSerializer(serializers.ModelSerializer):
+    duration_display = DurationField(source="duration", read_only=True)
+    asset_record = AssetRecordSerializer(read_only=True)
+    exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
+
+    class Meta:
+        model = Robot
+        fields = [
+            # plain model fields
+            "id",
+            "name",
+            "pair",
+            "market_type",
+            "enabled",
+            "start_time",
+            "ping_time",
+            "target_currency",
+            "base_currency",
+            "quote_currency",
+            "strategy_parameters",
+            "created_at",
+            "modified_at",
+            # related fields
+            "asset_record",
+            # derived fields
+            "duration_display",
+            "strategy_spec_view",
+            "exchange",
+        ]
+
+
+class RobotCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Robot
         fields = [
@@ -69,111 +118,22 @@ class RobotListSerializer(serializers.ModelSerializer):
             "target_currency",
             "base_currency",
             "quote_currency",
-            "enabled",
-            "start_time",
-            "ping_time",
-            "duration_display",
-            "asset_record",
             "credential",
             "strategy",
-            "strategy_name",
-            "exchange",
             "created_at",
             "modified_at",
         ]
         read_only_fields = [
-            "ping_time",
-            "asset_record",
+            "id",
             "created_at",
             "modified_at",
         ]
-        extra_kwargs = {
-            "credential": {"write_only": True},
-            "strategy": {"write_only": True},
-        }
-
-    class JSONAPIMeta:
-        resource_name = "robots"
-        included_resources = ["exchange", "asset_record"]
 
 
-class RobotRetrieveSerializer(serializers.ModelSerializer):
-    included_serializers = {
-        "exchange": ExchangeSerializer,
-        "asset_record": AssetRecordSerializer,
-        "user": UserSerializer,
-    }
-    user = UserSerializer(source="credential.user", read_only=True)
-    exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
-    duration_display = DurationField(source="duration", read_only=True)
-    asset_record = AssetRecordSerializer(read_only=True)
-    strategy_parameters = serializers.JSONField(read_only=True)
-    strategy_parameters_view = serializers.SerializerMethodField()
-
+class RobotUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Robot
         fields = [
             "id",
             "name",
-            "pair",
-            "target_currency",
-            "base_currency",
-            "quote_currency",
-            "enabled",
-            "start_time",
-            "ping_time",
-            "duration_display",
-            "asset_record",
-            "credential",
-            "strategy_parameters",
-            "strategy_parameters_view",
-            "user",
-            "exchange",
-            "created_at",
-            "modified_at",
         ]
-        read_only_fields = [
-            "ping_time",
-            "created_at",
-            "modified_at",
-        ]
-        extra_kwargs = {
-            "credential": {"write_only": True},
-        }
-
-    class JSONAPIMeta:
-        resource_name = "robots"
-        included_resources = ["exchange", "asset_record", "user"]
-
-    def get_strategy_parameters_view(self, obj: Robot) -> Dict[str, Any]:
-        spec = obj.strategy.specification
-        parameters = obj.strategy_parameters
-        for parameter in spec["parameters"]:
-            parameter["value"] = parameters[parameter["code"]]
-        return spec
-
-
-class RobotConfigSerializer(serializers.ModelSerializer):
-    user = UserSerializer(source="credential.user", read_only=True)
-    exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
-    credential_keys = CredentialKeysSerializer(source="credential", read_only=True)
-    test_net = serializers.BooleanField(source="credential.test_net", read_only=True)
-    strategy_parameters = serializers.JSONField()
-
-    class Meta:
-        model = Robot
-        fields = [
-            "id",
-            "name",
-            "pair",
-            "target_currency",
-            "enabled",
-            "test_net",
-            "user",
-            "exchange",
-            "credential_keys",
-            "strategy_parameters",
-        ]
-
-    class JSONAPIMeta:
-        resource_name = "robot_configs"

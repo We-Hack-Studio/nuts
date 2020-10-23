@@ -1,12 +1,26 @@
-from rest_framework import status
-from rest_framework_json_api.exceptions import (
-    exception_handler as drf_json_api_exception_handler,
-)
-
-from .proxies.exceptions import ExchangeProxyException
+from rest_framework.views import exception_handler as drf_exception_handler
 
 
 def exception_handler(exc, context):
-    if isinstance(exc, ExchangeProxyException):
-        exc.status_code = status.HTTP_424_FAILED_DEPENDENCY
-    return drf_json_api_exception_handler(exc, context)
+    response = drf_exception_handler(exc, context)
+    if response is None:
+        return
+
+    data = response.data
+
+    # ["error message"]
+    if isinstance(data, list):
+        return response
+
+    # {"detail": "error message"}
+    if data is not None and "detail" in data:
+        response.data = [data["detail"]]
+
+    """
+    {
+        "url": [
+            "This field is required."
+        ]
+    }
+    """
+    return response

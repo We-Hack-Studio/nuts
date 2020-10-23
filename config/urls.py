@@ -18,9 +18,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path
-from drf_yasg import openapi
-from drf_yasg.views import get_schema_view
-from rest_framework import permissions
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
 
 admin.site.site_header = "渔夫量化管理"
 urlpatterns = [
@@ -30,26 +32,20 @@ if settings.DEBUG:
     # Static file serving when using Gunicorn + Uvicorn for local web socket development
     urlpatterns += staticfiles_urlpatterns()
 
-schema_view = get_schema_view(
-    openapi.Info(
-        title="yufuquant API",
-        default_version="v1",
-        description="yufuquant API documentation",
-        terms_of_service="",
-        contact=openapi.Contact(email="zmrenwu@163.com"),
-        license=openapi.License(name="BSD License"),
-    ),
-    public=True,
-    permission_classes=(permissions.AllowAny,),
-)
 
 # API URLS
 urlpatterns += [
     path("api/v1/", include("config.api_router")),
+    path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "swagger/",
-        schema_view.with_ui("swagger", cache_timeout=0),
-        name="schema-swagger-ui",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger",
+    ),
+    path(
+        "redoc/",
+        SpectacularRedocView.as_view(url_name="schema"),
+        name="redoc",
     ),
 ]
 

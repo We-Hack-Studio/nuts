@@ -1,18 +1,65 @@
+from core.serializers import MaskedCharField
 from exchanges.serializers import ExchangeSerializer
 from rest_framework import serializers
 
 from .models import Credential
 
 
-class CredentialKeyField(serializers.CharField):
-    def to_representation(self, value):
-        head = value[:3]
-        hidden = value[3:-4]
-        tail = value[-4:]
-        return head + "*" * len(hidden) + tail
+class CredentialListSerializer(serializers.ModelSerializer):
+    api_key = MaskedCharField(read_only=True, help_text="Partial masked API key.")
+    secret = MaskedCharField(read_only=True, help_text="Partial masked secret key.")
+    passphrase = MaskedCharField(
+        read_only=True, mask_all=True, help_text="Completely masked passphrase."
+    )
+    exchange = ExchangeSerializer(read_only=True)
+
+    class Meta:
+        model = Credential
+        fields = [
+            "id",
+            "note",
+            "api_key",
+            "secret",
+            "passphrase",
+            "test_net",
+            "exchange",
+            "created_at",
+            "modified_at",
+        ]
+
+        extra_kwargs = {
+            "test_net": {"help_text": "Is a credential of exchange test net or not."},
+        }
 
 
-class CredentialKeysSerializer(serializers.ModelSerializer):
+class CredentialCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Credential
+        fields = [
+            "id",
+            "note",
+            "api_key",
+            "secret",
+            "passphrase",
+            "test_net",
+            "exchange",
+            "created_at",
+            "modified_at",
+        ]
+        read_only_fields = [
+            "id",
+            "created_at",
+            "modified_at",
+        ]
+        extra_kwargs = {
+            "exchange": {"write_only": True},
+            "api_key": {"write_only": True},
+            "secret": {"write_only": True},
+            "passphrase": {"write_only": True},
+        }
+
+
+class CredentialKeySerializer(serializers.ModelSerializer):
     class Meta:
         model = Credential
         fields = [
@@ -21,56 +68,3 @@ class CredentialKeysSerializer(serializers.ModelSerializer):
             "secret",
             "passphrase",
         ]
-
-
-class CredentialListSerializer(serializers.ModelSerializer):
-    api_key_masked = CredentialKeyField(source="api_key", read_only=True)
-    secret_masked = CredentialKeyField(source="secret", read_only=True)
-    exchange = ExchangeSerializer(read_only=True)
-
-    class Meta:
-        model = Credential
-        fields = [
-            "id",
-            "note",
-            "api_key_masked",
-            "secret_masked",
-            "test_net",
-            "exchange",
-            "created_at",
-        ]
-
-    class JSONAPIMeta:
-        resource_name = "credentials"
-
-
-class CredentialSerializer(serializers.ModelSerializer):
-    api_key_masked = CredentialKeyField(source="api_key", read_only=True)
-    secret_masked = CredentialKeyField(source="secret", read_only=True)
-    exchange_info = ExchangeSerializer(source="exchange", read_only=True)
-
-    class Meta:
-        model = Credential
-        fields = [
-            "id",
-            "note",
-            "api_key",
-            "secret",
-            "api_key_masked",
-            "secret_masked",
-            "test_net",
-            "exchange",
-            "exchange_info",
-            "created_at",
-        ]
-        read_only_fields = [
-            "created_at",
-        ]
-        extra_kwargs = {
-            "exchange": {"write_only": True},
-            "api_key": {"write_only": True},
-            "secret": {"write_only": True},
-        }
-
-    class JSONAPIMeta:
-        resource_name = "credentials"
