@@ -336,6 +336,11 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
 version = "5.3"
 
+[package.dependencies]
+[package.dependencies.toml]
+optional = true
+version = "*"
+
 [package.extras]
 toml = ["toml"]
 
@@ -1784,7 +1789,7 @@ test = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [metadata]
-content-hash = "333eb184fdad41348b77b2e26ce3e1b1d078becec20dbc5e87b0c3e196c17c66"
+content-hash = "cddbdca35afa885374c4fc1e1cdae658220d80bc3fdff38b4c84adf18417b0c1"
 lock-version = "1.0"
 python-versions = ">=3.7,<4"
 

@@ -70,7 +70,6 @@ class FileValidator(object):
 
         # Check the extension
         ext = splitext(value.name)[1][1:].lower()
-        print(ext)
         if self.allowed_extensions and ext not in self.allowed_extensions:
             message = self.extension_message % {
                 "extension": ext,

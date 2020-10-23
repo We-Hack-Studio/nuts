@@ -55,6 +55,7 @@ pytest-asyncio = "^0.14.0"
 black = "^20.8b1"
 flake8-isort = "^4.0.0"
 mkdocs-material = "^5.5.12"
+coverage = { version = "^5.3", extras = ["toml"] }
 
 [tool.pytest.ini_options]
 minversion = "6.0"
@@ -62,6 +63,20 @@ DJANGO_SETTINGS_MODULE = "config.settings.test"
 python_files = "tests.py test_*.py"
 norecursedirs = "frontend"
 addopts = "--reuse-db --cov=yufuquant --cov-report html"
+
+[tool.coverage.run]
+branch = true
+source = ["."]
+omit = [
+    "manage.py",
+    "yufuquant/settings/*",
+    "yufuquant/scripts/*",
+    "*/migrations/*",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
 
 [tool.isort]
 profile = "black"
