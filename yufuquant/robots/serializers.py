@@ -1,17 +1,8 @@
 from exchanges.serializers import ExchangeSerializer
 from rest_framework import serializers
-from rest_framework.fields import DurationField as DrfDurationField
 from rest_framework.serializers import FloatField
 
 from .models import AssetRecord, AssetRecordSnap, Robot
-
-
-class DurationField(DrfDurationField):
-    def to_representation(self, value):
-        days = value.days
-        seconds = value.seconds
-        hours = seconds // 3600
-        return f"{days}天{hours}小时"
 
 
 class PercentageField(FloatField):
@@ -46,7 +37,6 @@ class AssetRecordSerializer(serializers.ModelSerializer):
 
 
 class RobotListSerializer(serializers.ModelSerializer):
-    duration_display = DurationField(source="duration", read_only=True)
     strategy_name = serializers.CharField(read_only=True)
     asset_record = AssetRecordSerializer(read_only=True)
     exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
@@ -71,13 +61,14 @@ class RobotListSerializer(serializers.ModelSerializer):
             "asset_record",
             # derived fields
             "duration_display",
+            "duration_in_second",
+            "duration",
             "strategy_name",
             "exchange",
         ]
 
 
 class RobotRetrieveSerializer(serializers.ModelSerializer):
-    duration_display = DurationField(source="duration", read_only=True)
     asset_record = AssetRecordSerializer(read_only=True)
     test_net = serializers.BooleanField(read_only=True)
     exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
@@ -103,6 +94,7 @@ class RobotRetrieveSerializer(serializers.ModelSerializer):
             "asset_record",
             # derived fields
             "duration_display",
+            "duration_in_second",
             "strategy_spec_view",
             "test_net",
             "exchange",

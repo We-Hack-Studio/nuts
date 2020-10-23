@@ -1,5 +1,6 @@
 from core.models import TimeStampedModel
 from django.db import models
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from jsonfield import JSONField
 from model_utils.choices import Choices
@@ -51,10 +52,29 @@ class Robot(TimeStampedModel, models.Model):
         verbose_name = _("robot")
         verbose_name_plural = _("robots")
 
-    @property
+    @cached_property
     def duration(self):
         if self.start_time and self.ping_time:
             return self.ping_time - self.start_time
+
+    @property
+    def duration_display(self) -> str:
+        duration = self.duration
+        if duration is None:
+            return ""
+
+        days = duration.days
+        seconds = duration.seconds
+        hours = seconds // 3600
+        return _("{days}d {hours}h".format(days=days, hours=hours))
+
+    @property
+    def duration_in_second(self) -> int:
+        duration = self.duration
+        if duration is None:
+            return -1
+
+        return duration.seconds
 
     @property
     def strategy_spec_view(self):
