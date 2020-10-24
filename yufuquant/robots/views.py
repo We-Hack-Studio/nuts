@@ -99,6 +99,8 @@ class RobotViewSet(viewsets.ModelViewSet):
     def get_permissions(self) -> List[BasePermission]:
         if self.action == "adjust_strategy_parameters":
             return [IsAdminUser()]
+        elif self.action in {"retrieve"}:
+            return [(IsAdminUser | HasAPIKey)()]
         return super().get_permissions()
 
     def initialize_request(self, request, *args, **kwargs) -> Request:

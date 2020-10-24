@@ -5,7 +5,8 @@ from typing import List
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import AnonymousUser
+from django.utils.translation import gettext
+from rest_framework_api_key.models import APIKey
 
 User = get_user_model()
 
@@ -39,7 +40,7 @@ class StreamConsumer(AsyncJsonWebsocketConsumer):
         super().__init__(*args, **kwargs)
         self._topics = []
         self._event = asyncio.Event()
-        self.user = AnonymousUser()
+        self._authed = False
 
     async def connect(self):
         await super().connect()
@@ -49,8 +50,8 @@ class StreamConsumer(AsyncJsonWebsocketConsumer):
         # todo: validate the content
         cmd = content["cmd"]
         if cmd == "auth":
-            token = content["token"]
-            await self.auth(token)
+            api_key = content["api_key"]
+            await self.auth(api_key)
         elif cmd == "sub":
             topics = content["topics"]
             await self.sub(topics)
@@ -63,23 +64,39 @@ class StreamConsumer(AsyncJsonWebsocketConsumer):
         else:
             await self.send_json({"code": 405, "detail": f"不支持的指令 {cmd}"}, close=True)
 
-    async def auth(self, token: str):
+    async def auth(self, api_key: str):
         # Already authenticated
-        if self.user.is_authenticated:
+        if self._authed:
             return
 
-        async_user_get = database_sync_to_async(User.objects.get)
-        try:
-            user = await async_user_get(auth_token__key=token)
-            self.user = user
-            await self.send_json({"code": 200, "detail": "认证成功"})
-        except User.DoesNotExist:
-            await self.send_json({"code": 400, "detail": "认证失败"}, close=True)
+        if not api_key:
+            await self.send_json(
+                {"code": 400, "detail": gettext("No api key provided")}, close=True
+            )
+
+        async_is_valid = database_sync_to_async(APIKey.objects.is_valid)
+        result = await async_is_valid(api_key)
+        if result:
+            self._authed = True
+            await self.send_json({"code": 200, "detail": gettext("ok")})
+        else:
+            await self.send_json(
+                {"code": 400, "detail": gettext("Invalid api key")},
+                close=True,
+            )
 
     async def sub(self, topics):
         public_topics, private_topics = _category_topics(topics)
-        if len(private_topics) > 0 and not self.user.is_authenticated:
-            await self.send_json({"code": 401, "detail": "包含认证后才可订阅的话题"}, close=True)
+        if len(private_topics) > 0 and not self._authed:
+            await self.send_json(
+                {
+                    "code": 401,
+                    "detail": gettext(
+                        "Auth by api key is required when subscribe to private topics"
+                    ),
+                },
+                close=True,
+            )
             return
 
         for topic in public_topics + private_topics:
@@ -105,7 +122,7 @@ class StreamConsumer(AsyncJsonWebsocketConsumer):
             await self.send_json({"code": 400, "detail": "1分钟内未订阅任何话题"}, close=True)
 
     async def broadcast(self, message):
-        if self.user.is_anonymous:
+        if not self._authed:
             await self.send_json({"code": 403, "detail": "认证后才可广播消息"}, close=True)
             return
 
