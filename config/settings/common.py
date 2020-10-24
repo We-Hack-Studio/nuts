@@ -77,6 +77,7 @@ THIRD_PARTY_APPS = [
     "drf_spectacular",
     "django_celery_beat",
     "django_celery_results",
+    "rest_framework_api_key",
 ]
 LOCAL_APPS = [
     "core.apps.CoreConfig",
@@ -332,3 +333,8 @@ SPECTACULAR_SETTINGS: Dict[str, Any] = {
     # use '/api/v[0-9]' for tagging apis like '/api/v1/albums' with ['albums']
     "SCHEMA_PATH_PREFIX": r"/api/v[0-9]",
 }
+
+# djangorestframework-api-key
+# ------------------------------------------------------------------------------
+# https://florimondmanca.github.io/djangorestframework-api-key/guide/#custom-header
+API_KEY_CUSTOM_HEADER = "HTTP_X_API_KEY"
