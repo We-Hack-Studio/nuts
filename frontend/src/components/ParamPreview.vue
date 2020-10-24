@@ -30,9 +30,9 @@ export default {
     },
     formatValue(item) {
       if (item.type === "enum") {
-        const itemArray = item.items.find((ele) => ele[0] === item.value);
+        const itemArray = item.items.find((ele) => ele.value === item.value);
         if (itemArray) {
-          return itemArray[1];
+          return itemArray.display;
         }
         return "";
       }

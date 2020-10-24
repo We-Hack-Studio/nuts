@@ -13,7 +13,7 @@
         </template>
         <param-preview
             :parameters="
-              strategyParametersView && strategyParametersView.parameters
+              strategySpecView && strategySpecView.parameters
             "
         ></param-preview>
       </b-card>
@@ -27,7 +27,7 @@
         <param-form
             ref="paramForm"
             :fields="
-              strategyParametersView && strategyParametersView.parameters
+              strategySpecView && strategySpecView.parameters
             "
         ></param-form>
         <template v-slot:modal-footer="{ ok }">
@@ -45,8 +45,8 @@
 import LogPanel from "./RobotLogView";
 import ParamPreview from "../components/ParamPreview";
 import ParamForm from "../components/ParamForm";
-import {getRobotsId, postRobotsIdStrategyParameters} from "../api";
-import formatterMixin from "@/mixins/formatter"
+import {getRobotsId} from "@/api";
+import {getRobotsIdStrategySpecView, patchRobotsIdStrategyParameters} from "@/api/robot";
 
 export default {
   name: "robot-view",
@@ -54,10 +54,9 @@ export default {
     return {
       logList: [],
       robotId: null,
-      strategyParametersView: null,
+      strategySpecView: null,
     };
   },
-  mixins: [formatterMixin],
   components: {
     LogPanel,
     ParamPreview,
@@ -66,14 +65,11 @@ export default {
   methods: {
     async onSubmit(ok, event) {
       event.preventDefault();
-      let data = {
-        "type": "robots",
-        "strategy_parameters": JSON.stringify(this.$refs.paramForm.form)
-      }
+      let data = this.$refs.paramForm.form
       try {
-        await postRobotsIdStrategyParameters(
+        await patchRobotsIdStrategyParameters(
             this.$route.params.id,
-            this.formatter.serialize(data)
+            data
         );
         await this.getRobot();
         this.$bvModal.hide("param-form-modal");
@@ -113,9 +109,8 @@ export default {
     async getRobot() {
       try {
         const robotRes = await getRobotsId(this.$route.params.id);
-        const result = this.formatter.deserialize(robotRes.data)
+        const result = robotRes.data
         this.robotId = result.id;
-        this.strategyParametersView = result["strategy_parameters_view"];
       } catch (error) {
         if (error.response) {
           this.$bvToast.toast('机器人数据获取失败', {
@@ -136,9 +131,35 @@ export default {
         }
       }
     },
+
+    async getStrategySpecView() {
+      try {
+        const response = await getRobotsIdStrategySpecView(this.$route.params.id);
+        this.strategySpecView = response.data;
+      } catch (error) {
+        if (error.response) {
+          this.$bvToast.toast('策略视图获取失败', {
+            title: '策略视图获取失败',
+            autoHideDelay: 3000,
+            toaster: 'b-toaster-top-center',
+            variant: 'danger',
+            appendToast: false
+          });
+        } else {
+          this.$bvToast.toast(error.message, {
+            title: '策略视图获取失败',
+            autoHideDelay: 3000,
+            toaster: 'b-toaster-top-center',
+            variant: 'danger',
+            appendToast: false
+          });
+        }
+      }
+    },
   },
   async mounted() {
     await this.getRobot();
+    await this.getStrategySpecView()
   },
 };
 </script>
