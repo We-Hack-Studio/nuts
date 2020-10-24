@@ -4,6 +4,7 @@ from django.db.models import F
 from freezegun import freeze_time
 from rest_framework.request import Request
 from rest_framework.test import APIRequestFactory
+from rest_framework_api_key.models import APIKey
 from robots.models import Robot
 from robots.serializers import RobotListSerializer, RobotRetrieveSerializer
 from strategies.tests.factories import StrategyFactory
@@ -26,6 +27,7 @@ class RobotViewSetTestCase(APITestCase):
         self.normal_user = self.make_user(username="normal", password="password")
         self.robot_list_url = self.reverse("api:robot-list")
         self.nonexistent_robot_detail_url = self.reverse("api:robot-detail", pk=999999)
+        _, self.x_api_key = APIKey.objects.create_key(name="test-x-api-key")
 
     # list
     def test_list_permission(self):
@@ -192,24 +194,19 @@ class RobotViewSetTestCase(APITestCase):
     def test_ping_permission(self):
         robot = RobotFactory()
 
-        # anonymous user
-        response = self.post("api:robot-ping", pk=robot.pk)
-        self.response_401(response)
-
-        # normal user
-        self.login(username=self.normal_user.username, password="password")
+        # No x-api-key provided
         response = self.post("api:robot-ping", pk=robot.pk)
         self.response_403(response)
 
     def test_ping_nonexistent_robot(self):
-        self.login(username=self.admin_user.username, password="password")
-        response = self.post("api:robot-ping", pk=999999)
+        response = self.post("api:robot-ping", pk=999999, HTTP_X_API_KEY=self.x_api_key)
         self.response_404(response)
 
     def test_ping(self):
         robot = RobotFactory(credential=self.admin_user_credential)
-        self.login(username=self.admin_user.username, password="password")
-        response = self.post("api:robot-ping", pk=robot.pk)
+        response = self.post(
+            "api:robot-ping", pk=robot.pk, extra={"HTTP_X_API_KEY": self.x_api_key}
+        )
         self.response_200(response)
         self.assertIn("pong", response.data)
 
@@ -222,9 +219,9 @@ class RobotViewSetTestCase(APITestCase):
         self.response_401(response)
 
         # normal user
-        self.login(username=self.normal_user.username, password="password")
-        response = self.patch("api:robot-strategy-parameters", pk=robot.pk)
-        self.response_403(response)
+        # self.login(username=self.normal_user.username, password="password")
+        # response = self.patch("api:robot-strategy-parameters", pk=robot.pk)
+        # self.response_403(response)
 
     def test_adjust_nonexistent_robot_strategy_parameters(self):
         self.login(username=self.admin_user.username, password="password")
@@ -277,18 +274,16 @@ class RobotViewSetTestCase(APITestCase):
     def test_retrieve_strategy_parameters_permission(self):
         robot = RobotFactory()
 
-        # anonymous user
-        response = self.get("api:robot-strategy-parameters", pk=robot.pk)
-        self.response_401(response)
-
-        # normal user
-        self.login(username=self.normal_user.username, password="password")
+        # No x-api-key provided
         response = self.get("api:robot-strategy-parameters", pk=robot.pk)
         self.response_403(response)
 
     def test_retrieve_nonexistent_robot_strategy_parameters(self):
-        self.login(username=self.admin_user.username, password="password")
-        response = self.get("api:robot-strategy-parameters", pk=999999)
+        response = self.get(
+            "api:robot-strategy-parameters",
+            pk=999999,
+            extra={"HTTP_X_API_KEY": self.x_api_key},
+        )
         self.response_404(response)
 
     def test_retrieve_strategy_parameters(self):
@@ -316,9 +311,11 @@ class RobotViewSetTestCase(APITestCase):
             }
         )
         robot = RobotFactory(strategy=strategy, credential=self.admin_user_credential)
-        self.login(username=self.admin_user.username, password="password")
-
-        response = self.get("api:robot-strategy-parameters", pk=robot.pk)
+        response = self.get(
+            "api:robot-strategy-parameters",
+            pk=robot.pk,
+            extra={"HTTP_X_API_KEY": self.x_api_key},
+        )
         self.response_200(response)
         self.assertEqual(
             response.data,
@@ -411,29 +408,27 @@ class RobotViewSetTestCase(APITestCase):
     def test_partial_update_asset_record_permission(self):
         robot = RobotFactory()
 
-        # anonymous user
-        response = self.patch("api:robot-asset-record", pk=robot.pk)
-        self.response_401(response)
-
-        # normal user
-        self.login(username=self.normal_user.username, password="password")
+        # No x-api-key provided
         response = self.patch("api:robot-asset-record", pk=robot.pk)
         self.response_403(response)
 
     def test_partial_update_nonexistent_robot_asset_record(self):
-        self.login(username=self.admin_user.username, password="password")
-        response = self.patch("api:robot-asset-record", pk=999999)
+        response = self.patch(
+            "api:robot-asset-record",
+            pk=999999,
+            extra={"HTTP_X_API_KEY": self.x_api_key},
+        )
         self.response_404(response)
 
     def test_partial_update_asset_record(self):
         robot = RobotFactory(credential=self.admin_user_credential)
-        self.login(username=self.admin_user.username, password="password")
 
         data = {"total_balance": 6666}
         response = self.patch(
             "api:robot-asset-record",
             pk=robot.pk,
             data=data,
+            extra={"HTTP_X_API_KEY": self.x_api_key},
         )
         self.response_200(response)
         robot.refresh_from_db()
@@ -450,24 +445,25 @@ class RobotViewSetTestCase(APITestCase):
     def test_retrieve_credential_key_permission(self):
         robot = RobotFactory()
 
-        # anonymous user
-        response = self.get("api:robot-credential-key", pk=robot.pk)
-        self.response_401(response)
-
-        # normal user
-        self.login(username=self.normal_user.username, password="password")
+        # No x-api-key provided
         response = self.get("api:robot-credential-key", pk=robot.pk)
         self.response_403(response)
 
     def test_retrieve_nonexistent_robot_credential_key(self):
-        self.login(username=self.admin_user.username, password="password")
-        response = self.get("api:robot-credential-key", pk=999999)
+        response = self.get(
+            "api:robot-credential-key",
+            pk=999999,
+            extra={"HTTP_X_API_KEY": self.x_api_key},
+        )
         self.response_404(response)
 
     def test_retrieve_credential_key(self):
         robot = RobotFactory(credential=self.admin_user_credential)
-        self.login(username=self.admin_user.username, password="password")
-        response = self.get("api:robot-credential-key", pk=robot.pk)
+        response = self.get(
+            "api:robot-credential-key",
+            pk=robot.pk,
+            extra={"HTTP_X_API_KEY": self.x_api_key},
+        )
         self.response_200(response)
         self.assertEqual(
             response.data,

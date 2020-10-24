@@ -1,4 +1,4 @@
-from typing import Type
+from typing import List, Type
 
 from credentials.serializers import CredentialKeySerializer
 from django.db.models import F
@@ -8,9 +8,12 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import BasePermission, IsAdminUser
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
+from rest_framework.settings import api_settings
+from rest_framework_api_key.permissions import HasAPIKey
 
 from .models import Robot
 from .serializers import (
@@ -82,9 +85,7 @@ class RobotViewSet(viewsets.ModelViewSet):
     }
 
     def get_queryset(self):
-        qs = Robot.objects.filter(credential__user=self.request.user).order_by(
-            "-created_at"
-        )
+        qs = Robot.objects.all().order_by("-created_at")
         if self.action in {"list"}:
             qs = qs.annotate(strategy_name=F("strategy__name"))
         if self.action in {"retrieve"}:
@@ -95,6 +96,24 @@ class RobotViewSet(viewsets.ModelViewSet):
         assert self.action in self.action_serializer_map
         return self.action_serializer_map[self.action]
 
+    def get_permissions(self) -> List[BasePermission]:
+        if self.action == "adjust_strategy_parameters":
+            return [IsAdminUser()]
+        elif self.action in {"retrieve"}:
+            return [(IsAdminUser | HasAPIKey)()]  # type: ignore
+        return super().get_permissions()
+
+    def initialize_request(self, request, *args, **kwargs) -> Request:
+        # Dynamically set `authentication_classes` for `adjust_strategy_parameters`
+        # action view. Note self.action was not set before `initialize_request` invoked,
+        # so we need get it from `action_map`. Here is nearest to the place where
+        # request.authenticators be set.
+        method = request.method.lower()
+        a = self.action_map.get(method)
+        if a == "adjust_strategy_parameters":
+            self.authentication_classes = api_settings.DEFAULT_AUTHENTICATION_CLASSES
+        return super(RobotViewSet, self).initialize_request(request, *args, **kwargs)
+
     @extend_schema(
         summary="Ping robot", responses={200: {"pong": "timestamp in milliseconds."}}
     )
@@ -103,7 +122,8 @@ class RobotViewSet(viewsets.ModelViewSet):
         detail=True,
         url_path="ping",
         url_name="ping",
-        permission_classes=[IsAdminUser],
+        permission_classes=[HasAPIKey],
+        authentication_classes=[],
     )
     def ping(self, request, *args, **kwargs) -> Response:
         robot = self.get_object()
@@ -122,7 +142,8 @@ class RobotViewSet(viewsets.ModelViewSet):
         detail=True,
         url_path="strategyParameters",
         url_name="strategy-parameters",
-        permission_classes=[IsAdminUser],
+        permission_classes=[HasAPIKey],
+        authentication_classes=[],
     )
     def retrieve_strategy_parameters(self, request, *args, **kwargs) -> Response:
         robot = self.get_object()
@@ -161,7 +182,8 @@ class RobotViewSet(viewsets.ModelViewSet):
         detail=True,
         url_path="credentialKey",
         url_name="credential-key",
-        permission_classes=[IsAdminUser],
+        permission_classes=[HasAPIKey],
+        authentication_classes=[],
     )
     def retrieve_credential_key(self, request, *args, **kwargs) -> Response:
         robot = self.get_object()
@@ -175,7 +197,8 @@ class RobotViewSet(viewsets.ModelViewSet):
         detail=True,
         url_path="assetRecord",
         url_name="asset-record",
-        permission_classes=[IsAdminUser],
+        permission_classes=[HasAPIKey],
+        authentication_classes=[],
         serializer_class=AssetRecordSerializer,
     )
     def partial_update_asset_record(self, request, *args, **kwargs) -> Response:

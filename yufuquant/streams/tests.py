@@ -10,7 +10,7 @@ async def test_auth_with_bad_token():
     communicator = WebsocketCommunicator(StreamConsumer, "/ws/streams/")
     connected, subprotocol = await communicator.connect()
     assert connected
-    await communicator.send_json_to(data={"cmd": "auth", "token": "bad-auth-token"})
+    await communicator.send_json_to(data={"cmd": "auth", "api_key": "bad-auth-token"})
     response = await communicator.receive_json_from()
     assert response["code"] == 400
     # Close
