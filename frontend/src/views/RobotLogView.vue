@@ -6,7 +6,7 @@
 
 <script>
 import LogPanel from "@/components/LogPanel";
-import { mapState } from "vuex";
+import {mapState} from "vuex";
 
 export default {
   data() {
@@ -45,6 +45,13 @@ export default {
       this.ws = new WebSocket(wsuri);
       this.ws.onmessage = (message) => {
         message = JSON.parse(message.data);
+        if (message.ping) {
+          this._send({
+            pong: message.ping,
+          });
+          return
+        }
+
         if (message.code) {
           if (message.code === 200) {
             this._send({
@@ -77,7 +84,7 @@ export default {
         });
         this._send({
           cmd: "auth",
-          token: this.authToken,
+          auth_token: this.authToken,
         });
       };
       this.ws.onerror = (event) => {

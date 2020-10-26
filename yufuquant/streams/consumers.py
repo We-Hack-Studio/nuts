@@ -175,8 +175,8 @@ class StreamConsumer(AsyncJsonWebsocketConsumer):
         async_is_valid = database_sync_to_async(APIKey.objects.is_valid)
         result = await async_is_valid(api_key)
         if result:
-            self._authed = True
             await self.send_json({"code": 200, "detail": _("ok")})
+            self._authed = True
         else:
             await self.send_json(
                 {"code": 400, "detail": _("Invalid api key")},
@@ -198,6 +198,7 @@ class StreamConsumer(AsyncJsonWebsocketConsumer):
             return
 
         await self.send_json({"code": 200, "detail": _("Authenticated.")})
+        self._authed = True
 
     async def sub(self, topics):
         public_topics, private_topics = category_topics(topics)
