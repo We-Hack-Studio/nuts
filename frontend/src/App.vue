@@ -16,15 +16,13 @@ export default {
     name: 'App',
     data() {
         return {
-            isToggled: true,
+            isToggled: false,
         };
     },
     mounted() {
         window.onresize = () => {
             const width = document.documentElement.clientWidth;
-            if (width > 576) {
-                this.isToggled = false;
-            }
+            this.isToggled = width > 576 ? false : true;
         };
     },
     components: {
