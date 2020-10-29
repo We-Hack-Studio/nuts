@@ -1,17 +1,7 @@
 <template>
-  <div>
-    <b-row>
-      <b-col md="8">
-        <connect-form @credential-added="getCredentialList"></connect-form>
-      </b-col>
-      <b-col md="4">
-      </b-col>
-    </b-row>
-    <b-row class="mt-4">
-      <b-col md="8">
-        <connected-table :credential-list="credentialList" @delete-cred-confirmed="deleteCred"></connected-table>
-      </b-col>
-    </b-row>
+  <div class="mx-3">
+    <connect-form @credential-added="getCredentialList"></connect-form>
+    <connected-table :credential-list="credentialList" @delete-cred-confirmed="deleteCred"></connected-table>
   </div>
 </template>
 
@@ -37,18 +27,17 @@ export default {
     setCredentialList(data) {
       this.credentialList = data.map(cred => ({
         credId: cred.id,
-        exchangeNameZh: cred['exchange']["data"]['name_zh'],
+        exchangeNameZh: cred['exchange']['name_zh'],
         note: cred.note,
-        apiKeyMasked: cred['api_key_masked'],
-        secretMasked: cred['secret_masked'],
+        apiKey: cred['api_key'],
+        secret: cred['secret'],
         createdAt: cred['created_at'],
       }))
     },
     async getCredentialList() {
       try {
         const credentialsRes = await getCredentials()
-        const result = this.formatter.deserialize(credentialsRes.data)
-        this.setCredentialList(result.data)
+        this.setCredentialList(credentialsRes.data)
       } catch (error) {
         if (error.response) {
           this.$bvToast.toast('无法获取交易所凭据', {
@@ -100,6 +89,3 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>

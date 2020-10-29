@@ -1,62 +1,85 @@
 <template>
-  <b-form @submit="onSubmit" class="form-row">
-    <b-col md="3">
-      <b-form-group label="交易所:" label-for="id_exchange">
-        <b-form-select
-            id="id_exchange"
-            v-model="form.exchange"
-            :options="exchangeOptions"
-            required
-        ></b-form-select>
-      </b-form-group>
-    </b-col>
-    <b-col md="3">
-      <b-form-group
-          label="备注:"
-          label-for="id_note"
-      >
-        <b-form-input
-            id="id_note"
-            v-model="form.note"
-            type="text"
-            required
-        ></b-form-input>
-      </b-form-group>
-    </b-col>
-    <b-col md="6">
-      <b-form-group label="API Key:" label-for="id_api_key">
-        <b-form-input
-            id="id_api_key"
-            v-model="form.apiKey"
-            required
-        ></b-form-input>
-      </b-form-group>
-    </b-col>
-    <b-col md="12">
-      <b-form-group label="Secret:" label-for="id_secret">
-        <b-form-input
-            id="id_secret"
-            v-model="form.secret"
-            type="password"
-            required
-        ></b-form-input>
-      </b-form-group>
-    </b-col>
-    <b-col md="12">
-      <b-form-checkbox
-          id="id_test_net"
-          v-model="form.testNet"
-          name="test_net"
-          value="true"
-          unchecked-value="false"
-      >
-        测试网
-      </b-form-checkbox>
-    </b-col>
-    <b-col>
-      <b-button type="submit" variant="primary" class="mt-2">接入</b-button>
-    </b-col>
-  </b-form>
+  <b-card header-tag="header">
+    <template #header>
+      <h6 class="mb-0">绑定交易所凭据</h6>
+    </template>
+    <b-card-text>
+      <b-row class="">
+        <b-col sm="12" md="9">
+          <b-form @submit="onSubmit" class="form-row">
+            <b-col md="4">
+              <b-form-group label="交易所:" label-for="id_exchange">
+                <b-form-select
+                    id="id_exchange"
+                    v-model="form.exchange"
+                    :options="exchangeOptions"
+                    required
+                ></b-form-select>
+              </b-form-group>
+            </b-col>
+            <b-col md="4">
+              <b-form-group
+                  label="备注:"
+                  label-for="id_note"
+              >
+                <b-form-input
+                    id="id_note"
+                    v-model="form.note"
+                    type="text"
+                    required
+                ></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col md="4">
+              <b-form-group label="API Key:" label-for="id_api_key">
+                <b-form-input
+                    id="id_api_key"
+                    v-model="form.apiKey"
+                    required
+                ></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col md="6">
+              <b-form-group label="Secret:" label-for="id_secret">
+                <b-form-input
+                    id="id_secret"
+                    v-model="form.secret"
+                    type="password"
+                    required
+                ></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col md="6">
+              <b-form-group label="Passphrase:" label-for="id_passphrase">
+                <b-form-input
+                    id="id_passphrase"
+                    v-model="form.passphrase"
+                    type="password"
+                ></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col md="12">
+              <b-form-checkbox
+                  id="id_test_net"
+                  v-model="form.testNet"
+                  name="test_net"
+                  value="true"
+                  unchecked-value="false"
+              >
+                测试网
+              </b-form-checkbox>
+            </b-col>
+            <b-col class="text-center">
+              <b-button type="submit" variant="primary" class="mt-3">绑定此交易所凭据</b-button>
+            </b-col>
+          </b-form>
+        </b-col>
+        <b-col sm="12" md="3">
+          这里放帮助文档
+        </b-col>
+      </b-row>
+    </b-card-text>
+  </b-card>
 </template>
 
 <script>
@@ -71,6 +94,7 @@ export default {
         note: '',
         apiKey: '',
         secret: '',
+        passphrase: '',
         exchange: null,
         testNet: false,
       },
@@ -85,12 +109,12 @@ export default {
         "note": this.form.note,
         "api_key": this.form.apiKey,
         "secret": this.form.secret,
+        "passphrase": this.form.passphrase,
         "exchange": this.form.exchange,
         "test_net": this.form.testNet,
       }
-      const type = "credentials"
       try {
-        await postCredentials(this.formatter.serialize({type, ...data}))
+        await postCredentials(data)
         this.$bvToast.toast('交易所接入成功！', {
           title: '成功',
           autoHideDelay: 3000,
@@ -132,8 +156,7 @@ export default {
     async getExchangeOptions() {
       try {
         const exchangesRes = await getExchanges()
-        const result = this.formatter.deserialize(exchangesRes.data)
-        this.setExchangeOptions(result.data)
+        this.setExchangeOptions(exchangesRes.data)
       } catch (error) {
         if (error.response) {
           this.$bvToast.toast('无法获取可接入的交易所列表', {

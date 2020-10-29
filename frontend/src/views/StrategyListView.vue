@@ -1,19 +1,18 @@
 <template>
-  <b-row>
-    <b-col md="6">
-      <strategy-item
-          v-for="strategy in strategyList"
-          :strategy="strategy"
-          :key="strategy.id"
-          class="mt-3">
-      </strategy-item>
-    </b-col>
-  </b-row>
+  <b-container fluid="">
+    <b-row>
+      <b-col sm="12" md="6" lg="4" v-for="strategy in strategyList" :key="strategy.id" class="mb-3">
+        <strategy-item
+            :strategy="strategy"
+            class="strategy-item">
+        </strategy-item>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
 import StrategyItem from "../components/StrategyItem"
-import formatterMixin from "@/mixins/formatter"
 import {getStrategies} from "@/api"
 
 export default {
@@ -21,7 +20,6 @@ export default {
   components: {
     StrategyItem
   },
-  mixins: [formatterMixin],
   data() {
     return {
       strategyList: []
@@ -38,8 +36,8 @@ export default {
     async getStrategyList() {
       try {
         const strategiesRes = await getStrategies()
-        const result = this.formatter.deserialize(strategiesRes.data)
-        this.setStrategyList(result.data)
+        console.log(strategiesRes)
+        this.setStrategyList(strategiesRes.data.results)
       } catch (error) {
         if (error.response) {
           this.$bvToast.toast('无法获取策略列表数据', {
@@ -67,6 +65,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.strategy-item {
+  height: 100%;
+}
 </style>
