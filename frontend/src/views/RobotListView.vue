@@ -1,7 +1,7 @@
 <template>
     <div class="robot-list-view">
         <b-row class="row">
-            <b-col md="6" xl="4" offset-md="3" offset-xl="4" v-for="robot in robotList" :key="robot.robotId">
+            <b-col lg="4" md="6" xs="12" v-for="robot in robotList" :key="robot.robotId">
                 <robot-list-item :robot="robot" @refresh="refreshList"></robot-list-item>
             </b-col>
         </b-row>
