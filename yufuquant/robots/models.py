@@ -40,7 +40,7 @@ class Robot(TimeStampedModel, models.Model):
         null=True,
         related_name="robots",
     )
-    strategy_parameters = JSONField(_("strategy parameters"))
+    strategy_parameters = JSONField(_("strategy parameters"), blank=True, default={})
     target_currency = models.CharField(_("target currency"), max_length=10, blank=True)
     # for spots
     base_currency = models.CharField(_("base currency"), max_length=10, blank=True)
