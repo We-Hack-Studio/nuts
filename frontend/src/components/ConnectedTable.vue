@@ -8,7 +8,7 @@
               <router-link to="/" class="mr-2">
                 <b-icon-pencil-square></b-icon-pencil-square>
               </router-link>
-              <a href="#" class="text-danger" @click="showMsgBox">
+              <a href="#" class="text-danger" @click="showMsgBox(credential.credId)">
                 <b-icon-trash></b-icon-trash>
               </a>
             </span>
@@ -75,7 +75,7 @@ export default {
     }
   },
   methods: {
-    showMsgBox(credId, index) {
+    showMsgBox(credId) {
       this.$bvModal.msgBoxConfirm('删除交易所凭证将同时清除关联的机器人。', {
         title: '确认删除？',
         size: 'sm',
@@ -91,7 +91,7 @@ export default {
             if (!value) {
               return
             }
-            this.$emit("delete-cred-confirmed", {credId: credId, index: index})
+            this.$emit("delete-cred-confirmed", {credId: credId})
           })
           .catch(err => {
             console.log(err);

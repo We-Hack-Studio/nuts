@@ -8,12 +8,10 @@
 <script>
 import ConnectForm from "@/components/ConnectForm";
 import ConnectedTable from "@/components/ConnectedTable";
-import {getCredentials, deleteCredentialsId} from "@/api";
-import formatterMixin from "@/mixins/formatter"
+import {getCredentials, deleteCredential} from "@/api/credential";
 
 export default {
   name: "ConnectView",
-  mixins: [formatterMixin],
   data() {
     return {
       credentialList: []
@@ -58,10 +56,10 @@ export default {
         }
       }
     },
-    async deleteCred({credId, index}) {
+    async deleteCred({credId}) {
       try {
-        await deleteCredentialsId(credId)
-        this.credentialList.splice(index, 1)
+        await deleteCredential(credId)
+        await this.getCredentialList()
       } catch (error) {
         if (error.response) {
           this.$bvToast.toast('删除失败', {
