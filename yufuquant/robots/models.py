@@ -66,7 +66,7 @@ class Robot(TimeStampedModel, models.Model):
         days = duration.days
         seconds = duration.seconds
         hours = seconds // 3600
-        return _("{days}d {hours}h".format(days=days, hours=hours))
+        return _("{days}d{hours}h".format(days=days, hours=hours))
 
     @property
     def duration_in_second(self) -> int:
