@@ -1,6 +1,5 @@
 from typing import List, Type
 
-from credentials.serializers import CredentialKeySerializer
 from django.db.models import F
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -80,7 +79,6 @@ class RobotViewSet(viewsets.ModelViewSet):
         "create": RobotCreateSerializer,
         "partial_update": RobotUpdateSerializer,
         "partial_update_asset_record": AssetRecordSerializer,
-        "retrieve_credential_key": CredentialKeySerializer,
         "list_asset_record_snap": AssetRecordSnapSerializer,
     }
 

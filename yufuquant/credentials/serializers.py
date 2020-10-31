@@ -59,12 +59,5 @@ class CredentialCreateSerializer(serializers.ModelSerializer):
         }
 
 
-class CredentialKeySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Credential
-        fields = [
-            "id",
-            "api_key",
-            "secret",
-            "passphrase",
-        ]
+class CredentialUpdateSerializer(CredentialCreateSerializer):
+    pass

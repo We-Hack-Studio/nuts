@@ -11,3 +11,7 @@ export async function createCredential(data) {
 export async function deleteCredential(credId) {
     return authInstance.delete('/credentials/' + credId + '/');
 }
+
+export async function updateCredential(credId, data) {
+    return authInstance.patch('/credentials/' + credId + '/', data);
+}
