@@ -6,7 +6,11 @@ from rest_framework import mixins, permissions, throttling, viewsets
 from rest_framework.serializers import BaseSerializer
 
 from .models import Credential
-from .serializers import CredentialCreateSerializer, CredentialListSerializer
+from .serializers import (
+    CredentialCreateSerializer,
+    CredentialListSerializer,
+    CredentialUpdateSerializer,
+)
 
 
 @method_decorator(
@@ -23,6 +27,12 @@ from .serializers import CredentialCreateSerializer, CredentialListSerializer
     ),
 )
 @method_decorator(
+    name="update",
+    decorator=extend_schema(
+        summary="Update bound exchange credential",
+    ),
+)
+@method_decorator(
     name="destroy",
     decorator=extend_schema(
         summary="Unbind exchange credential",
@@ -32,11 +42,13 @@ class CredentialViewSet(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.DestroyModelMixin,
+    mixins.UpdateModelMixin,
     viewsets.GenericViewSet,
 ):
     action_serializer_map = {
         "list": CredentialListSerializer,
         "create": CredentialCreateSerializer,
+        "partial_update": CredentialUpdateSerializer,
     }
     permission_classes = [permissions.IsAdminUser]
     throttle_classes = [throttling.UserRateThrottle]
