@@ -46,6 +46,17 @@ class Robot(TimeStampedModel, models.Model):
     base_currency = models.CharField(_("base currency"), max_length=10, blank=True)
     quote_currency = models.CharField(_("quote currency"), max_length=10, blank=True)
 
+    # store
+    strategy_store = JSONField(
+        _("strategy store"), blank=True, default={"updatedAt": None, "data": {}}
+    )
+    position_store = JSONField(
+        _("position store"), blank=True, default={"updatedAt": None, "positions": []}
+    )
+    order_store = JSONField(
+        _("order store"), blank=True, default={"updatedAt": None, "orders": []}
+    )
+
     objects: RobotManager = RobotManager()
 
     class Meta:

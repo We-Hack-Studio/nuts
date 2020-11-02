@@ -72,6 +72,9 @@ class RobotRetrieveSerializer(serializers.ModelSerializer):
     asset_record = AssetRecordSerializer(read_only=True)
     test_net = serializers.BooleanField(read_only=True)
     exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
+    strategy_store = serializers.JSONField()
+    position_store = serializers.JSONField()
+    order_store = serializers.JSONField()
 
     class Meta:
         model = Robot
@@ -88,6 +91,9 @@ class RobotRetrieveSerializer(serializers.ModelSerializer):
             "base_currency",
             "quote_currency",
             "strategy_parameters",
+            "strategy_store",
+            "position_store",
+            "order_store",
             "created_at",
             "modified_at",
             # related fields

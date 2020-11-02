@@ -10,7 +10,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import BasePermission, IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.serializers import BaseSerializer
+from rest_framework.serializers import BaseSerializer, DateTimeField
 from rest_framework.settings import api_settings
 from rest_framework_api_key.permissions import HasAPIKey
 
@@ -110,7 +110,7 @@ class RobotViewSet(viewsets.ModelViewSet):
         a = self.action_map.get(method)
         if a == "adjust_strategy_parameters":
             self.authentication_classes = api_settings.DEFAULT_AUTHENTICATION_CLASSES
-        return super(RobotViewSet, self).initialize_request(request, *args, **kwargs)
+        return super().initialize_request(request, *args, **kwargs)
 
     @extend_schema(
         summary="Ping robot", responses={200: {"pong": "timestamp in milliseconds."}}
@@ -229,3 +229,63 @@ class RobotViewSet(viewsets.ModelViewSet):
         page = self.paginate_queryset(filtered)
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
+
+    @extend_schema(
+        summary="Update robot strategy store",
+    )
+    @action(
+        methods=["PUT"],
+        detail=True,
+        url_path="strategyStore",
+        url_name="strategy-store",
+        permission_classes=[HasAPIKey],
+        authentication_classes=[],
+    )
+    def update_strategy_store(self, request, *args, **kwargs) -> Response:
+        robot = self.get_object()
+        now = timezone.now()
+        now_str = DateTimeField().to_representation(now)
+        robot.strategy_store["data"] = request.data
+        robot.strategy_store["updatedAt"] = now_str
+        robot.save(update_fields=["strategy_store"])
+        return Response(robot.strategy_store, status=status.HTTP_200_OK)
+
+    @extend_schema(
+        summary="Update robot position store",
+    )
+    @action(
+        methods=["PUT"],
+        detail=True,
+        url_path="positionStore",
+        url_name="position-store",
+        permission_classes=[HasAPIKey],
+        authentication_classes=[],
+    )
+    def update_position_store(self, request, *args, **kwargs) -> Response:
+        robot = self.get_object()
+        now = timezone.now()
+        now_str = DateTimeField().to_representation(now)
+        robot.position_store["positions"] = request.data
+        robot.position_store["updatedAt"] = now_str
+        robot.save(update_fields=["position_store"])
+        return Response(robot.position_store, status=status.HTTP_200_OK)
+
+    @extend_schema(
+        summary="Update robot order store",
+    )
+    @action(
+        methods=["PUT"],
+        detail=True,
+        url_path="orderStore",
+        url_name="order-store",
+        permission_classes=[HasAPIKey],
+        authentication_classes=[],
+    )
+    def update_order_store(self, request, *args, **kwargs) -> Response:
+        robot = self.get_object()
+        now = timezone.now()
+        now_str = DateTimeField().to_representation(now)
+        robot.order_store["orders"] = request.data
+        robot.order_store["updatedAt"] = now_str
+        robot.save(update_fields=["order_store"])
+        return Response(robot.order_store, status=status.HTTP_200_OK)

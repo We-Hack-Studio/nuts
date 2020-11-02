@@ -493,3 +493,115 @@ class RobotViewSetTestCase(APITestCase):
         self.login(username=self.admin_user.username, password="password")
         response = self.get("api:robot-asset-record-snap-list", pk=robot.pk)
         self.response_200(response)
+
+    # update position store
+    def test_update_position_store_permission(self):
+        robot = RobotFactory()
+
+        # No x-api-key provided
+        response = self.put("api:robot-position-store", pk=robot.pk)
+        self.response_403(response)
+
+    def test_update_nonexistent_robot_position_store(self):
+        response = self.put(
+            "api:robot-position-store",
+            pk=999999,
+            extra={"HTTP_X_API_KEY": self.x_api_key},
+        )
+        self.response_404(response)
+
+    @freeze_time("2020-10-18 03:21:34.456789+08:00")  # UTC
+    def test_update_position_store(self):
+        robot = RobotFactory(credential=self.admin_user_credential)
+
+        positions = [{"qty": 1, "avgPrice": 355, "side": -1}]
+        response = self.put(
+            "api:robot-position-store",
+            pk=robot.pk,
+            data=positions,
+            extra={"HTTP_X_API_KEY": self.x_api_key},
+        )
+        self.response_200(response)
+        robot.refresh_from_db()
+        self.assertEqual(
+            robot.position_store["updatedAt"],
+            "2020-10-18T03:21:34.456789+08:00",
+        )
+        self.assertEqual(
+            robot.position_store["positions"],
+            [{"qty": 1, "avgPrice": 355, "side": -1}],
+        )
+
+    # update order store
+    def test_update_order_store_permission(self):
+        robot = RobotFactory()
+
+        # No x-api-key provided
+        response = self.put("api:robot-order-store", pk=robot.pk)
+        self.response_403(response)
+
+    def test_update_nonexistent_robot_order_store(self):
+        response = self.put(
+            "api:robot-order-store",
+            pk=999999,
+            extra={"HTTP_X_API_KEY": self.x_api_key},
+        )
+        self.response_404(response)
+
+    @freeze_time("2020-10-18 03:21:34.456789+08:00")  # UTC
+    def test_update_order_store(self):
+        robot = RobotFactory(credential=self.admin_user_credential)
+
+        orders = [{"qty": 1, "price": 355, "side": -1}]
+        response = self.put(
+            "api:robot-order-store",
+            pk=robot.pk,
+            data=orders,
+            extra={"HTTP_X_API_KEY": self.x_api_key},
+        )
+        self.response_200(response)
+        robot.refresh_from_db()
+        self.assertEqual(
+            robot.order_store["updatedAt"],
+            "2020-10-18T03:21:34.456789+08:00",
+        )
+        self.assertEqual(
+            robot.order_store["orders"], [{"qty": 1, "price": 355, "side": -1}]
+        )
+
+    # update strategy store
+    def test_update_strategy_store_permission(self):
+        robot = RobotFactory()
+
+        # No x-api-key provided
+        response = self.put("api:robot-strategy-store", pk=robot.pk)
+        self.response_403(response)
+
+    def test_update_nonexistent_robot_strategy_store(self):
+        response = self.put(
+            "api:robot-strategy-store",
+            pk=999999,
+            extra={"HTTP_X_API_KEY": self.x_api_key},
+        )
+        self.response_404(response)
+
+    @freeze_time("2020-10-18 03:21:34.456789+08:00")  # UTC
+    def test_update_strategy_store(self):
+        robot = RobotFactory(credential=self.admin_user_credential)
+
+        data = {"openPosQty": 100, "maxPosQty": 10}
+        response = self.put(
+            "api:robot-strategy-store",
+            pk=robot.pk,
+            data=data,
+            extra={"HTTP_X_API_KEY": self.x_api_key},
+        )
+        self.response_200(response)
+        robot.refresh_from_db()
+        self.assertEqual(
+            robot.strategy_store["updatedAt"],
+            "2020-10-18T03:21:34.456789+08:00",
+        )
+        self.assertEqual(
+            robot.strategy_store["data"], {"openPosQty": 100, "maxPosQty": 10}
+        )
