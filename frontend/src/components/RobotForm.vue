@@ -18,7 +18,7 @@
                     type="text"
                     :state="formErrors.name===undefined?null:false"
                 ></b-form-input>
-                <b-form-invalid-feedback :state="formErrors.exchange===undefined?null:false">
+                <b-form-invalid-feedback :state="formErrors.name===undefined?null:false">
                   {{ formErrors.name !== undefined && formErrors.name[0] }}
                 </b-form-invalid-feedback>
               </b-form-group>
@@ -35,7 +35,7 @@
                     required
                     :state="formErrors.credential===undefined?null:false"
                 ></b-form-select>
-                <b-form-invalid-feedback :state="formErrors.exchange===undefined?null:false">
+                <b-form-invalid-feedback :state="formErrors.credential===undefined?null:false">
                   {{ formErrors.credential !== undefined && formErrors.credential[0] }}
                 </b-form-invalid-feedback>
               </b-form-group>
@@ -60,7 +60,7 @@
                     required
                     :state="formErrors['market_type']===undefined?null:false"
                 ></b-form-select>
-                <b-form-invalid-feedback :state="formErrors.exchange===undefined?null:false">
+                <b-form-invalid-feedback :state="formErrors['market_type']===undefined?null:false">
                   {{ formErrors['market_type'] !== undefined && formErrors['market_type'][0] }}
                 </b-form-invalid-feedback>
               </b-form-group>
@@ -77,7 +77,7 @@
                     :state="formErrors.pair===undefined?null:false"
                 >
                 </b-form-input>
-                <b-form-invalid-feedback :state="formErrors.exchange===undefined?null:false">
+                <b-form-invalid-feedback :state="formErrors.pair===undefined?null:false">
                   {{ formErrors.pair !== undefined && formErrors.pair[0] }}
                 </b-form-invalid-feedback>
               </b-form-group>
@@ -115,7 +115,7 @@
                       :state="formErrors['quote_currency']===undefined?null:false"
                   >
                   </b-form-input>
-                  <b-form-invalid-feedback :state="formErrors['base_currency']===undefined?null:false">
+                  <b-form-invalid-feedback :state="formErrors['quote_currency']===undefined?null:false">
                     {{ formErrors['quote_currency'] !== undefined && formErrors['quote_currency'][0] }}
                   </b-form-invalid-feedback>
                 </b-form-group>

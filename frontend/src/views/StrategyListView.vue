@@ -1,5 +1,13 @@
 <template>
-  <b-container fluid="">
+  <div class="mx-sm-2 mx-md-3">
+    <div class="mb-3">
+      <router-link :to="{name: 'strategy-add'}">
+        <b-button variant="primary">
+          <b-icon icon="plus" aria-hidden="true"></b-icon>
+          新增策略
+        </b-button>
+      </router-link>
+    </div>
     <b-row>
       <b-col sm="12" md="6" lg="4" v-for="strategy in strategyList" :key="strategy.id" class="mb-3">
         <strategy-item
@@ -8,7 +16,7 @@
         </strategy-item>
       </b-col>
     </b-row>
-  </b-container>
+  </div>
 </template>
 
 <script>

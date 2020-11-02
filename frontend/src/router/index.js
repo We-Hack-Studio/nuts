@@ -7,7 +7,7 @@ import LoginView from "../views/LoginView";
 import CredentialView from "../views/CredentialView";
 import Account from "../views/Account";
 import StrategyListView from "../views/StrategyListView";
-import StrategyCreateView from "../views/StrategyCreateView";
+import StrategyCreateView from "../views/StrategyAddView";
 import Vue from 'vue'
 
 Vue.use(VueRouter)
@@ -21,7 +21,7 @@ const routes = [
     {path: '/credential', name: 'credential', component: CredentialView},
     {path: '/account', component: Account},
     {path: '/strategy/list', name: 'strategy-list', component: StrategyListView},
-    {path: '/strategy/create', name: 'strategy-create', component: StrategyCreateView},
+    {path: '/strategy/add', name: 'strategy-add', component: StrategyCreateView},
 ]
 const router = new VueRouter({
     routes // (缩写) 相当于 routes: routes
