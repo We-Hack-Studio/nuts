@@ -7,3 +7,7 @@ export async function getRobotsIdStrategySpecView(robotId) {
 export async function patchRobotsIdStrategyParameters(robotId, data) {
     return authInstance.patch(`/robots/${robotId}/strategyParameters/`, data);
 }
+
+export async function createRobot(data) {
+    return authInstance.post('/robots/', data);
+}
