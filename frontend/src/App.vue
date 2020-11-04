@@ -24,6 +24,8 @@ export default {
             const width = document.documentElement.clientWidth;
             if (width > 576) {
                 this.isToggled = false;
+            } else {
+                this.isToggled = true;
             }
         };
     },

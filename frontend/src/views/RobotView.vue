@@ -1,7 +1,17 @@
 <template>
     <b-row class="m-1">
+        <b-col md="6">
+            <position-card :robotDetail="robotDetail" />
+            <position-and-orders :positionStore="positionStore" />
+            <asset-line />
+        </b-col>
+        <b-col md="6">
+            <robot-form />
+        </b-col>
         <b-col md="12">
             <log-panel :log-list="logList"></log-panel>
+        </b-col>
+        <b-col>
             <b-card header-tag="header" class="mt-3">
                 <template v-slot:header>
                     <div class="d-flex justify-content-between align-items-center">
@@ -13,13 +23,13 @@
                 </template>
                 <param-preview :parameters="strategySpecView && strategySpecView.parameters"></param-preview>
             </b-card>
-            <b-modal button-size="sm" size="md" id="param-form-modal" scrollable centered title="参数设置">
-                <param-form ref="paramForm" :fields="strategySpecView && strategySpecView.parameters"></param-form>
-                <template v-slot:modal-footer="{ ok }">
-                    <b-button size="sm" variant="primary" @click="onSubmit(ok, $event)">确认 </b-button>
-                </template>
-            </b-modal>
         </b-col>
+        <b-modal button-size="sm" size="md" id="param-form-modal" scrollable centered title="参数设置">
+            <param-form ref="paramForm" :fields="strategySpecView && strategySpecView.parameters"></param-form>
+            <template v-slot:modal-footer="{ ok }">
+                <b-button size="sm" variant="primary" @click="onSubmit(ok, $event)">确认 </b-button>
+            </template>
+        </b-modal>
     </b-row>
 </template>
 
@@ -27,6 +37,10 @@
 import LogPanel from './RobotLogView';
 import ParamPreview from '../components/ParamPreview';
 import ParamForm from '../components/ParamForm';
+import PositionCard from '../components/robot-item/PositionCard';
+import PositionAndOrders from '../components/robot-item/PositionAndOrders';
+import AssetLine from '../components/robot-item/AssetLine';
+import RobotForm from '../components/robot-item/RobotForm';
 import { getRobotsId } from '@/api';
 import { getRobotsIdStrategySpecView, patchRobotsIdStrategyParameters } from '@/api/robot';
 
@@ -37,12 +51,18 @@ export default {
             logList: [],
             robotId: null,
             strategySpecView: null,
+            robotDetail: {},
+            positionStore: null,
         };
     },
     components: {
         LogPanel,
         ParamPreview,
         ParamForm,
+        PositionCard,
+        PositionAndOrders,
+        AssetLine,
+        RobotForm,
     },
     methods: {
         async onSubmit(ok, event) {
@@ -89,6 +109,9 @@ export default {
             try {
                 const robotRes = await getRobotsId(this.$route.params.id);
                 const result = robotRes.data;
+                this.robotDetail = result;
+                this.positionStore = result['position_store'];
+
                 this.robotId = result.id;
             } catch (error) {
                 if (error.response) {
@@ -110,7 +133,11 @@ export default {
                 }
             }
         },
-
+        // async getRobotDetail() {
+        //     const robotDetail = await this.getRobotDetail(this.$route.params.id);
+        //     console.log(robotDetail);
+        //     this.robotDetail = robotDetail.data;
+        // },
         async getStrategySpecView() {
             try {
                 const response = await getRobotsIdStrategySpecView(this.$route.params.id);
