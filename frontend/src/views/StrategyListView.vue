@@ -38,6 +38,7 @@ export default {
       this.strategyList = data.map(strategy => ({
         id: strategy.id,
         name: strategy.name,
+        brief: strategy.brief,
         description: strategy.description,
       }))
     },
