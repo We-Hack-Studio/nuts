@@ -8,6 +8,7 @@ import CredentialView from "../views/CredentialView";
 import Account from "../views/Account";
 import StrategyListView from "../views/StrategyListView";
 import StrategyCreateView from "../views/StrategyAddView";
+import StrategyDetailView from "../views/StrategyDetailView";
 import Vue from 'vue'
 
 Vue.use(VueRouter)
@@ -22,6 +23,7 @@ const routes = [
     {path: '/account', component: Account},
     {path: '/strategy/list', name: 'strategy-list', component: StrategyListView},
     {path: '/strategy/add', name: 'strategy-add', component: StrategyCreateView},
+    {path: '/strategy/:id', name: 'strategy-detail', component: StrategyDetailView},
 ]
 const router = new VueRouter({
     routes // (缩写) 相当于 routes: routes

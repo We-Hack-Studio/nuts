@@ -11,6 +11,7 @@ class StrategySerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "name",
+            "brief",
             "description",
             "specification",
             "created_at",
