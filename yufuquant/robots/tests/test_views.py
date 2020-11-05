@@ -130,7 +130,9 @@ class RobotViewSetTestCase(APITestCase):
         request = self.api_request_factory.get(self.nonexistent_robot_detail_url)
         robot = (
             Robot.objects.all()
-            .annotate(test_net=F("credential__test_net"))
+            .annotate(
+                test_net=F("credential__test_net"), strategy_name=F("strategy__name")
+            )
             .get(pk=robot.pk)
         )
         serializer = RobotRetrieveSerializer(

@@ -84,7 +84,7 @@ class RobotViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         qs = Robot.objects.all().order_by("-created_at")
-        if self.action in {"list"}:
+        if self.action in {"list", "retrieve"}:
             qs = qs.annotate(strategy_name=F("strategy__name"))
         if self.action in {"retrieve"}:
             qs = qs.annotate(test_net=F("credential__test_net"))
