@@ -69,12 +69,14 @@ class RobotListSerializer(serializers.ModelSerializer):
 
 
 class RobotRetrieveSerializer(serializers.ModelSerializer):
+    strategy_name = serializers.CharField(read_only=True)
     asset_record = AssetRecordSerializer(read_only=True)
     test_net = serializers.BooleanField(read_only=True)
     exchange = ExchangeSerializer(source="credential.exchange", read_only=True)
     strategy_store = serializers.JSONField()
     position_store = serializers.JSONField()
     order_store = serializers.JSONField()
+    market_type_display = serializers.CharField(source="get_market_type_display")
 
     class Meta:
         model = Robot
@@ -102,8 +104,10 @@ class RobotRetrieveSerializer(serializers.ModelSerializer):
             "duration_display",
             "duration_in_second",
             "strategy_spec_view",
+            "strategy_name",
             "test_net",
             "exchange",
+            "market_type_display",
         ]
 
 
