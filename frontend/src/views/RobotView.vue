@@ -12,7 +12,7 @@
           </b-tab>
         </b-tabs>
       </b-card>
-      <asset-chart/>
+      <!--      <asset-chart/>-->
     </b-col>
     <b-col md="4">
       <overview :overview-data="overviewData"/>
@@ -42,7 +42,7 @@ import LogPanel from '@/components/robot-console/LogPanel';
 import ParamPreview from '../components/ParamPreview';
 import ParamForm from '../components/ParamForm';
 import Position from '../components/robot-console/Position';
-import AssetChart from '../components/robot-console/AssetChart';
+// import AssetChart from '../components/robot-console/AssetChart';
 import Overview from '../components/robot-console/Overview';
 import Order from "@/components/robot-console/Order";
 import {getRobotsId} from '@/api';
@@ -67,7 +67,7 @@ export default {
     Overview,
     Position,
     Order,
-    AssetChart,
+    // AssetChart,
   },
   methods: {
     async onSubmit(ok, event) {
