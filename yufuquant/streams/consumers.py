@@ -18,6 +18,7 @@ public_topic_patterns: List[str] = []
 private_topic_patterns = [
     r"robot#\d+\.ping",
     r"robot#\d+\.log",
+    r"robot#\d+\.assetRecord",
     r"robot#\d+\.store",
     r"robot#\d+\.strategyParameters",
 ]
