@@ -2,7 +2,7 @@ from credentials.models import Credential
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from exchanges.models import Exchange
-from robots.models import Robot
+from robots.models import AssetRecord, AssetRecordSnap, Robot
 from strategies.models import Strategy
 
 User = get_user_model()
@@ -27,4 +27,6 @@ def run():
     Credential.objects.all().delete()
     Strategy.objects.all().delete()
     Robot.objects.all().delete()
+    AssetRecord.objects.all().delete()
+    AssetRecordSnap.objects.all().delete()
     print("Database was cleaned.")
