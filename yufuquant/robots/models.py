@@ -144,7 +144,7 @@ class AssetRecordSnap(TimeStampedModel, models.Model):
         ("1d", "d1", _("1 day")),
     )
 
-    total_principal = models.FloatField(_("total capital"))
+    total_principal = models.FloatField(_("total principal"))
     total_balance = models.FloatField(_("total balance"))
     period = models.CharField(_("period"), max_length=10, choices=PERIOD)
     asset_record = models.ForeignKey(

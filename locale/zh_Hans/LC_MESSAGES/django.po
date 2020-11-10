@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-06 12:04+0800\n"
+"POT-Creation-Date: 2020-11-10 20:01+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-
-#: yufuquant/core/decrators.py:22
-#, python-brace-format
-msgid "Only accept {fields} fields."
-msgstr ""
 
 #: yufuquant/core/models.py:7
 msgid "created_at"
@@ -38,21 +33,21 @@ msgid ""
 "'%(allowed_extensions)s.'"
 msgstr ""
 
-#: yufuquant/core/validators.py:47
+#: yufuquant/core/validators.py:48
 #, python-format
 msgid ""
 "MIME type '%(mimetype)s' is not valid. Allowed types are: "
 "%(allowed_mimetypes)s."
 msgstr ""
 
-#: yufuquant/core/validators.py:50
+#: yufuquant/core/validators.py:52
 #, python-format
 msgid ""
 "The current file %(size)s, which is too small. The minumum file size is "
 "%(allowed_size)s."
 msgstr ""
 
-#: yufuquant/core/validators.py:53
+#: yufuquant/core/validators.py:56
 #, python-format
 msgid ""
 "The current file %(size)s, which is too large. The maximum file size is "
@@ -63,39 +58,39 @@ msgstr ""
 msgid "Credentials"
 msgstr "交易所凭据"
 
-#: yufuquant/credentials/models.py:9
+#: yufuquant/credentials/models.py:11
 msgid "note"
 msgstr "备注"
 
-#: yufuquant/credentials/models.py:10
+#: yufuquant/credentials/models.py:12
 msgid "API Key"
 msgstr "API Key"
 
-#: yufuquant/credentials/models.py:11
+#: yufuquant/credentials/models.py:13
 msgid "secret"
 msgstr "Secret"
 
-#: yufuquant/credentials/models.py:12
+#: yufuquant/credentials/models.py:14
 msgid "passphrase"
 msgstr "密码"
 
-#: yufuquant/credentials/models.py:13
+#: yufuquant/credentials/models.py:15
 msgid "test net"
 msgstr "测试网"
 
-#: yufuquant/credentials/models.py:16 yufuquant/exchanges/models.py:24
+#: yufuquant/credentials/models.py:18 yufuquant/exchanges/models.py:23
 msgid "exchange"
 msgstr "交易所"
 
-#: yufuquant/credentials/models.py:22
+#: yufuquant/credentials/models.py:24
 msgid "user"
 msgstr "用户"
 
-#: yufuquant/credentials/models.py:28
+#: yufuquant/credentials/models.py:30
 msgid "credential"
 msgstr "交易所凭据"
 
-#: yufuquant/credentials/models.py:29
+#: yufuquant/credentials/models.py:31
 msgid "credentials"
 msgstr "交易所凭据"
 
@@ -103,32 +98,32 @@ msgstr "交易所凭据"
 msgid "Exchanges"
 msgstr "交易所"
 
-#: yufuquant/exchanges/models.py:10
+#: yufuquant/exchanges/models.py:9
 msgid "code"
 msgstr "代码"
 
-#: yufuquant/exchanges/models.py:11 yufuquant/robots/models.py:14
+#: yufuquant/exchanges/models.py:10 yufuquant/robots/models.py:23
 #: yufuquant/strategies/models.py:8
 msgid "name"
 msgstr "名称"
 
-#: yufuquant/exchanges/models.py:12
+#: yufuquant/exchanges/models.py:11
 msgid "chinese name"
 msgstr "中文名"
 
-#: yufuquant/exchanges/models.py:13
+#: yufuquant/exchanges/models.py:12
 msgid "logo"
 msgstr "Logo"
 
-#: yufuquant/exchanges/models.py:20
+#: yufuquant/exchanges/models.py:19
 msgid "active"
 msgstr "启用"
 
-#: yufuquant/exchanges/models.py:21
+#: yufuquant/exchanges/models.py:20
 msgid "rank"
 msgstr "排序"
 
-#: yufuquant/exchanges/models.py:25
+#: yufuquant/exchanges/models.py:24
 msgid "exchanges"
 msgstr "交易所"
 
@@ -136,113 +131,244 @@ msgstr "交易所"
 msgid "Robots"
 msgstr "机器人"
 
-#: yufuquant/robots/models.py:12
-msgid "spots"
+#: yufuquant/robots/models.py:15
+msgid "Spots"
 msgstr "现货"
 
-#: yufuquant/robots/models.py:12
-msgid "futures"
-msgstr "期货"
+#: yufuquant/robots/models.py:16
+msgid "Margin"
+msgstr "杠杆"
 
-#: yufuquant/robots/models.py:15
+#: yufuquant/robots/models.py:17
+msgid "Linear delivery contract"
+msgstr "线性交割合约"
+
+#: yufuquant/robots/models.py:18
+msgid "Linear perpetual contract"
+msgstr "线性永续合约"
+
+#: yufuquant/robots/models.py:19
+msgid "Inverse delivery contract"
+msgstr "反向交割合约"
+
+#: yufuquant/robots/models.py:20
+msgid "Inverse perpetual contract"
+msgstr "反向永续合约"
+
+#: yufuquant/robots/models.py:24
 msgid "pair"
 msgstr "交易对"
 
-#: yufuquant/robots/models.py:16
+#: yufuquant/robots/models.py:25
 msgid "market type"
 msgstr "市场类型"
 
-#: yufuquant/robots/models.py:17
+#: yufuquant/robots/models.py:26
 msgid "enabled"
 msgstr "开启"
 
-#: yufuquant/robots/models.py:18
+#: yufuquant/robots/models.py:27
 msgid "start time"
 msgstr "启动时间"
 
-#: yufuquant/robots/models.py:19
+#: yufuquant/robots/models.py:28
 msgid "ping time"
 msgstr "心跳时间"
 
-#: yufuquant/robots/models.py:22
+#: yufuquant/robots/models.py:31
 msgid "exchange credential"
 msgstr "交易所凭据"
 
-#: yufuquant/robots/models.py:28 yufuquant/strategies/models.py:13
+#: yufuquant/robots/models.py:37 yufuquant/strategies/models.py:14
 msgid "strategy"
 msgstr "策略"
 
-#: yufuquant/robots/models.py:34
+#: yufuquant/robots/models.py:43
 msgid "strategy parameters"
 msgstr "策略参数"
 
-#: yufuquant/robots/models.py:35
+#: yufuquant/robots/models.py:44
 msgid "target currency"
 msgstr "目标币种"
 
-#: yufuquant/robots/models.py:37
+#: yufuquant/robots/models.py:46
 msgid "base currency"
 msgstr "基础币种"
 
-#: yufuquant/robots/models.py:38
+#: yufuquant/robots/models.py:47
 msgid "quote currency"
 msgstr "计价币种"
 
-#: yufuquant/robots/models.py:43 yufuquant/robots/models.py:66
+#: yufuquant/robots/models.py:51
+msgid "strategy store"
+msgstr "策略 Store"
+
+#: yufuquant/robots/models.py:54
+msgid "position store"
+msgstr "持仓 Store"
+
+#: yufuquant/robots/models.py:57
+msgid "order store"
+msgstr "订单 Store"
+
+#: yufuquant/robots/models.py:63 yufuquant/robots/models.py:111
 msgid "robot"
 msgstr "机器人"
 
-#: yufuquant/robots/models.py:44
+#: yufuquant/robots/models.py:64
 msgid "robots"
 msgstr "机器人"
 
-#: yufuquant/robots/models.py:55
+#: yufuquant/robots/models.py:80
+#, python-brace-format
+msgid "{days}d{hours}h"
+msgstr "{days}天{hours}小时"
+
+#: yufuquant/robots/models.py:100
 msgid "currency"
 msgstr "币种"
 
-#: yufuquant/robots/models.py:56
+#: yufuquant/robots/models.py:101 yufuquant/robots/models.py:147
 msgid "total principal"
-msgstr "总利润"
+msgstr "总投资"
 
-#: yufuquant/robots/models.py:57
+#: yufuquant/robots/models.py:102 yufuquant/robots/models.py:148
 msgid "total balance"
 msgstr "总余额"
 
-#: yufuquant/robots/models.py:59
+#: yufuquant/robots/models.py:104
 msgid "total principal 24 hours ago"
-msgstr "24小时前总利润"
+msgstr "24小时前总投资"
 
-#: yufuquant/robots/models.py:62
+#: yufuquant/robots/models.py:107
 msgid "total balance 24 hours ago"
 msgstr "24小时前总余额"
 
-#: yufuquant/robots/models.py:72
+#: yufuquant/robots/models.py:117 yufuquant/robots/models.py:152
 msgid "asset record"
 msgstr "资产记录"
 
-#: yufuquant/robots/models.py:73
+#: yufuquant/robots/models.py:118
 msgid "asset records"
 msgstr "资产记录"
+
+#: yufuquant/robots/models.py:143
+msgid "1 hour"
+msgstr "1小时"
+
+#: yufuquant/robots/models.py:144
+msgid "1 day"
+msgstr "1天"
+
+#: yufuquant/robots/models.py:149
+msgid "period"
+msgstr "周期"
+
+#: yufuquant/robots/models.py:158
+msgid "asset record snap"
+msgstr "资产记录快照"
+
+#: yufuquant/robots/models.py:159
+msgid "asset record snaps"
+msgstr "资产记录快照"
 
 #: yufuquant/strategies/apps.py:7
 msgid "Strategies"
 msgstr "策略"
 
 #: yufuquant/strategies/models.py:9
+msgid "brief"
+msgstr "简介"
+
+#: yufuquant/strategies/models.py:10
 msgid "description"
 msgstr "描述"
 
-#: yufuquant/strategies/models.py:10
+#: yufuquant/strategies/models.py:11
 msgid "specification"
 msgstr "规格说明"
 
-#: yufuquant/strategies/models.py:14
+#: yufuquant/strategies/models.py:15
 msgid "strategies"
 msgstr "策略"
 
 #: yufuquant/streams/apps.py:7
 msgid "Streams"
 msgstr "流"
+
+#: yufuquant/streams/consumers.py:105
+msgid "Invalid stream content."
+msgstr "无效的流内容。"
+
+#: yufuquant/streams/consumers.py:116
+#, python-brace-format
+msgid "Unsupported cmd: {cmd}."
+msgstr "不支持的指令：{cmd}。"
+
+#: yufuquant/streams/consumers.py:124
+msgid "Invalid auth stream."
+msgstr "无效的认证流。"
+
+#: yufuquant/streams/consumers.py:137
+msgid "Invalid sub stream."
+msgstr "无效的订阅流。"
+
+#: yufuquant/streams/consumers.py:147
+msgid "Invalid unsub stream."
+msgstr "无效的取消订阅流。"
+
+#: yufuquant/streams/consumers.py:158
+msgid "Invalid broadcast stream."
+msgstr "无效的广播流。"
+
+#: yufuquant/streams/consumers.py:171
+msgid "No api key provided"
+msgstr "没有提供 api key"
+
+#: yufuquant/streams/consumers.py:177
+msgid "ok"
+msgstr "OK"
+
+#: yufuquant/streams/consumers.py:181
+msgid "Invalid api key"
+msgstr "无效的 api key"
+
+#: yufuquant/streams/consumers.py:196
+msgid "Invalid auth token."
+msgstr "无效的认证令牌。"
+
+#: yufuquant/streams/consumers.py:199
+msgid "Authenticated."
+msgstr "已认证。"
+
+#: yufuquant/streams/consumers.py:209
+msgid "Authentication required for subscribing private topics."
+msgstr "订阅私密主题需认证。"
+
+#: yufuquant/streams/consumers.py:241
+#, python-brace-format
+msgid "No subscription within {timeout} seconds."
+msgstr "{timeout}秒内没有订阅主题。"
+
+#: yufuquant/streams/consumers.py:254
+msgid "Authentication required for broadcasting message."
+msgstr "广播消息需认证。"
+
+#: yufuquant/streams/consumers.py:320
+msgid "Heartbeat timeout."
+msgstr "心跳超时。"
+
+#: yufuquant/users/admin.py:14
+msgid "Personal info"
+msgstr "个人信息"
+
+#: yufuquant/users/admin.py:16
+msgid "Permissions"
+msgstr "权限"
+
+#: yufuquant/users/admin.py:27
+msgid "Important dates"
+msgstr "重要日期"
 
 #: yufuquant/users/apps.py:7
 msgid "Users"
@@ -256,6 +382,6 @@ msgstr "昵称"
 msgid "avatar"
 msgstr "头像"
 
-#: yufuquant/users/serializers.py:25
+#: yufuquant/users/serializers.py:22
 msgid "Unable to log in with provided credentials."
 msgstr "无法使用当前提供的认证信息登录。"
