@@ -18,9 +18,8 @@ public_topic_patterns: List[str] = []
 private_topic_patterns = [
     r"robot#\d+\.ping",
     r"robot#\d+\.log",
-    r"robot#\d+\.asset",
-    r"robot#\d+\.order",
-    r"robot#\d+\.position",
+    r"robot#\d+\.assetRecord",
+    r"robot#\d+\.store",
     r"robot#\d+\.strategyParameters",
 ]
 topic_patterns = public_topic_patterns + private_topic_patterns
@@ -271,6 +270,16 @@ class StreamConsumer(AsyncJsonWebsocketConsumer):
                 await self.channel_layer.group_send(
                     group, {"type": "robot.log", "message": message}
                 )
+        elif category in {
+            "robotPositionStore",
+            "robotOrderStore",
+            "robotStrategyStore",
+        }:
+            store_topic_groups = [g for g in self.groups if g.endswith("store")]
+            for group in store_topic_groups:
+                await self.channel_layer.group_send(
+                    group, {"type": "robot.store", "message": message}
+                )
         else:
             pass
 
@@ -287,6 +296,10 @@ class StreamConsumer(AsyncJsonWebsocketConsumer):
         await self.send_json(message)
 
     async def robot_ping(self, event):
+        message = event["message"]
+        await self.send_json(message)
+
+    async def robot_store(self, event):
         message = event["message"]
         await self.send_json(message)
 

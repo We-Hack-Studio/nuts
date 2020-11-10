@@ -27,10 +27,9 @@ def test_category_topics():
         topics=[
             "robot#1.ping",
             "robot#11.log",
-            "robot#111.asset",
+            "robot#111.assetRecord",
             "robot#1111.log",
-            "robot#11111.order",
-            "robot#111111.position",
+            "robot#11111.store",
             "robot#1111111.strategyParameters",
             "robot#a.log",
             "private",
@@ -41,10 +40,9 @@ def test_category_topics():
     assert private == [
         "robot#1.ping",
         "robot#11.log",
-        "robot#111.asset",
+        "robot#111.assetRecord",
         "robot#1111.log",
-        "robot#11111.order",
-        "robot#111111.position",
+        "robot#11111.store",
         "robot#1111111.strategyParameters",
     ]
     assert public == []
