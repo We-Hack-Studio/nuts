@@ -46,7 +46,7 @@ import Position from '../components/robot-console/Position';
 import Overview from '../components/robot-console/Overview';
 import Order from '@/components/robot-console/Order';
 import { getRobotsId } from '@/api';
-import { getRobotsIdStrategySpecView, patchRobotsIdStrategyParameters } from '@/api/robot';
+import { getRobotStrategySpecView, updateRobotStrategyParameters } from '@/api/robot';
 import { mapState } from 'vuex';
 
 export default {
@@ -175,8 +175,8 @@ export default {
             event.preventDefault();
             let data = this.$refs.paramForm.form;
             try {
-                await patchRobotsIdStrategyParameters(this.$route.params.id, data);
-                await this.getRobot();
+                await updateRobotStrategyParameters(this.$route.params.id, data);
+                await this.getStrategySpecView();
                 this.$bvModal.hide('param-form-modal');
             } catch (error) {
                 if (error.response) {
@@ -261,7 +261,7 @@ export default {
         },
         async getStrategySpecView() {
             try {
-                const response = await getRobotsIdStrategySpecView(this.$route.params.id);
+                const response = await getRobotStrategySpecView(this.$route.params.id);
                 this.strategySpecView = response.data;
             } catch (error) {
                 if (error.response) {
