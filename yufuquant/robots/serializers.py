@@ -92,7 +92,6 @@ class RobotRetrieveSerializer(serializers.ModelSerializer):
             "target_currency",
             "base_currency",
             "quote_currency",
-            "strategy_parameters",
             "strategy_store",
             "position_store",
             "order_store",
@@ -103,7 +102,6 @@ class RobotRetrieveSerializer(serializers.ModelSerializer):
             # derived fields
             "duration_display",
             "duration_in_second",
-            "strategy_spec_view",
             "strategy_name",
             "test_net",
             "exchange",
