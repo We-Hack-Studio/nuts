@@ -2,8 +2,8 @@ site_name: 渔夫量化
 site_description: Test description
 
 repo_name: yufuquant
-repo_url: https://github.com/yufuquant/yufuquant
-edit_uri: "https://github.com/yufuquant/yufuquant/tree/master/docs/"
+repo_url: https://github.com/We-Hack-Studio/yufuquant
+edit_uri: "https://github.com/We-Hack-Studio/yufuquant/tree/master/docs/"
 use_directory_urls: true
 
 theme:

@@ -1,0 +1,22 @@
+upstream django  {
+    server django:8000;
+}
+
+server {
+    listen 80 default_server;
+    server_name _;
+    location / {
+        root   /apps/yufuquant/dist;
+        index  index.html;
+    }
+    location /static {
+        alias /apps/yufuquant/staticfiles;
+    }
+    location /media {
+        alias /apps/yufuquant/media;
+    }
+    location ~ ^/(api|ws|admin) {
+        include /etc/nginx/includes/proxy.conf;
+        proxy_pass http://django;
+    }
+}

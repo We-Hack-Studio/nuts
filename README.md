@@ -10,7 +10,7 @@
 
 ## 部署
 
-文档：[部署](https://yufuquant.github.io/yufuquant/deploy/)
+文档：[部署](https://we-hack-studio.github.io/yufuquant/)
 
 ## 用户手册
 
