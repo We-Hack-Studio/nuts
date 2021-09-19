@@ -1,12 +1,12 @@
 FROM python:3.8
 
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED 2
 
 RUN apt-get update && apt-get install -y postgresql-client gettext python3-dev libpq-dev
 
 WORKDIR /app
 
-RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | POETRY_PREVIEW=1 python
+RUN pip install poetry
 ENV PATH "/root/.poetry/bin:${PATH}"
 RUN poetry config virtualenvs.create false
 COPY poetry.lock pyproject.toml /app/
