@@ -13,7 +13,7 @@
     "chart.js": "^2.9.4",
     "core-js": "^3.6.5",
     "echarts": "^4.9.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.2",
     "sarala-json-api-data-formatter": "^2.0.0",
     "v-charts": "^1.19.0",
     "vue": "^2.6.11",
