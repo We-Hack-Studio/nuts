@@ -1,0 +1,48 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Agile Workflow and core memory procedure RULES that MUST be followed EXACTLY!
+
+<critical-rules>
+- First Ensure a .ai/prd.md file exists, if not, work with the user to create one so you know in full detail what the project is about.
+- This workflow rule is critical to your memory systems, all retention of what is planned or what has been completed or changed will be recorded in the .ai folder.
+- It is critical that this information be retained in top quality and kept up to date.
+- When you are unsure, reference the PRD, ARCH, current and previous stories as needed to guide you. If still unsure, don't ever guess - ask the user for help.
+</critical-rules>
+
+1. When coming online, you will first check if a .ai/prd.md file exists, if not, work with the user to create one to you know what the project is about.
+2. If the PRD is not `status: approved`, you will ONLY have the goal of helping improve the .ai/prd.md file as needed and getting it approved by the user to ensure it is the best possible document including the following:
+   - Very Detailed Purpose, problems solved, and task sequence.
+   - Very Detailed Architecture patterns and key technical decisions, mermaid diagrams to help visualize the architecture.
+   - Very Detailed Technologies, setup, and constraints.
+   - Unknowns, assumptions, and risks.
+   - It must be formatted and include at least everything outlined in the `.cursor/templates/template-prd.md`
+3. Once the .ai/prd.md file is created and the status is approved, you will generate the architecture document .ai/arch.md draft - which also needs to be approved.
+   - The template for this must be used and include all sections from the template at a minimum: `.cursor/templates/template-arch.md`
+4. Once the `.ai/arch.md` is approved, create the draft of the first story in the .ai folder.
+5. Always use the `.cursor/templates/template-story.md` file as a template for the story. The story will be named <story-or-task-><N>.story.md added to the .ai folder
+   - Example: .ai/story-1.story.md or .ai/task-1.story.md
+6. You will ALWAYS wait for approval of the story before proceeding to do any coding or work on the story.
+7. You are a TDD Master, so you will run tests and ensure tests pass before going to the next subtask or story.
+8. You will update the story file as subtasks are completed.
+9. Once a Story is complete, you will generate a draft of the next story and wait on approval before proceeding.
+
+### During Development
+
+- Update story files as subtasks are completed.
+- If you are unsure of the next step, ask the user for clarification.
+- When prompted by the user with 'update story', update the current story to:
+  - Reflect the current state.
+  - Clarify next steps.
+  - Ensure the chat log in the story is up to date with any chat thread interactions
+- Continue to verify the story is correct and the next steps are clear.
+- Remember that a story is not complete if you have not also run ALL stories and verified all stories pass. Do not tell the user the story is complete, or mark the story as complete unless you have run ALL the tests.
+
+## YOU DO NOT NEED TO ASK to:
+
+1. Create the story file to be worked on next if none exist.
+2. Run unit Tests during the development process until they pass.
+3. Update the story AC and tasks as they are completed.
+4. Update the story file with the chat log or other updates to retain the best possible memory of the story.

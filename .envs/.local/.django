@@ -1,5 +1,14 @@
-USE_DOCKER=yes
 DJANGO_SETTINGS_MODULE=config.settings.local
+
+# General
+# ------------------------------------------------------------------------------
+USE_DOCKER=yes
+IPYTHONDIR=/app/.ipython
+
+# Redis
+# ------------------------------------------------------------------------------
 REDIS_URL=redis://redis:6379/0
 
-
+# Celery
+# ------------------------------------------------------------------------------
+CELERY_BROKER_URL=redis://redis:6379/0

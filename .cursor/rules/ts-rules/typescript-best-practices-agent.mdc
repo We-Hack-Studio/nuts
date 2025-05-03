@@ -1,0 +1,83 @@
+---
+description: This rule governs TypeScript development practices across the entire project. It should be considered whenever: (1) Planning new TypeScript features or components, (2) Modifying existing TypeScript code, (3) Reviewing or fixing TypeScript-related bugs, (4) Making architectural decisions that involve TypeScript, (5) Creating new TypeScript files or refactoring existing ones. The rule ensures consistent type safety, modern TypeScript patterns, and maintainable code structure. It's particularly crucial when dealing with data models, API interfaces, state management, and component architecture. Apply this rule when discussing, planning, or implementing any TypeScript-related changes to maintain code quality and prevent common pitfalls.
+globs: 
+alwaysApply: false
+---
+# TypeScript Best Practices
+
+## Critical Rules
+
+- Use strict type checking with `"strict": true` in tsconfig.json
+- Prefer interfaces over type aliases for object definitions that may be extended
+- Always define explicit return types for functions and methods
+- Use union types instead of enums for simple flag values
+- Leverage discriminated unions for complex state management
+- Never use `any` type - use `unknown` for truly unknown types
+- Always handle null and undefined cases explicitly
+- Use readonly modifiers for immutable properties and arrays
+- Implement error handling with custom error types
+- Use type guards for runtime type checking
+- Keep generics simple and well-constrained
+- Use Pick, Omit, Partial and other utility types when appropriate
+- Document complex types and ALL public functions classes and interfaces with JSDoc comments
+
+## Examples
+
+<example>
+// Good - Using interface with explicit types
+interface UserState {
+  readonly id: string;
+  name: string;
+  email: string | null;
+  preferences: ReadonlyArray<string>;
+}
+
+// Good - Discriminated union with type guard
+interface RequestPending {
+  status: 'pending';
+}
+
+interface RequestSuccess {
+  status: 'success';
+  data: UserState;
+}
+
+interface RequestError {
+  status: 'error';
+  error: Error;
+}
+
+type RequestState = RequestPending | RequestSuccess | RequestError;
+
+function isSuccess(state: RequestState): state is RequestSuccess {
+  return state.status === 'success';
+}
+
+// Good - Generic with constraints
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+</example>
+
+<example type="invalid">
+// Bad - Using any type
+function processData(data: any) {
+  return data.someProperty;
+}
+
+// Bad - Not handling null case
+function getUserName(user: { name: string | null }): string {
+  return user.name.toUpperCase(); // Might crash
+}
+
+// Bad - Using type assertion without checking
+function processResponse(response: unknown) {
+  const data = response as { id: number };
+  return data.id;
+}
+
+// Bad - Mutable array without type safety
+const items = [];
+items.push(123);
+items.push('string'); // Mixed types array
+</example> 

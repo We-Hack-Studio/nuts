@@ -10,8 +10,8 @@
 
 ## 部署
 
-文档：[部署](https://we-hack-studio.github.io/nuts/deploy/)
+文档：[部署](./docs/deploy.md)
 
 ## 用户手册
 
-文档：[用户手册](https://yufuquant.github.io/yufuquant-user-manual/)
+文档：[用户手册](./docs/specification.md)

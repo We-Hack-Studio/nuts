@@ -1,0 +1,5 @@
+/node_modules
+/build
+/temp
+.gitignore
+/xnotes

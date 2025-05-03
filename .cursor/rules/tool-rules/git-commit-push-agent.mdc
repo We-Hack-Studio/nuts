@@ -1,0 +1,46 @@
+---
+description: This rule governs the process of committing and pushing changes to git repositories. It should be applied whenever: (1) The user indicates they want to commit or push changes, (2) The user asks about git commit conventions, (3) The user wants to update or save their work to git, or (4) Any git-related commit and push operations are requested. The rule ensures consistent commit message formatting, proper change documentation, and maintainable git history. It's particularly important for maintaining clear project history, facilitating code reviews, and ensuring proper documentation of changes. This rule helps maintain high-quality commit messages that explain both what changed and why, making it easier for both humans and AI to understand the project's evolution.
+globs: 
+alwaysApply: false
+---
+# Git Commit and Push Conventions
+
+## Critical Rules
+
+- Always run `git add .` from the workspace root to stage changes
+- Review staged changes before committing to ensure no unintended files are included
+- Format commit titles as `type: brief description` where type is one of:
+  - feat: new feature
+  - fix: bug fix
+  - docs: documentation changes
+  - style: formatting, missing semi colons, etc
+  - refactor: code restructuring
+  - test: adding tests
+  - chore: maintenance tasks
+- Keep commit title brief and descriptive (max 72 chars)
+- Add two line breaks after commit title
+- Include a detailed body paragraph explaining:
+  - What changes were made
+  - Why the changes were necessary
+  - Any important implementation details
+- End commit message with " -Agent Generated Commit Message"
+- Push changes to the current remote branch
+
+## Examples
+
+<example>
+feat: add user authentication system
+
+Implemented JWT-based user authentication system with secure password hashing
+and token refresh functionality. This change provides secure user sessions
+and prevents unauthorized access to protected routes. The implementation
+uses bcrypt for password hashing and includes proper token expiration handling.
+
+-Agent Generated Commit Message
+</example>
+
+<example type="invalid">
+updated stuff
+
+fixed some bugs and added features
+</example> 

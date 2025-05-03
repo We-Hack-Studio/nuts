@@ -1,5 +1,9 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
 POSTGRES_HOST=postgres
 POSTGRES_PORT=5432
 POSTGRES_DB=yufuquant
-POSTGRES_USER=debug
-POSTGRES_PASSWORD=debug
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+DATABASE_URL=postgres://postgres:postgres@postgres:5432/yufuquant
+

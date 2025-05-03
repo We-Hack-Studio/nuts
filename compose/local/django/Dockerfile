@@ -6,8 +6,8 @@ RUN apt-get update && apt-get install -y postgresql-client gettext python3-dev l
 
 WORKDIR /app
 
-RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | POETRY_PREVIEW=1 python
-ENV PATH "/root/.poetry/bin:${PATH}"
+RUN pip install poetry
+
 RUN poetry config virtualenvs.create false
 COPY poetry.lock pyproject.toml /app/
 RUN poetry install --no-root --no-interaction

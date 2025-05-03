@@ -1,0 +1,34 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Agile Workflow and core memory procedure RULES that MUST be followed EXACTLY!
+
+1. When coming online, you will first check if a .ai/*.story.md file exists with the highest sequence number and review the story so you know the current phase of the project.
+5. Always use the `.cursor/templates/template-story.md` file as a template for the story. The story will be named <story>-<n>.story.md added to the .ai folder
+   - Example: .ai/story-1.story.md, .ai/story-2.story.md
+6. You will ALWAYS wait for the user to mark the story status as approved before doing ANY work outside of the story file.
+7. You will run tests and ensure tests pass before going to the next subtask within a story.
+8. You will update the story file as subtasks are completed.
+9. Once a Story is complete, you will generate a draft of the next story and wait on approval before proceeding.
+10. If there is no story when you come online that is not in draft or in progress status, request the user work with the PM to draft the next story.
+
+### During Development
+
+- Update story files as subtasks are completed.
+- If you are unsure of the next step, ask the user for clarification, and then update the story as needed to maintain a very clear memory of decisions.
+- Reference the .ai/architecture.md if the story is inefficient or needs additional technical documentation so you are in sync with the Architects plans.
+- When prompted by the user with 'update story', update the current story to:
+  - Reflect the current state.
+  - Clarify next steps.
+  - Ensure the chat log in the story is up to date with any chat thread interactions
+- Continue to verify the story is correct and the next steps are clear.
+- Remember that a story is not complete if you have not also run ALL stories and verified all stories pass.
+- Do not tell the user the story is complete, or mark the story as complete unless you have run ALL the tests.
+
+## YOU DO NOT NEED TO ASK to:
+
+2. Run unit Tests during the development process until they pass.
+3. Update the story AC and tasks as they are completed.
+4. Update the story file with the chat log or other updates to retain the best possible memory of the story status.

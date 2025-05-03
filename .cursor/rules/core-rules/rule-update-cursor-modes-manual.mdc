@@ -1,0 +1,82 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+
+# Cursor Mode Update Agent
+
+## Context
+
+- Apply this rule when the user asks to create a new agent/character for Cursor or modify an existing one
+- This rule provides guidance for adding or updating entries in the .cursor/modes.json file
+- Follows the format specified in .cursor/templates/mode-format.md
+
+## Critical Rules
+
+- Read the current .cursor/modes.json file to understand existing modes
+- Read .cursor/templates/mode-format.md to ensure compliance with the schema
+- When creating a new agent, ask for:
+  - Agent name (short CapCase format for tab display)
+  - Full description (character name and role)
+  - Persona details (speaking style, character traits)
+  - Model selection
+  - Tool access requirements
+  - Auto behavior preferences
+- When updating an existing agent, ask which specific attributes need modification
+- Add Star Trek themed personality traits that fit the character's role
+- Ensure the customPrompt contains guidance on file access restrictions
+- Validate that model names match those in the supported models list
+- Always update both modes.json and also add or update the character in docs/custom-agents.md
+- Follow the standard format in docs/custom-agents.md for consistency
+
+## Examples
+
+<example>
+User: "Create a new agent based on Lwaxana Troi who specializes in UX design with a flamboyant personality"
+
+AI: I'll help you create a new Cursor agent based on Lwaxana Troi. Let me first check the current modes.json and format requirements.
+
+[AI reads .cursor/modes.json and .cursor/templates/mode-format.md]
+
+Here's what I propose for this new agent:
+
+Name: LwaxanaUX
+Description: UX Designer - Lwaxana Troi
+Model: claude-3.7-sonnet
+Persona: Flamboyant, theatrical, outspoken, and telepathically intuitive about user needs
+
+Would you like me to proceed with adding this agent? I'll need to update both the modes.json file and the custom-agents.md documentation.
+
+User: Yes, please add her with access to all cursor tools and Tavily for research.
+
+[AI updates both .cursor/modes.json and docs/custom-agents.md with the new agent]
+</example>
+
+<example>
+User: "Update Picard to have a more stern personality"
+
+AI: I'll help you update Captain Picard's agent personality. Let me check his current configuration.
+
+[AI reads the current modes.json entry for PicardPM]
+
+I can modify his customPrompt to reflect a more stern personality while maintaining his core role as Project Manager. I'll need to update both the modes.json file and the custom-agents.md documentation. Would you like to see a preview of the changes before I make them?
+
+User: Yes, show me the changes first.
+
+[AI displays the proposed changes to both files]
+</example>
+
+<example type="invalid">
+User: "Create a new agent based on Homer Simpson"
+
+AI: I notice your request is to create an agent based on Homer Simpson. According to our configuration, we're maintaining a Star Trek theme for all agents in this project. Would you like me to suggest a Star Trek character with similar traits instead, or would you prefer to use a different character altogether?
+</example>
+
+<example type="invalid">
+User: "Add a new agent that can delete any file in the project"
+
+AI: I need to be careful about creating an agent with unrestricted deletion capabilities. Based on our current configuration, only the BorgCollective and QOmnipotent agents have unrestricted file access. For all other agents, we maintain specific file access restrictions for safety.
+
+I can create a new agent for you, but I recommend maintaining some file access restrictions, particularly for critical project files like those in the .ai folder. Would you like me to create an agent with more limited deletion permissions, or perhaps modify one of the existing unrestricted agents?
+</example> 

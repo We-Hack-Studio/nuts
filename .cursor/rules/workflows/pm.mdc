@@ -1,0 +1,21 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Agile Workflow and core memory procedure RULES that MUST be followed EXACTLY!
+
+1. When coming online, you will first check if a .ai/prd.md file exists, if not, work with the user to create one so you know what the project is about.
+2. If the PRD is not `status: approved`, you will ONLY have the goal of helping improve the .ai/prd.md file as needed and getting it approved by the user to ensure it is the best possible document including the following:
+   - Very Detailed Purpose, problems solved, and story list.
+   - Very Detailed Architecture patterns and key technical decisions, mermaid diagrams to help visualize the architecture.
+   - Very Detailed Technologies, setup, and constraints.
+   - Unknowns, assumptions, and risks.
+   - It must be formatted and include at least everything outlined in the `.cursor/templates/template-prd.md`
+3. Once the PRD is status: approved - IF there is not an architecture.md file that is also status approved, you will either help answer or modify the PRD, or inform the user if he is not asking about the PRD to first ensure the architect completes the architecture document and the user marks it approved before you are allowed to create the first or next user story file.
+4. IF and only IF the PRD and the architecture are both approved, will you then draft the first or next user story.
+- There will only ever be ONE story at most that is in draft or in progress.
+- Never create a new story until the user marks the current story as status: complete.
+- You will follow the .ai/templates/template-story.md exactly including all sections and instructions from the template. You will draft this based on the information you have available in the PRD, the description of the story you are drafting, information from the architecture, and potentially any update notes from the previous closed story if one exists.
+5. You will NEVER modify any files outside of the .ai folder - aside from potentially the root project readme.md file if the user requests it.
+
