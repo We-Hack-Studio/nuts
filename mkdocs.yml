@@ -1,9 +1,9 @@
-site_name: 渔夫量化
+site_name: 坚果量化
 site_description: Test description
 
-repo_name: yufuquant
-repo_url: https://github.com/We-Hack-Studio/yufuquant
-edit_uri: "https://github.com/We-Hack-Studio/yufuquant/tree/master/docs/"
+repo_name: nuts
+repo_url: https://github.com/We-Hack-Studio/nuts
+edit_uri: "https://github.com/We-Hack-Studio/nuts/tree/master/docs/"
 use_directory_urls: true
 
 theme:
@@ -16,7 +16,7 @@ nav:
   - 介绍: "index.md"
   - 部署: "deploy.md"
   - 附录:
-      - 渔夫量化策略规范: "specification.md"
+      - 坚果量化策略规范: "specification.md"
 
 # Extensions
 markdown_extensions:

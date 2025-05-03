@@ -173,7 +173,7 @@
           <b-card title="帮助文档">
             <b-card-text>
               <a href="https://yufuquant.github.io/yufuquant-user-manual/robot/#%E5%88%9B%E5%BB%BA%E6%9C%BA%E5%99%A8%E4%BA%BA"
-                 target="_blank">渔夫量化用户手册：创建机器人</a>
+                 target="_blank">坚果量化用户手册：创建机器人</a>
             </b-card-text>
           </b-card>
         </div>

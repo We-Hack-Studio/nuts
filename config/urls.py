@@ -24,7 +24,7 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
-admin.site.site_header = "渔夫量化管理"
+admin.site.site_header = "坚果量化管理"
 urlpatterns = [
     path("admin/", admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

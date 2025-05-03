@@ -5,7 +5,7 @@
                 <b-card class="p-lg-3">
                     <div class="title py-4 text-secondary">
                         <b-icon icon="x-diamond" scale="3" class="mr-4" />
-                        <h4>渔夫量化</h4>
+                        <h4>坚果量化</h4>
                     </div>
                     <div class="text-center small text-secondary py-4 mb-2">使用账号密码登录</div>
                     <b-form @submit="onSubmit">
