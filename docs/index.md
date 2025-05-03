@@ -4,4 +4,19 @@
 
 ## 架构
 
-![](./images/architecture.png)
+```mermaid
+flowchart TD
+    Exchange[数字货币交易所]
+    Bot[机器人控制台]
+    API[坚果API]
+    Strategy[策略引擎]
+    
+    Exchange ---> API
+    API ---> Exchange
+    Bot ---> API
+    API ---> Bot
+    API ---> Strategy
+    Strategy ---> API
+    Exchange ---> Strategy
+    Strategy ---> Bot
+```
