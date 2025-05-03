@@ -70,8 +70,8 @@ jobs:
           context: .
           file: ./compose/dev/django/Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/nuts-dev-backend:latest # Updated tag
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/nuts-dev-backend:latest # Updated cache ref
+          tags: ghcr.io/we-hack-studio/nuts-dev-backend:latest # Updated tag to lowercase
+          cache-from: type=registry,ref=ghcr.io/we-hack-studio/nuts-dev-backend:latest # Updated cache ref to lowercase
           cache-to: type=inline
 
       - name: Build and push frontend
@@ -81,8 +81,8 @@ jobs:
           context: .
           file: ./compose/dev/node/Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/nuts-dev-frontend:latest # Updated tag
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/nuts-dev-frontend:latest # Updated cache ref
+          tags: ghcr.io/we-hack-studio/nuts-dev-frontend:latest # Updated tag to lowercase
+          cache-from: type=registry,ref=ghcr.io/we-hack-studio/nuts-dev-frontend:latest # Updated cache ref to lowercase
           cache-to: type=inline
 
       - name: Image digest backend
