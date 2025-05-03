@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y postgresql-client gettext python3-dev l
 
 WORKDIR /app
 
-RUN pip install poetry==1.8.3
+RUN pip install poetry
 # ENV PATH "/root/.poetry/bin:${PATH}"
 RUN poetry config virtualenvs.create false
 COPY poetry.lock pyproject.toml /app/

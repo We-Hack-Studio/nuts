@@ -2,7 +2,7 @@
 name = "yufuquant"
 version = "0.1.0"
 description = ""
-authors = ["zmrenwu <zmrenwu@gmail.com>"]
+authors = ["terryso <oxtiger@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.7,<4"
