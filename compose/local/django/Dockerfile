@@ -1,6 +1,6 @@
 FROM python:3.8
 
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED 2
 
 RUN apt-get update && apt-get install -y postgresql-client gettext python3-dev libpq-dev
 
