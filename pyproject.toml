@@ -38,8 +38,6 @@ django-celery-beat = "^2.1.0"
 django-celery-results = "^1.2.1"
 typing_extensions = ">=4.0.0"
 requests = "<2.30.0"
-# Pin packaging version for compatibility with older poetry plugins
-packaging = "<22.0"
 
 [tool.poetry.dev-dependencies]
 mkdocs = "^1.1.2"
