@@ -37,7 +37,6 @@ argon2-cffi = "^20.1.0"
 django-celery-beat = "^2.1.0"
 django-celery-results = "^1.2.1"
 typing_extensions = ">=4.0.0"
-requests = "<2.30.0"
 
 [tool.poetry.dev-dependencies]
 mkdocs = "^1.1.2"
