@@ -85,14 +85,14 @@
          "default":null,
          "editable":true,
          "items":[
-            [
-               1,
-               "做多"
-            ],
-            [
-               -1,
-               "做空"
-            ]
+            {
+                "value":1,
+                "display":"做多"
+            },
+            {
+                "value":-1,
+                "display":"做空"
+            }
          ]
       },
       {
